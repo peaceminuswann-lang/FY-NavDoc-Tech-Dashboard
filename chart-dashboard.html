@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chart Revision Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+        .container-custom {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        .header-section {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        .header-section h1 {
+            color: #ff8c00;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .table-section {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        .table-section h5 {
+            color: #ff8c00;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .table {
+            margin-bottom: 0;
+        }
+        .table thead {
+            background-color: #ffcc00;
+            color: #000;
+        }
+        .btn-edit {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+        .btn-edit:hover {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            color: white;
+            text-decoration: none;
+        }
+        .btn-home {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        .btn-home:hover {
+            background: #5a6268;
+            color: white;
+            text-decoration: none;
+        }
+        .revision-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #ff8c00;
+        }
+        .revision-info strong {
+            color: #ff8c00;
+        }
+        .header-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .row-yes {
+            background-color: #d4edda !important;
+        }
+        .row-yes td {
+            background-color: #d4edda !important;
+            font-weight: bold;
+        }
+        .row-no {
+            background-color: #f8d7da !important;
+        }
+        .row-no td {
+            background-color: #f8d7da !important;
+            font-weight: bold;
+        }
+        .table tbody td {
+            text-align: center;
+            vertical-align: middle;
+        }
+        .table thead th {
+            text-align: center;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-custom">
+        <!-- Header Section -->
+        <div class="header-section">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h1><i class="fas fa-chart-line me-2"></i>Chart Revision Dashboard</h1>
+                    <p class="text-muted mb-0">View and manage chart revision information for all aircraft fleets</p>
+                </div>
+                <a href="index.html" class="btn btn-home"><i class="fas fa-arrow-left me-2"></i>Back to Home</a>
+            </div>
+        </div>
+
+        <!-- Revision Info -->
+        <div class="revision-info">
+            <strong><i class="fas fa-calendar me-2"></i>Revision Date:</strong>
+            <span id="revisionDateDisplay">Loading...</span>
+            <div style="margin-top: 10px;">
+                <a href="chart-admin.html" class="btn btn-edit"><i class="fas fa-edit me-2"></i>Edit Chart Data</a>
+            </div>
+        </div>
+
+        <!-- ATR72 Section -->
+        <div class="table-section">
+            <h5><i class="fas fa-plane me-2"></i>ATR72 - Chart Revision</h5>
+            <div style="overflow-x: auto;">
+                <table class="table table-bordered table-sm" id="atr72-dashboard">
+                    <thead>
+                        <tr>
+                            <th style="width: 15%; text-align: center;">List of Airports</th>
+                            <th style="width: 25%; text-align: center;">Type of Destination</th>
+                            <th style="width: 20%; text-align: center;">New Revision</th>
+                            <th style="width: 40%; text-align: center;">Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody id="atr72-dashboard-body">
+                        <tr><td colspan="4" class="text-center text-muted py-4">Loading ATR72 data...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- B737 Section -->
+        <div class="table-section">
+            <h5><i class="fas fa-plane me-2"></i>B737 - Chart Revision</h5>
+            <div style="overflow-x: auto;">
+                <table class="table table-bordered table-sm" id="b737-dashboard">
+                    <thead>
+                        <tr>
+                            <th style="width: 15%; text-align: center;">List of Airports</th>
+                            <th style="width: 25%; text-align: center;">Type of Destination</th>
+                            <th style="width: 20%; text-align: center;">New Revision</th>
+                            <th style="width: 40%; text-align: center;">Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody id="b737-dashboard-body">
+                        <tr><td colspan="4" class="text-center text-muted py-4">Loading B737 data...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function loadDashboardData() {
+            try {
+                const savedData = localStorage.getItem('chartRevisionData');
+                if (savedData) {
+                    const data = JSON.parse(savedData);
+                    
+                    // Display revision date
+                    const revisionDateDisplay = document.getElementById('revisionDateDisplay');
+                    if (data.revisionDate) {
+                        revisionDateDisplay.textContent = data.revisionDate;
+                    }
+                    
+                    // Load ATR72 data
+                    if (data.atr72 && data.atr72.length > 0) {
+                        const atr72Body = document.getElementById('atr72-dashboard-body');
+                        atr72Body.innerHTML = '';
+                        data.atr72.forEach(row => {
+                            const tr = document.createElement('tr');
+                            // Add color class based on New Revision status
+                            const isYes = row.newRevision === 'Yes';
+                            tr.className = isYes ? 'row-yes' : 'row-no';
+                            tr.innerHTML = `
+                                <td><strong>${row.airport || '-'}</strong></td>
+                                <td><strong>${row.typeOfDestination || '-'}</strong></td>
+                                <td><strong>${row.newRevision || '-'}</strong></td>
+                                <td><strong>${row.remarks || '-'}</strong></td>
+                            `;
+                            atr72Body.appendChild(tr);
+                        });
+                    }
+                    
+                    // Load B737 data
+                    if (data.b737 && data.b737.length > 0) {
+                        const b737Body = document.getElementById('b737-dashboard-body');
+                        b737Body.innerHTML = '';
+                        data.b737.forEach(row => {
+                            const tr = document.createElement('tr');
+                            // Add color class based on New Revision status
+                            const isYes = row.newRevision === 'Yes';
+                            tr.className = isYes ? 'row-yes' : 'row-no';
+                            tr.innerHTML = `
+                                <td><strong>${row.airport || '-'}</strong></td>
+                                <td><strong>${row.typeOfDestination || '-'}</strong></td>
+                                <td><strong>${row.newRevision || '-'}</strong></td>
+                                <td><strong>${row.remarks || '-'}</strong></td>
+                            `;
+                            b737Body.appendChild(tr);
+                        });
+                    }
+                } else {
+                    document.getElementById('atr72-dashboard-body').innerHTML = '<tr><td colspan="4" class="text-center text-muted py-4">No data available. Please visit Admin page to add data.</td></tr>';
+                    document.getElementById('b737-dashboard-body').innerHTML = '<tr><td colspan="4" class="text-center text-muted py-4">No data available. Please visit Admin page to add data.</td></tr>';
+                }
+            } catch (error) {
+                console.error('Error loading dashboard data:', error);
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', loadDashboardData);
+    </script>
+</body>
+</html>

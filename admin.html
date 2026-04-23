@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis by Flight Operations, Technical & Development - Admin Upload</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js';
+        import { getFirestore, doc, getDoc, setDoc, collection, getDocs, deleteDoc } from 'https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js';
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDwsKS5dyfQdYzuWxA-QiqhdBoWsc_Ysoo",
+            authDomain: "fireflyfuelanalysis.firebaseapp.com",
+            projectId: "fireflyfuelanalysis",
+            storageBucket: "fireflyfuelanalysis.firebasestorage.app",
+            messagingSenderId: "71676733667",
+            appId: "1:71676733667:web:99b441746ac568ed13bdd6",
+            measurementId: "G-NHY73QPYVX"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Make db available globally
+        window.db = db;
+        window.collection = collection;
+        window.doc = doc;
+        window.setDoc = setDoc;
+        window.getDoc = getDoc;
+        window.getDocs = getDocs;
+    </script>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #ff8c00 0%, #ffca28 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .upload-card {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 22px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.12);
+            padding: 42px;
+            max-width: 540px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .upload-icon {
+            font-size: 4rem;
+            color: #ff8c00;
+            margin-bottom: 20px;
+        }
+
+        .btn-upload {
+            background: linear-gradient(135deg, #ff8c00 0%, #ff9f1a 100%);
+            border: none;
+            border-radius: 25px;
+            padding: 12px 30px;
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-upload:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            color: white;
+        }
+
+        .file-input {
+            margin: 20px 0;
+        }
+
+        .back-link {
+            color: #ff8c00;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive CSS for Admin Page */
+        @media (max-width: 768px) {
+            .upload-card {
+                padding: 28px;
+                border-radius: 18px;
+                margin: 20px;
+            }
+
+            .upload-icon {
+                font-size: 3rem;
+                margin-bottom: 15px;
+            }
+
+            .upload-card h2 {
+                font-size: 1.5rem;
+            }
+
+            .upload-card p {
+                font-size: 0.9rem;
+            }
+
+            .card {
+                border-radius: 14px;
+            }
+
+            .card-header {
+                padding: 12px;
+                font-size: 0.95rem;
+            }
+
+            .card-body {
+                padding: 15px;
+            }
+
+            .form-label {
+                font-size: 0.85rem;
+                margin-bottom: 4px;
+            }
+
+            .form-control, .form-select {
+                font-size: 0.9rem;
+                padding: 8px 10px;
+            }
+
+            .btn {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+
+            .table {
+                font-size: 0.8rem;
+            }
+
+            .table th, .table td {
+                padding: 8px 5px;
+            }
+
+            .btn-outline-secondary {
+                padding: 8px 15px;
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .upload-card {
+                padding: 20px;
+                border-radius: 16px;
+                margin: 15px;
+            }
+
+            .upload-icon {
+                font-size: 2.5rem;
+                margin-bottom: 12px;
+            }
+
+            .upload-card h2 {
+                font-size: 1.25rem;
+                margin-bottom: 8px;
+            }
+
+            .upload-card p {
+                font-size: 0.85rem;
+                margin-bottom: 15px;
+            }
+
+            .row.g-3 {
+                gap: 1rem !important;
+            }
+
+            .col-md-6 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+
+            .card {
+                border-radius: 12px;
+            }
+
+            .card-header {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+
+            .card-header i {
+                font-size: 0.9rem;
+            }
+
+            .card-body {
+                padding: 12px;
+            }
+
+            .form-label {
+                font-size: 0.8rem;
+                margin-bottom: 3px;
+            }
+
+            .form-control, .form-select {
+                font-size: 0.85rem;
+                padding: 6px 8px;
+                border-radius: 6px;
+            }
+
+            .mb-3 {
+                margin-bottom: 10px !important;
+            }
+
+            .btn {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+                border-radius: 18px;
+            }
+
+            .table {
+                font-size: 0.75rem;
+            }
+
+            .table th, .table td {
+                padding: 6px 4px;
+            }
+
+            .table th {
+                font-size: 0.7rem;
+            }
+
+            .mt-5 {
+                margin-top: 1.5rem !important;
+            }
+
+            .mt-4 {
+                margin-top: 1rem !important;
+            }
+
+            .d-flex {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .justify-content-between {
+                justify-content: center !important;
+            }
+
+            .align-items-center {
+                align-items: stretch !important;
+            }
+
+            .btn-outline-secondary {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+                width: 100%;
+            }
+
+            .back-link {
+                display: inline-block;
+                text-align: center;
+                width: 100%;
+                padding: 8px;
+            }
+
+            .back-link i {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="upload-card">
+        <i class="fas fa-cloud-upload-alt upload-icon"></i>
+        <h2 class="mb-4">Admin Data Upload</h2>
+        <p class="text-muted mb-4">Upload separate CSV files for each fleet type</p>
+        <div id="uploadForm">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="card border-warning">
+                        <div class="card-header bg-warning text-white">
+                            <i class="fas fa-plane me-2"></i>B737 Fleet
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">Month</label>
+                                <select id="b737Month" class="form-select">
+                                    <option value="01">January</option>
+                                    <option value="02">February</option>
+                                    <option value="03">March</option>
+                                    <option value="04">April</option>
+                                    <option value="05">May</option>
+                                    <option value="06">June</option>
+                                    <option value="07">July</option>
+                                    <option value="08">August</option>
+                                    <option value="09">September</option>
+                                    <option value="10">October</option>
+                                    <option value="11">November</option>
+                                    <option value="12">December</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Year</label>
+                                <input type="number" id="b737Year" class="form-control" value="2026" min="2020" max="2030">
+                            </div>
+                            <input type="file" id="b737File" accept=".xlsx,.xls,.csv" class="form-control mb-3">
+                            <button onclick="processFile('b737')" class="btn btn-warning w-100 text-white" id="b737Btn">
+                                <i class="fas fa-upload me-2"></i>Upload B737 Data
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card border-warning">
+                        <div class="card-header bg-warning text-white">
+                            <i class="fas fa-plane me-2"></i>ATR72 Fleet
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">Month</label>
+                                <select id="atrMonth" class="form-select">
+                                    <option value="01">January</option>
+                                    <option value="02">February</option>
+                                    <option value="03">March</option>
+                                    <option value="04">April</option>
+                                    <option value="05">May</option>
+                                    <option value="06">June</option>
+                                    <option value="07">July</option>
+                                    <option value="08">August</option>
+                                    <option value="09">September</option>
+                                    <option value="10">October</option>
+                                    <option value="11">November</option>
+                                    <option value="12">December</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Year</label>
+                                <input type="number" id="atrYear" class="form-control" value="2026" min="2020" max="2030">
+                            </div>
+                            <input type="file" id="atrFile" accept=".xlsx,.xls,.csv" class="form-control mb-3">
+                            <button onclick="processFile('atr')" class="btn btn-warning w-100 text-white" id="atrBtn">
+                                <i class="fas fa-upload me-2"></i>Upload ATR72 Data
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-5">
+            <h3 class="mb-3">Uploaded Data</h3>
+            <div id="dataList" class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Fleet</th>
+                            <th>Month</th>
+                            <th>Year</th>
+                            <th>Records</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dataTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="mt-4 d-flex justify-content-between align-items-center">
+            <a href="index.html" class="back-link">
+                <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+            </a>
+            <button class="btn btn-outline-secondary" onclick="logout()">
+                <i class="fas fa-sign-out-alt me-2"></i>Logout
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const ADMIN_USERNAME = 'FYFOTD';
+        const ADMIN_PASSWORD = 'firefly@123';
+
+        window.firebaseConfigured = false;
+        document.addEventListener('DOMContentLoaded', checkLogin);
+
+        function checkLogin() {
+            const isLoggedIn = sessionStorage.getItem('adminLoggedIn') === 'true';
+            console.log('Check login - adminLoggedIn:', isLoggedIn);
+            
+            if (isLoggedIn) {
+                // Ensure upload form is visible
+                const uploadForm = document.getElementById('uploadForm');
+                if (uploadForm) {
+                    uploadForm.style.display = 'block';
+                    console.log('Upload form visible');
+                }
+                // Load data list after a short delay
+                setTimeout(() => {
+                    console.log('Loading data list...');
+                    updateDataList();
+                }, 500);
+            } else {
+                console.log('Not logged in, redirecting to login page');
+                // Give a small delay to show the page briefly
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 100);
+            }
+        }
+
+        function logout() {
+            sessionStorage.removeItem('adminLoggedIn');
+            window.location.href = 'login.html';
+        }
+
+        function parseCSV(csv) {
+            const rows = [];
+            let currentRow = [];
+            let currentField = '';
+            let insideQuotes = false;
+            
+            for (let i = 0; i < csv.length; i++) {
+                const char = csv[i];
+                const nextChar = csv[i + 1];
+                
+                if (char === '"') {
+                    if (insideQuotes && nextChar === '"') {
+                        currentField += '"';
+                        i++;
+                    } else {
+                        insideQuotes = !insideQuotes;
+                    }
+                } else if (char === ',' && !insideQuotes) {
+                    currentRow.push(currentField.trim());
+                    currentField = '';
+                } else if ((char === '\n' || char === '\r') && !insideQuotes) {
+                    if (currentField.trim() || currentRow.length > 0) {
+                        currentRow.push(currentField.trim());
+                        if (currentRow.some(f => f)) {
+                            rows.push(currentRow);
+                        }
+                        currentRow = [];
+                        currentField = '';
+                    }
+                    if (char === '\r' && nextChar === '\n') i++;
+                } else {
+                    currentField += char;
+                }
+            }
+            
+            if (currentField.trim() || currentRow.length > 0) {
+                currentRow.push(currentField.trim());
+                if (currentRow.some(f => f)) {
+                    rows.push(currentRow);
+                }
+            }
+            
+            if (rows.length < 2) return [];
+            
+            const headers = rows[0].map(h => h.trim());
+            const data = [];
+            for (let i = 1; i < rows.length; i++) {
+                const row = rows[i];
+                if (!row || row.length === 0 || !row.some(f => f)) continue;
+                const obj = {};
+                for (let j = 0; j < headers.length; j++) {
+                    obj[headers[j]] = (row[j] || '').trim();
+                }
+                data.push(obj);
+            }
+            console.log('Parsed CSV - Headers:', headers);
+            console.log('Parsed CSV - Sample row:', data[0]);
+            console.log('Parsed CSV - Total rows:', data.length);
+            return data;
+        }
+
+        async function processFile(fleetType) {
+            const btn = document.getElementById(fleetType + 'Btn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Uploading...';
+            
+            let file, month, year;
+            if (fleetType === 'b737') {
+                file = document.getElementById('b737File').files[0];
+                month = document.getElementById('b737Month').value;
+                year = document.getElementById('b737Year').value;
+            } else if (fleetType === 'atr') {
+                file = document.getElementById('atrFile').files[0];
+                month = document.getElementById('atrMonth').value;
+                year = document.getElementById('atrYear').value;
+            }
+            if (!file) {
+                alert('Please select a file for ' + fleetType.toUpperCase());
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-upload me-2"></i>Upload ' + fleetType.toUpperCase() + ' Data';
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                let data = [];
+                const fileName = file.name.toLowerCase();
+                if (fileName.endsWith('.xlsx') || fileName.endsWith('.xls')) {
+                    const workbook = XLSX.read(e.target.result, {type: 'binary'});
+                    const sheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[sheetName];
+                    data = XLSX.utils.sheet_to_json(worksheet);
+                } else if (fileName.endsWith('.csv')) {
+                    const csv = e.target.result;
+                    // Proper CSV parser that handles quoted fields
+                    data = parseCSV(csv);
+                } else {
+                    alert('Unsupported file format');
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-upload me-2"></i>Upload ' + fleetType.toUpperCase() + ' Data';
+                    return;
+                }
+                // Store data
+                const key = fleetType + '_' + month + '_' + year;
+                const success = await setFlightData(key, data);
+                if (!success) {
+                    alert('Failed to save data. Please try again.');
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-upload me-2"></i>Upload ' + fleetType.toUpperCase() + ' Data';
+                    return;
+                }
+                // Update available months
+                let months = await getAvailableMonths();
+                const monthKey = month + '_' + year;
+                if (!months.includes(monthKey)) {
+                    months.push(monthKey);
+                    await setAvailableMonths(months);
+                }
+                alert(fleetType.toUpperCase() + ' data for ' + month + '/' + year + ' uploaded successfully!\n\nNote: Refresh the dashboard page to see the new data.');
+                // Clear the input
+                if (fleetType === 'b737') {
+                    document.getElementById('b737File').value = '';
+                } else {
+                    document.getElementById('atrFile').value = '';
+                }
+                updateDataList();
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-upload me-2"></i>Upload ' + fleetType.toUpperCase() + ' Data';
+            };
+            if (file.name.toLowerCase().endsWith('.xlsx') || file.name.toLowerCase().endsWith('.xls')) {
+                reader.readAsBinaryString(file);
+            } else {
+                reader.readAsText(file);
+            }
+        }
+
+        async function updateDataList() {
+            const tbody = document.getElementById('dataTableBody');
+            tbody.innerHTML = '';
+            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            const allData = await getAllFlightData();
+            Object.keys(allData).forEach(key => {
+                if (key.startsWith('b737_') || key.startsWith('atr_')) {
+                    const parts = key.split('_');
+                    const fleet = parts[0];
+                    const month = parts[1];
+                    const year = parts[2];
+                    const data = allData[key];
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${fleet === 'b737' ? 'B737' : 'ATR72'}</td>
+                        <td>${monthNames[parseInt(month) - 1]}</td>
+                        <td>${year}</td>
+                        <td>${data.length}</td>
+                        <td><button class="btn btn-danger btn-sm" onclick="deleteData('${key}')">Delete</button></td>
+                    `;
+                    tbody.appendChild(row);
+                }
+            });
+        }
+
+        async function deleteData(key) {
+            if (confirm('Are you sure you want to delete this data?')) {
+                try {
+                    // Actually delete the document from Supabase
+                    const { error } = await window.supabase
+                        .from('flight_data')
+                        .delete()
+                        .eq('id', key);
+                    
+                    if (error) {
+                        console.error('Error deleting data:', error);
+                        alert('Error deleting data');
+                        return;
+                    }
+                    
+                    // Update available months
+                    const parts = key.split('_');
+                    const monthKey = parts[1] + '_' + parts[2];
+                    let months = await getAvailableMonths();
+                    // Check if any other data for this month
+                    const allData = await getAllFlightData();
+                    let hasOther = false;
+                    Object.keys(allData).forEach(k => {
+                        if (k !== key && k.includes('_' + monthKey)) {
+                            hasOther = true;
+                        }
+                    });
+                    if (!hasOther) {
+                        months = months.filter(m => m !== monthKey);
+                        await setAvailableMonths(months);
+                    }
+                    await updateDataList();
+                    alert('Data deleted successfully!\n\nPlease refresh the Dashboard to see the updated data.');
+                } catch (error) {
+                    console.error('Error deleting data:', error);
+                    alert('Error deleting data. Please try again.');
+                }
+            }
+        }
+
+        // Supabase functions
+        async function setFlightData(key, data) {
+            try {
+                const { error } = await window.supabase
+                    .from('flight_data')
+                    .upsert([{ id: key, data: data }]);
+                if (error) {
+                    console.error('Error setting flight data:', error);
+                    return false;
+                }
+                return true;
+            } catch (error) {
+                console.error('Error setting flight data:', error);
+                return false;
+            }
+        }
+
+        async function getAvailableMonths() {
+            try {
+                const { data, error } = await window.supabase
+                    .from('available_months')
+                    .select('months')
+                    .eq('id', 'availableMonths')
+                    .single();
+                if (error) {
+                    return [];
+                }
+                return data?.months || [];
+            } catch (error) {
+                console.error('Error getting available months:', error);
+                return [];
+            }
+        }
+
+        async function setAvailableMonths(months) {
+            try {
+                const { error } = await window.supabase
+                    .from('available_months')
+                    .upsert([{ id: 'availableMonths', months: months }]);
+                if (error) {
+                    console.error('Error setting available months:', error);
+                    return false;
+                }
+                return true;
+            } catch (error) {
+                console.error('Error setting available months:', error);
+                return false;
+            }
+        }
+
+        async function getAllFlightData() {
+            try {
+                const { data, error } = await window.supabase
+                    .from('flight_data')
+                    .select('id, data');
+                if (error) {
+                    console.error('Error getting flight data:', error);
+                    return {};
+                }
+                const result = {};
+                data.forEach(row => {
+                    if (Array.isArray(row.data) && row.data.length > 0) {
+                        result[row.id] = row.data;
+                    }
+                });
+                return result;
+            } catch (error) {
+                console.error('Error getting all flight data:', error);
+                return {};
+            }
+        }
+    </script>
+
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.38.0"></script>
+    <script>
+        // Supabase configuration
+        const SUPABASE_URL = 'https://mefobbecnrgleyuimsld.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_Kl-0wxh6IDu_m5HTJEutqQ_q-vXu7e7';
+        
+        // Initialize Supabase
+        const { createClient } = window.supabase;
+        const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
+        
+        // Make client available globally
+        window.supabase = supabaseClient;
+    </script>
+
+    <!-- SheetJS for XLSX parsing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chart Revision Admin - Edit</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+        .container-custom {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 400px;
+        }
+        .login-box h2 {
+            color: #ff8c00;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .form-control, .form-control:focus {
+            border-radius: 6px;
+            border: 1px solid #ddd;
+        }
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        .btn-login {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .btn-login:hover {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            color: white;
+        }
+        .header-section {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            display: none;
+        }
+        .header-section.show {
+            display: block;
+        }
+        .header-section h1 {
+            color: #ff8c00;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .table-section {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            display: none;
+        }
+        .table-section.show {
+            display: block;
+        }
+        .table-section h5 {
+            color: #ff8c00;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .table {
+            margin-bottom: 0;
+        }
+        .table thead {
+            background-color: #ffcc00;
+            color: #000;
+        }
+        .revision-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #ff8c00;
+            display: none;
+        }
+        .revision-info.show {
+            display: block;
+        }
+        .btn-save {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+        .btn-save:hover {
+            background: linear-gradient(135deg, #20c997 0%, #28a745 100%);
+            color: white;
+        }
+        .btn-logout {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        .btn-logout:hover {
+            background: #c82333;
+            color: white;
+        }
+        .btn-add-row {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        .btn-add-row:hover {
+            background: #218838;
+            color: white;
+        }
+        .header-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Container -->
+    <div class="login-container" id="loginContainer">
+        <div class="login-box">
+            <h2><i class="fas fa-lock me-2"></i>Admin Login</h2>
+            <form id="loginForm" onsubmit="event.preventDefault(); handleLogin();">
+                <div class="mb-3">
+                    <label for="username" class="form-label"><i class="fas fa-user me-2"></i>Username</label>
+                    <input type="text" class="form-control form-control-lg" id="username" placeholder="Enter username" required autofocus>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label"><i class="fas fa-key me-2"></i>Password</label>
+                    <input type="password" class="form-control form-control-lg" id="password" placeholder="Enter password" required>
+                </div>
+                <button type="submit" class="btn btn-login">
+                    <i class="fas fa-sign-in-alt me-2"></i>Login
+                </button>
+            </form>
+            <div class="alert alert-info mt-3 mb-0">
+                <small><strong>Demo Credentials:</strong><br>Username: <code>admin</code><br>Password: <code>admin123</code></small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Content Container -->
+    <div class="container-custom" id="adminContent" style="display: none;">
+        <!-- Header Section -->
+        <div class="header-section show">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h1><i class="fas fa-chart-line me-2"></i>Chart Revision Admin - Edit Mode</h1>
+                    <p class="text-muted mb-0">Edit and manage chart revision information for all aircraft fleets</p>
+                </div>
+                <button class="btn btn-logout" onclick="logout()"><i class="fas fa-sign-out-alt me-2"></i>Logout</button>
+            </div>
+        </div>
+
+        <!-- Revision Info -->
+        <div class="revision-info show">
+            <strong><i class="fas fa-calendar me-2"></i>Revision Date:</strong>
+            <input type="text" class="form-control form-control-sm" id="revisionDate" style="max-width: 400px; margin-top: 10px;" placeholder="e.g., WEF 16-Apr-2026 / LSY Standard Rev 2616">
+        </div>
+
+        <!-- ATR72 Section -->
+        <div class="table-section show">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h5 style="margin: 0;"><i class="fas fa-plane me-2"></i>ATR72 - Chart Revision</h5>
+                <button class="btn btn-add-row" onclick="addRow('atr72')"><i class="fas fa-plus me-2"></i>Add Row</button>
+            </div>
+            <div style="overflow-x: auto;">
+                <table class="table table-bordered table-sm" id="atr72-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 15%; text-align: center;">List of Airports</th>
+                            <th style="width: 25%; text-align: center;">Type of Destination</th>
+                            <th style="width: 20%; text-align: center;">New Revision</th>
+                            <th style="width: 30%; text-align: center;">Remarks</th>
+                            <th style="width: 10%; text-align: center;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="atr72-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- B737 Section -->
+        <div class="table-section show">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h5 style="margin: 0;"><i class="fas fa-plane me-2"></i>B737 - Chart Revision</h5>
+                <button class="btn btn-add-row" onclick="addRow('b737')"><i class="fas fa-plus me-2"></i>Add Row</button>
+            </div>
+            <div style="overflow-x: auto;">
+                <table class="table table-bordered table-sm" id="b737-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 15%; text-align: center;">List of Airports</th>
+                            <th style="width: 25%; text-align: center;">Type of Destination</th>
+                            <th style="width: 20%; text-align: center;">New Revision</th>
+                            <th style="width: 30%; text-align: center;">Remarks</th>
+                            <th style="width: 10%; text-align: center;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="b737-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Save Button -->
+        <div style="margin-bottom: 30px;">
+            <button class="btn btn-save btn-lg" onclick="saveAllData()">
+                <i class="fas fa-save me-2"></i>Save All Changes
+            </button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Admin credentials (hardcoded for demo)
+        const ADMIN_USERNAME = 'admin';
+        const ADMIN_PASSWORD = 'admin123';
+
+        function handleLogin() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+                // Login successful
+                sessionStorage.setItem('adminLoggedIn', 'true');
+                showLoginSection(false);
+                loadAdminData();
+                showNotification('Login successful!', 'success');
+            } else {
+                showNotification('Invalid username or password', 'danger');
+                document.getElementById('password').value = '';
+            }
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                sessionStorage.removeItem('adminLoggedIn');
+                document.getElementById('loginForm').reset();
+                showLoginSection(true);
+                showNotification('Logged out successfully', 'info');
+            }
+        }
+
+        function showLoginSection(show) {
+            const loginContainer = document.getElementById('loginContainer');
+            const adminContent = document.getElementById('adminContent');
+            
+            if (show) {
+                loginContainer.style.display = 'flex';
+                adminContent.style.display = 'none';
+            } else {
+                loginContainer.style.display = 'none';
+                adminContent.style.display = 'block';
+            }
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `alert alert-${type}`;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                z-index: 9999;
+                min-width: 300px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            `;
+            notification.innerHTML = `<i class="fas fa-check-circle me-2"></i>${message}`;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        function loadAdminData() {
+            try {
+                const savedData = localStorage.getItem('chartRevisionData');
+                if (savedData) {
+                    const data = JSON.parse(savedData);
+                    
+                    // Load revision date
+                    if (data.revisionDate) {
+                        document.getElementById('revisionDate').value = data.revisionDate;
+                    }
+                    
+                    // Load ATR72 data
+                    const atr72Body = document.getElementById('atr72-body');
+                    atr72Body.innerHTML = '';
+                    if (data.atr72 && data.atr72.length > 0) {
+                        data.atr72.forEach((row, index) => {
+                            addTableRow('atr72', index, row);
+                        });
+                    }
+                    
+                    // Load B737 data
+                    const b737Body = document.getElementById('b737-body');
+                    b737Body.innerHTML = '';
+                    if (data.b737 && data.b737.length > 0) {
+                        data.b737.forEach((row, index) => {
+                            addTableRow('b737', index, row);
+                        });
+                    }
+                } else {
+                    // Load default data from main page if exists
+                    addRow('atr72', 12);
+                    addRow('b737', 12);
+                }
+            } catch (error) {
+                console.error('Error loading admin data:', error);
+            }
+        }
+
+        function addTableRow(aircraft, index, data = {}) {
+            const body = document.getElementById(`${aircraft}-body`);
+            const tr = document.createElement('tr');
+            
+            tr.innerHTML = `
+                <td><input type="text" class="form-control form-control-sm" value="${data.airport || ''}" placeholder="Airport Code" /></td>
+                <td><select class="form-select form-select-sm">
+                    <option ${data.typeOfDestination === 'Domestic/International' ? 'selected' : ''}>Domestic/International</option>
+                    <option ${data.typeOfDestination === 'Alternate Route' ? 'selected' : ''}>Alternate Route</option>
+                    <option ${data.typeOfDestination === 'Charter' ? 'selected' : ''}>Charter</option>
+                </select></td>
+                <td><select class="form-select form-select-sm">
+                    <option ${data.newRevision === 'Yes' ? 'selected' : ''}>Yes</option>
+                    <option ${data.newRevision === 'No' ? 'selected' : ''}>No</option>
+                </select></td>
+                <td><select class="form-select form-select-sm">
+                    <option value="" ${!data.remarks ? 'selected' : ''}></option>
+                    ${aircraft === 'atr72' ? `
+                        <option ${data.remarks === 'NOTAM' ? 'selected' : ''}>NOTAM</option>
+                        <option ${data.remarks === 'Charts' ? 'selected' : ''}>Charts</option>
+                        <option ${data.remarks === 'NOTAM & Charts' ? 'selected' : ''}>NOTAM & Charts</option>
+                    ` : `
+                        <option ${data.remarks === 'Minima' ? 'selected' : ''}>Minima</option>
+                        <option ${data.remarks === 'Charts' ? 'selected' : ''}>Charts</option>
+                        <option ${data.remarks === 'Minima & Charts' ? 'selected' : ''}>Minima & Charts</option>
+                    `}
+                </select></td>
+                <td><button class="btn btn-sm btn-danger" onclick="deleteRow(this)"><i class="fas fa-trash"></i></button></td>
+            `;
+            
+            body.appendChild(tr);
+        }
+
+        function addRow(aircraft, count = 1) {
+            for (let i = 0; i < count; i++) {
+                addTableRow(aircraft, i);
+            }
+        }
+
+        function deleteRow(button) {
+            if (confirm('Are you sure you want to delete this row?')) {
+                button.closest('tr').remove();
+                showNotification('Row deleted successfully', 'success');
+            }
+        }
+
+        function saveAllData() {
+            try {
+                const revisionDate = document.getElementById('revisionDate').value;
+                
+                const chartData = {
+                    revisionDate: revisionDate,
+                    atr72: [],
+                    b737: []
+                };
+                
+                // Collect ATR72 data
+                const atr72Rows = document.querySelectorAll('#atr72-body tr');
+                atr72Rows.forEach(row => {
+                    const inputs = row.querySelectorAll('input');
+                    const selects = row.querySelectorAll('select');
+                    if (inputs[0].value) {
+                        chartData.atr72.push({
+                            airport: inputs[0].value,
+                            typeOfDestination: selects[0].value,
+                            newRevision: selects[1].value,
+                            remarks: selects[2].value
+                        });
+                    }
+                });
+                
+                // Collect B737 data
+                const b737Rows = document.querySelectorAll('#b737-body tr');
+                b737Rows.forEach(row => {
+                    const inputs = row.querySelectorAll('input');
+                    const selects = row.querySelectorAll('select');
+                    if (inputs[0].value) {
+                        chartData.b737.push({
+                            airport: inputs[0].value,
+                            typeOfDestination: selects[0].value,
+                            newRevision: selects[1].value,
+                            remarks: selects[2].value
+                        });
+                    }
+                });
+                
+                // Save to localStorage
+                localStorage.setItem('chartRevisionData', JSON.stringify(chartData));
+                console.log('Data saved:', chartData);
+                showNotification('<i class="fas fa-check-circle me-2"></i>All changes saved successfully!', 'success');
+            } catch (error) {
+                console.error('Error saving data:', error);
+                showNotification('Error saving data: ' + error.message, 'danger');
+            }
+        }
+
+        // Check if user is logged in on page load
+        window.addEventListener('load', function() {
+            const isLoggedIn = sessionStorage.getItem('adminLoggedIn') === 'true';
+            if (isLoggedIn) {
+                showLoginSection(false);
+                loadAdminData();
+            } else {
+                showLoginSection(true);
+            }
+        });
+    </script>
+</body>
+</html>
