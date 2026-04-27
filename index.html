@@ -17,6 +17,10 @@
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+    <!-- Calendar Library -->
+    <link href="https://cdn.jsdelivr.net/npm/litepicker@latest/dist/litepicker.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/litepicker@latest/dist/litepicker.js"></script>
+
     <!-- jsPDF for PDF export -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     
@@ -1934,7 +1938,11 @@
                 <a href="javascript:void(0);" id="nav-fuel" class="sidebar-item" onclick="showFuelAnalysis()">Fuel Analysis</a>
                 <a href="javascript:void(0);" id="nav-delay" class="sidebar-item" onclick="showDelayCodeAnalysis()">Delay Code Analysis</a>
                 <a href="javascript:void(0);" id="nav-chartrevision" class="sidebar-item" onclick="showChartRevision()">Chart Revision</a>
+                <a href="javascript:void(0);" id="nav-payment" class="sidebar-item" onclick="showPaymentDashboard()">Payment Dashboard</a>
                 <a href="javascript:void(0);" id="nav-database" class="sidebar-item" onclick="showDatabase()">Database</a>
+                <div class="sidebar-section">Device Management</div>
+                <a href="javascript:void(0);" id="nav-ipad" class="sidebar-item" onclick="showDeviceIPad()">iPad</a>
+                <a href="javascript:void(0);" id="nav-phone" class="sidebar-item" onclick="showPhoneManagement()">Phone</a>
                 <div class="sidebar-section">Tools</div>
                 <a href="javascript:void(0);" id="nav-jsonconverter" class="sidebar-item" onclick="showJSONConverter()">JSON Converter</a>
             </div>
@@ -2031,6 +2039,60 @@
                                         </div>
                                     </div>
                                     <p class="app-card-text">Access the database interface for flight data and operational records.</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="my-apps-section mb-5">
+                        <h2 class="mb-4">Device Management</h2>
+                        <div class="row g-4">
+                            <div class="col-md-6 col-xl-3">
+                                <a href="javascript:void(0);" onclick="showDeviceIPad()" class="app-card card text-decoration-none text-dark p-4 h-100">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="app-card-icon bg-primary text-white rounded-circle me-3">
+                                            <i class="fas fa-tablet-alt"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="app-card-title mb-1">iPad Inventory</h5>
+                                            <small class="text-muted">Flight crew iPad assignment</small>
+                                        </div>
+                                    </div>
+                                    <p class="app-card-text">Track iPad devices, availability, and crew assignments.</p>
+                                </a>
+                            </div>
+                            <div class="col-md-6 col-xl-3">
+                                <a href="javascript:void(0);" onclick="showPhoneManagement()" class="app-card card text-decoration-none text-dark p-4 h-100">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="app-card-icon bg-secondary text-white rounded-circle me-3">
+                                            <i class="fas fa-mobile-alt"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="app-card-title mb-1">Phone Inventory</h5>
+                                            <small class="text-muted">Device management coming soon</small>
+                                        </div>
+                                    </div>
+                                    <p class="app-card-text">Manage phone inventory and assignment details once ready.</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="my-apps-section mb-5">
+                        <h2 class="mb-4">Payment & Finance</h2>
+                        <div class="row g-4">
+                            <div class="col-md-6 col-xl-3">
+                                <a href="javascript:void(0);" onclick="showPaymentDashboard()" class="app-card card text-decoration-none text-dark p-4 h-100">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="app-card-icon bg-danger text-white rounded-circle me-3">
+                                            <i class="fas fa-credit-card"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="app-card-title mb-1">Payment Dashboard</h5>
+                                            <small class="text-muted">Track and manage payments</small>
+                                        </div>
+                                    </div>
+                                    <p class="app-card-text">View payment schedules, expenses, and currency conversion for operational payments.</p>
                                 </a>
                             </div>
                         </div>
@@ -2355,6 +2417,102 @@
                     </div>
                 </div>
 
+                <div id="deviceIpadContent" style="display: none;">
+                    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+                        <button class="btn btn-outline-secondary" onclick="showLauncher()">
+                            <i class="fas fa-arrow-left me-2"></i>Back to Home
+                        </button>
+                        <div>
+                            <h2 class="mb-1" style="font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, #ff8c00, #ff6b35); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin: 0;">
+                                <i class="fas fa-tablet-alt me-2" style="color: #ff8c00; -webkit-text-fill-color: initial;"></i>iPad Inventory
+                            </h2>
+                            <p class="text-muted mb-0" style="font-size: 1rem; font-weight: 500;">Flight crew device assignment and availability tracker</p>
+                        </div>
+                        <button class="btn btn-lg" onclick="openAddIPadModal()" style="background: linear-gradient(135deg, #ff8c00, #ff9f1a); color: white; border: none; border-radius: 14px; padding: 12px 28px; font-weight: 700; box-shadow: 0 8px 25px rgba(255, 140, 0, 0.35); transition: all 0.3s ease; margin-right: 12px;">
+                            <i class="fas fa-plus-circle me-2"></i>Add New iPad
+                        </button>
+                        <button class="btn btn-lg btn-outline-primary" onclick="openAddNewUserModal()" style="border-radius: 14px; padding: 12px 28px; font-weight: 700;">
+                            <i class="fas fa-user-plus me-2"></i>Add New Flight Crew
+                        </button>
+                    </div>
+
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-4">
+                            <div class="card p-4" style="border-radius: 20px; border: none; box-shadow: 0 12px 30px rgba(255, 140, 0, 0.15); background: linear-gradient(135deg, #fff7eb 0%, #fff0d6 100%);">
+                                <div style="display: flex; align-items: center; gap: 15px;">
+                                    <div style="background: linear-gradient(135deg, #ff8c00, #ffb74d); width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; box-shadow: 0 6px 15px rgba(255, 140, 0, 0.3);">
+                                        <i class="fas fa-tablet-alt"></i>
+                                    </div>
+                                    <div>
+                                        <div class="metric-label" style="font-size: 0.85rem; color: #8a5a00; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Total iPads</div>
+                                        <div class="metric-value" id="ipadTotalCount" style="font-size: 2.2rem; color: #ff8c00;">0</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card p-4" style="border-radius: 20px; border: none; box-shadow: 0 12px 30px rgba(73, 163, 81, 0.15); background: linear-gradient(135deg, #effaf2 0%, #dff5e6 100%);">
+                                <div style="display: flex; align-items: center; gap: 15px;">
+                                    <div style="background: linear-gradient(135deg, #4CAF50, #66bb6a); width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; box-shadow: 0 6px 15px rgba(76, 175, 80, 0.3);">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                    <div>
+                                        <div class="metric-label" style="font-size: 0.85rem; color: #2e7d32; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Available</div>
+                                        <div class="metric-value" id="ipadAvailableCount" style="font-size: 2.2rem; color: #4CAF50;">0</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card p-4" style="border-radius: 20px; border: none; box-shadow: 0 12px 30px rgba(214, 61, 61, 0.15); background: linear-gradient(135deg, #fff1f1 0%, #ffe0e0 100%);">
+                                <div style="display: flex; align-items: center; gap: 15px;">
+                                    <div style="background: linear-gradient(135deg, #f44336, #ef5350); width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; box-shadow: 0 6px 15px rgba(244, 67, 54, 0.3);">
+                                        <i class="fas fa-user-check"></i>
+                                    </div>
+                                    <div>
+                                        <div class="metric-label" style="font-size: 0.85rem; color: #c62828; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Assigned</div>
+                                        <div class="metric-value" id="ipadAssignedCount" style="font-size: 2.2rem; color: #f44336;">0</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card" style="border-radius: 20px; border: none; box-shadow: 0 14px 28px rgba(255, 140, 0, 0.1); overflow: hidden;">
+                        <div class="card-header" style="background: linear-gradient(135deg, #ff8c00, #ffb74d); border-radius: 20px 20px 0 0; padding: 20px 24px; border: none;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <h5 class="mb-0" style="color: white; font-weight: 800; font-size: 1.2rem;">
+                                    <i class="fas fa-users me-2"></i>Flight Crew iPad Assignment
+                                </h5>
+                                <span style="background: rgba(255,255,255,0.25); padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; color: white;">
+                                    <i class="fas fa-list me-1"></i><span id="ipadCountBadge">0</span> Devices
+                                </span>
+                            </div>
+                        </div>
+                        <div class="card-body" style="padding: 0;">
+                            <div id="ipadAssignedTableContainer"></div>
+                            <div id="ipadOtherTableContainer" class="mt-4"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="devicePhoneContent" style="display: none;">
+                    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+                        <button class="btn btn-outline-secondary" onclick="showLauncher()">
+                            <i class="fas fa-arrow-left me-2"></i>Back to Home
+                        </button>
+                        <div>
+                            <h2 class="mb-1">Phone Inventory</h2>
+                            <p class="text-muted mb-0">Phone inventory page will be available once details are ready.</p>
+                        </div>
+                        <div></div>
+                    </div>
+
+                    <div class="alert alert-warning">
+                        <strong>Phone inventory</strong> is coming soon. I added this section so we can expand it once you provide the phone details.
+                    </div>
+                </div>
+
                 <div id="chartRevisionContent" style="display: none;">
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <div></div>
@@ -2573,6 +2731,201 @@
                                     <i class="fas fa-times me-2"></i>Cancel
                                 </button>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="paymentDashboardContent" style="display: none;">
+                    <div class="d-flex justify-content-end align-items-center mb-4 gap-2">
+                        <button class="btn btn-outline-secondary" id="paymentAddReminderBtn" onclick="openAddReminderModal()" style="display: none; font-weight: 600; border-radius: 8px;">
+                            <i class="fas fa-calendar-plus me-2"></i>Add Payment Reminder
+                        </button>
+                        <button class="btn btn-outline-secondary" id="paymentEditToggle" onclick="togglePaymentEditMode()" style="display: none;">
+                            <i class="fas fa-edit me-2"></i>Edit Payment List
+                        </button>
+                        <button class="btn btn-outline-secondary" onclick="showLauncher()">
+                            <i class="fas fa-arrow-left me-2"></i>Back to Home
+                        </button>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-md-8">
+                            <div class="card" style="border-radius: 16px; border: 2px solid #ffe9d6; box-shadow: 0 4px 12px rgba(255, 140, 0, 0.1);">
+                                <div class="card-header" style="background: linear-gradient(135deg, #ff8c00 0%, #ffb74d 100%); border-radius: 14px 14px 0 0;">
+                                    <h5 class="mb-0">Payment Calendar</h5>
+                                </div>
+                                <div class="card-body" style="padding: 20px;">
+                                    <div style="margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;">
+                                        <button class="btn btn-sm btn-outline-secondary" onclick="previousMonth()" style="padding: 6px 12px; font-weight: 600;">
+                                            <i class="fas fa-chevron-left"></i>
+                                        </button>
+                                        <h6 id="calendarMonthYear" style="margin: 0; font-weight: 700; font-size: 1.1rem;"></h6>
+                                        <button class="btn btn-sm btn-outline-secondary" onclick="nextMonth()" style="padding: 6px 12px; font-weight: 600;">
+                                            <i class="fas fa-chevron-right"></i>
+                                        </button>
+                                    </div>
+                                    <div id="paymentCalendar" style="border: 2px solid #ffe9d6; border-radius: 10px; padding: 20px; background: #fafafa;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card" style="border-radius: 16px; border: 2px solid #ffe9d6; box-shadow: 0 4px 12px rgba(255, 140, 0, 0.1);">
+                                <div class="card-header" style="background: linear-gradient(135deg, #ff8c00 0%, #ffb74d 100%); border-radius: 14px 14px 0 0;">
+                                    <h5 class="mb-0">Summary</h5>
+                                </div>
+                                <div class="card-body" style="padding: 20px;">
+                                    <div style="margin-bottom: 20px;">
+                                        <label style="color: #666; font-size: 0.9rem; font-weight: 600; text-transform: uppercase;">Currency:</label>
+                                        <select id="currencySelector" class="form-select" onchange="updatePaymentSummary()" style="border-radius: 8px; border: 2px solid #ffe9d6;">
+                                            <option value="MYR">MYR (Malaysian Ringgit)</option>
+                                            <option value="USD">USD (US Dollar)</option>
+                                            <option value="EUR">EUR (Euro)</option>
+                                            <option value="SGD">SGD (Singapore Dollar)</option>
+                                            <option value="PHP">PHP (Philippine Peso)</option>
+                                        </select>
+                                    </div>
+                                    <div style="background: linear-gradient(135deg, #ff8c00 0%, #ffb74d 100%); border-radius: 12px; padding: 20px; color: white;">
+                                        <div style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; opacity: 0.9; margin-bottom: 8px;">Total Amount Spent</div>
+                                        <div id="totalAmountDisplay" style="font-size: 2.5rem; font-weight: 900;">RM0.00</div>
+                                        <div style="font-size: 0.85rem; margin-top: 12px; opacity: 0.85;">Updated: <span id="lastUpdateDisplay">Today</span></div>
+                                    </div>
+                                    <div id="monthlySummarySection" style="margin-top: 20px; background: #fff9f0; border-radius: 14px; padding: 18px;">
+                                        <div style="font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #666; margin-bottom: 12px;">Monthly Summary</div>
+                                        <div style="overflow-x: auto;">
+                                            <table class="table table-sm table-hover mb-0" style="font-size: 0.95rem;">
+                                                <thead style="background: #fff3e0;">
+                                                    <tr>
+                                                        <th>Month</th>
+                                                        <th style="text-align: right;">Amount</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="monthlySummaryBody">
+                                                    <tr>
+                                                        <td colspan="2" style="text-align: center; color: #666;">No data available</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Expense Breakdown -->
+                    <div class="card mb-4" style="border-radius: 16px; border: 2px solid #ffe9d6; box-shadow: 0 4px 12px rgba(255, 140, 0, 0.1);">
+                        <div class="card-header" style="background: linear-gradient(135deg, #ff8c00 0%, #ffb74d 100%); border-radius: 14px 14px 0 0;">
+                            <h5 class="mb-0">Expense Breakdown by Category</h5>
+                        </div>
+                        <div class="card-body" style="padding: 20px;">
+                            <div id="expenseBreakdownTable" style="overflow-x: auto;">
+                                <table class="table table-hover" style="margin-bottom: 0;">
+                                    <thead style="background: #f5f5f5;">
+                                        <tr>
+                                            <th>Category</th>
+                                            <th style="text-align: right;">Amount</th>
+                                            <th style="text-align: right;">% of Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="expenseBreakdownBody">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Views Toggle -->
+                    <div style="display: flex; gap: 20px; margin-bottom: 20px; border-bottom: 2px solid #ffe9d6; padding-bottom: 16px;">
+                        <button id="paymentListToggle" onclick="togglePaymentView('list')" style="background: none; border: none; font-size: 1.1rem; font-weight: 700; color: #ff8c00; cursor: pointer; padding: 8px 0; border-bottom: 3px solid #ff8c00; margin-bottom: -16px;">
+                            <i class="fas fa-list me-2"></i>Payment List
+                        </button>
+                        <button id="paymentReminderToggle" onclick="togglePaymentView('reminder')" style="background: none; border: none; font-size: 1.1rem; font-weight: 400; color: #666; cursor: pointer; padding: 8px 0; margin-bottom: -16px;">
+                            <i class="fas fa-clock me-2"></i>Payment Reminder List
+                        </button>
+                    </div>
+
+                    <!-- Payment List Card -->
+                    <div id="paymentListCard" class="card mb-4" style="border-radius: 16px; border: 2px solid #ffe9d6; box-shadow: 0 4px 12px rgba(255, 140, 0, 0.1);">
+                        <div class="card-header" style="background: linear-gradient(135deg, #ff8c00 0%, #ffb74d 100%); border-radius: 14px 14px 0 0;">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">Payment List</h5>
+                                <div style="display: flex; gap: 10px;">
+                                    <button class="btn btn-sm btn-light" onclick="togglePaymentEditMode()" id="paymentEditToggle" style="font-weight: 600; border-radius: 6px;">
+                                        <i class="fas fa-edit me-1"></i>Edit Payment List
+                                    </button>
+                                    <button class="btn btn-sm btn-light" onclick="openAddReminderModal()" id="addPaymentBtn" style="display: none; font-weight: 600; border-radius: 6px;">
+                                        <i class="fas fa-plus me-1"></i>Add Payment
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body" style="padding: 20px; overflow-x: auto;">
+                            <table class="table table-striped table-hover" id="paymentTable" style="margin-bottom: 0;">
+                                <thead style="background: #f5f5f5;">
+                                    <tr>
+                                        <th style="width: 5%;">No</th>
+                                        <th style="width: 20%;">Vendor Name</th>
+                                        <th style="width: 20%;">Category</th>
+                                        <th style="width: 15%;">Created Date</th>
+                                        <th style="width: 12%;">Currency</th>
+                                        <th style="width: 12%; text-align: right;">Amount</th>
+                                        <th style="width: 12%; text-align: right;">In RM</th>
+                                        <th id="paymentActionHeader" style="width: 4%; text-align: center; display: none;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="paymentTableBody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Payment Reminder List Card -->
+                    <div id="paymentReminderListCard" class="card mb-4" style="border-radius: 16px; border: 2px solid #ffe9d6; box-shadow: 0 4px 12px rgba(255, 140, 0, 0.1); display: none;">
+                        <div class="card-header" style="background: linear-gradient(135deg, #ff8c00 0%, #ffb74d 100%); border-radius: 14px 14px 0 0;">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">Payment Reminder List - All Details</h5>
+                            </div>
+                        </div>
+                        <div class="card-body" style="padding: 20px; overflow-x: auto;">
+                            <table class="table table-striped table-hover" style="margin-bottom: 0; font-size: 0.9rem;">
+                                <thead style="background: #f5f5f5;">
+                                    <tr>
+                                        <th style="width: 3%;">No</th>
+                                        <th style="width: 12%;">Payment Name</th>
+                                        <th style="width: 12%;">Vendor Name</th>
+                                        <th style="width: 15%;">Category</th>
+                                        <th style="width: 10%;">Created Date</th>
+                                        <th style="width: 10%;">Payment Date</th>
+                                        <th style="width: 8%;">Currency</th>
+                                        <th style="width: 10%; text-align: right;">Amount</th>
+                                        <th style="width: 12%;">PO Number</th>
+                                        <th style="width: 12%;">Invoice Number</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="paymentReminderListBody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Currency Rates Table -->
+                    <div class="card" style="border-radius: 16px; border: 2px solid #ffe9d6; box-shadow: 0 4px 12px rgba(255, 140, 0, 0.1);">
+                        <div class="card-header" style="background: linear-gradient(135deg, #ff8c00 0%, #ffb74d 100%); border-radius: 14px 14px 0 0;">
+                            <h5 class="mb-0">Currency Exchange Rates to MYR</h5>
+                        </div>
+                        <div class="card-body" style="padding: 20px; overflow-x: auto;">
+                            <table class="table table-hover" id="currencyRatesTable" style="margin-bottom: 0;">
+                                <thead style="background: #f5f5f5;">
+                                    <tr>
+                                        <th style="width: 25%;">Currency Code</th>
+                                        <th style="width: 25%;">Currency Name</th>
+                                        <th style="width: 25%;">Rate to MYR</th>
+                                        <th style="width: 25%;">Last Updated</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="currencyRatesBody">
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -2974,21 +3327,39 @@
     <script src="app.js"></script>
     <script>
         function clearActiveNav() {
-            document.getElementById('nav-myapps').classList.remove('active');
-            document.getElementById('nav-fuel').classList.remove('active');
-            document.getElementById('nav-delay').classList.remove('active');
-            document.getElementById('nav-database').classList.remove('active');
-            document.getElementById('nav-chartrevision').classList.remove('active');
+            document.querySelectorAll('.sidebar-item.active').forEach(item => {
+                item.classList.remove('active');
+            });
+        }
+
+        function hideAllSections() {
+            const sections = [
+                'launcherSection',
+                'analysisContent',
+                'delayCodeContent',
+                'databaseContent',
+                'chartRevisionContent',
+                'paymentDashboardContent',
+                'jsonConverterContent',
+                'deviceIpadContent',
+                'devicePhoneContent'
+            ];
+            sections.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.style.display = 'none';
+            });
         }
 
         function showLauncher() {
             clearActiveNav();
+            hideAllSections();
             document.getElementById('nav-myapps').classList.add('active');
             document.getElementById('launcherSection').style.display = 'block';
             document.getElementById('analysisContent').style.display = 'none';
             document.getElementById('delayCodeContent').style.display = 'none';
             document.getElementById('databaseContent').style.display = 'none';
             document.getElementById('chartRevisionContent').style.display = 'none';
+            document.getElementById('paymentDashboardContent').style.display = 'none';
             document.getElementById('jsonConverterContent').style.display = 'none';
             
             // Hide back/refresh buttons on launcher
@@ -3002,12 +3373,14 @@
 
         function showFuelAnalysis() {
             clearActiveNav();
+            hideAllSections();
             document.getElementById('nav-fuel').classList.add('active');
             document.getElementById('launcherSection').style.display = 'none';
             document.getElementById('analysisContent').style.display = 'block';
             document.getElementById('delayCodeContent').style.display = 'none';
             document.getElementById('databaseContent').style.display = 'none';
             document.getElementById('chartRevisionContent').style.display = 'none';
+            document.getElementById('paymentDashboardContent').style.display = 'none';
             document.getElementById('jsonConverterContent').style.display = 'none';
             
             // Show back/refresh buttons on analysis pages
@@ -3024,12 +3397,14 @@
 
         function showDelayCodeAnalysis() {
             clearActiveNav();
+            hideAllSections();
             document.getElementById('nav-delay').classList.add('active');
             document.getElementById('launcherSection').style.display = 'none';
             document.getElementById('analysisContent').style.display = 'none';
             document.getElementById('delayCodeContent').style.display = 'block';
             document.getElementById('databaseContent').style.display = 'none';
             document.getElementById('chartRevisionContent').style.display = 'none';
+            document.getElementById('paymentDashboardContent').style.display = 'none';
             document.getElementById('jsonConverterContent').style.display = 'none';
             
             // Show back/refresh buttons on analysis pages
@@ -3895,12 +4270,14 @@
 
         function showDatabase() {
             clearActiveNav();
+            hideAllSections();
             document.getElementById('nav-database').classList.add('active');
             document.getElementById('launcherSection').style.display = 'none';
             document.getElementById('analysisContent').style.display = 'none';
             document.getElementById('delayCodeContent').style.display = 'none';
             document.getElementById('databaseContent').style.display = 'block';
             document.getElementById('chartRevisionContent').style.display = 'none';
+            document.getElementById('paymentDashboardContent').style.display = 'none';
             document.getElementById('jsonConverterContent').style.display = 'none';
             
             // Hide back/refresh buttons
@@ -3915,12 +4292,14 @@
 
         function showChartRevision() {
             clearActiveNav();
+            hideAllSections();
             document.getElementById('nav-chartrevision').classList.add('active');
             document.getElementById('launcherSection').style.display = 'none';
             document.getElementById('analysisContent').style.display = 'none';
             document.getElementById('delayCodeContent').style.display = 'none';
             document.getElementById('databaseContent').style.display = 'none';
             document.getElementById('chartRevisionContent').style.display = 'block';
+            document.getElementById('paymentDashboardContent').style.display = 'none';
             document.getElementById('jsonConverterContent').style.display = 'none';
             
             // Show back/refresh buttons
@@ -3940,14 +4319,1044 @@
             document.getElementById('pageSubtitle').style.display = 'block';
         }
 
+        function showPaymentDashboard() {
+            clearActiveNav();
+            hideAllSections();
+            document.getElementById('nav-payment').classList.add('active');
+            document.getElementById('launcherSection').style.display = 'none';
+            document.getElementById('analysisContent').style.display = 'none';
+            document.getElementById('delayCodeContent').style.display = 'none';
+            document.getElementById('databaseContent').style.display = 'none';
+            document.getElementById('chartRevisionContent').style.display = 'none';
+            document.getElementById('paymentDashboardContent').style.display = 'block';
+            document.getElementById('jsonConverterContent').style.display = 'none';
+            
+            // Show back/refresh buttons
+            document.getElementById('backToHomeBtn').style.display = 'inline-block';
+            document.getElementById('refreshDataBtn').style.display = 'inline-block';
+            
+            // Update Page Title
+            document.getElementById('pageTitle').textContent = 'Payment Dashboard';
+            document.getElementById('pageSubtitle').textContent = 'Track and manage payment schedules and expenses';
+            document.getElementById('pageSubtitle').style.display = 'block';
+            
+            // Initialize payment dashboard
+            initializePaymentDashboard();
+        }
+
+        const iPadDevices = [
+            { serial: 'IPD-1001', colour: 'Space Gray', version: 'iPad Air 5', availability: 'Assigned', assignedTo: 'Captain Amran', designation: '', remarks: '', collectionDate: '' },
+            { serial: 'IPD-1002', colour: 'Silver', version: 'iPad Pro 12.9', availability: 'Available', assignedTo: '', designation: '', remarks: '', collectionDate: '' },
+            { serial: 'IPD-1003', colour: 'Space Gray', version: 'iPad Air 4', availability: 'Assigned', assignedTo: 'First Officer Lee', designation: '', remarks: '', collectionDate: '' },
+            { serial: 'IPD-1004', colour: 'Rose Gold', version: 'iPad Mini 6', availability: 'Available', assignedTo: '', designation: '', remarks: '', collectionDate: '' }
+        ];
+
+        // Crew list for dropdown
+        const crewList = [
+            "8502574 - Yeow Jian How", "8502560 - Nadzreen haziq Mohd Yazid", "8502416 - Ahmed Naim Azli", "8502623 - Mohd Nadzmi Syafiq Mohd Nadzri",
+            "8502264 - Lee Shaun Quan Xiong", "2358302 - Chin Tze Yee", "2358006 - Umar' Anas bin Abd Halim", "8502573 - Mohd Ikmal Bin Ahmad",
+            "2358021 - Sidek Bin Abdul Majid", "8501838 - Muhammad Hakimi Zarime", "8502497 - Mahesh Kumar Nadarajan", "8502649 - Muhammad zamir ghazali",
+            "2358464 - Kamarul Ariff Bin Abd Karim", "8502618 - ROSLAN MUSA BIN SULAIMAN", "8502626 - Mohd Danial Faris Mohd Nasir", "2358011 - Wisnu Utomo Bin Radjikin",
+            "8502648 - PAVITRAVIKNESH A/L SUNDARARAJAH", "8502627 - TAUFIQ UL FAIQ BIN ABDULLAH", "8502421 - ANNIS AMMANIENA KAMAL BAHARIN", "2358984 - DENON SASHI PEREIRA",
+            "2351772 - Mohd Izhan Fariz bin Zailan", "8502011 - Muhd Haikal Hasrom", "2110513 - MOHD ZEFRIE BIN MOHD JASBIR KHAN", "8502414 - Amirul Adli Bin Shaipuddin",
+            "8502392 - Abdul Hazim Bin Mohd Nadzeri", "8500189 - MOHAMMAD MUZAFAR BIN MOHD AMIR", "8502620 - Muhammad Aiman Bin Mohd Ghaus", "2358002 - MOHAMAD SYAFIQ BIN MOHAMED SHARIFF",
+            "2358012 - Nasran Bin Ahmad Musahar", "2356766 - Ahmad Farez bin Rusman", "8502629 - Muhammad Ikhwan Bin Masri", "8502493 - HAANSEL ANANTH BOSS",
+            "8502470 - Aisya binti Azli", "2108962 - Hafiz Hamzani Firdaus Brohier", "2351307 - Mohd Hareez Bin Hamzah", "2358004 - Muhammad Fahmi Bin Ishak",
+            "8502403 - Ahmad Kamil Zailani Kamarudin", "8000825 - Nawal Adam Abdul Ghaffar", "8502419 - Gan Kem Fuei", "8502650 - Syed Mohammad Hafeez Syed Padzil",
+            "8502404 - Nor Ariff Imran Bin Norazman", "8500114 - Abdul Karim Bin Kallingal Mohamed", "2352017 - Gunageswaran A/L Rajaratnam", "2355619 - Che Wan Ibrahim Bin Wan Zainuddin",
+            "8502182 - Michael Chai Yiin Kiong", "8000390 - Syaharuan Bin Keman", "8502628 - MIOR NOR BADRISHAH BIN MOHAMAD", "2358007 - MOHD FADZUAN BIN MOHD SAFEA",
+            "8502422 - JAYRAJ A/L NADARAJAN", "8502564 - AMIRA NURIA ANUAR", "2358985 - ASHRAF HAKIMI BIN AKASHAH", "8500579 - SHAIFUL BAHAREEN BIN BAHARUDDIN",
+            "2351775 - Mohd Rahimi bin Mamat", "8502621 - Raja Airulzaman Azam Shah Raja Badrul Alam Shah", "8000790 - MOHD RIZUAN BIN JAMALUDIN", "2358005 - TSAQAFY BIN MUHAMAD NASIR",
+            "8502088 - AHMAD FATHUDDIN BIN MOHAMAD", "2353779 - MOHD HAKIMI BIN ABD.RASIB", "2358465 - YASSER BIN IBRAHIM", "8502619 - AFIQ AZFAR BIN AMINUDDIN",
+            "8000569 - MOHD HAZMAN BIN ARFANDY", "8502415 - THAYALLAN A/L SADASIVAM", "2358301 - AHMAD KHAIRI BIN YAHAYA", "8502413 - CHOO JIANWEI",
+            "8502513 - KEITH JONATHAN CHARLES", "2358009 - MOHAMMAD ANUWAR BIN AHMAD", "2358010 - MOHD NADZMI SYAFIQ BIN MOHD NADZRI", "2900052 - Muhammad Hazri Aliff Bin Abdul Aziz",
+            "2357884 - Abdul Adib Bin Aidil", "2357882 - Chin Yi Yiing", "2357886 - Kang Chin Ming", "2357888 - Muhammad Syahir Bin Subri",
+            "2357889 - Nor Mohammad Azzan Bin Arifin", "2357885 - Amirul Burhanuddin Bin Aminuddin", "2357885 - Tevaneshwaran A/L Yogaswaran", "2357883 - Muhammad Adi Hakimi Bin Azhar",
+            "2357887 - Abdul Qayyum Bin Muhammad Ghazie", "2357881 - ROZEMEN MOHAMED", "FY EFB B738 01", "FY EFB B738 02", "FY EFB B738 03", "FY EFB B738 04",
+            "FY EFB B738 05", "FY EFB B738 06", "FY EFB B738 07", "FY EFB B738 08", "FY EFB B738 09", "FY EFB B738 10",
+            "8500369 - HUSSAIN ISHAN", "8501834 - NIK AZLEEN NIK HASSAN SHUHAIMI", "8502032 - MOHD SUHAILIN BIN MOHD RAMLI", "8502394 - DANIAL WARITH ABU BAKAR",
+            "8502572 - SHARA AZLIN BINTI JALIL", "8502570 - AKMAL HAKIM BIN RAMLEE HAJIMAN", "8502571 - NUR SYAFIQAH BISNU", "8502615 - MOHAMAD FIRDAUS B. MOHAMED AZMI",
+            "8502042 - MUHAMMED FADZLY BIN MUHAMMED REDUAN", "8502491 - AMIRUL ASYRAF BIN AZMI", "8502439 - MUHAMMAD ASYRAF BIN MOHD RADZUAN",
+            "2356599 - AJAIPREET SINGH CHAAL A/L GURMIT SINGH", "8502508 - HAMZAH BIN ARIFFIN", "2358879 - AFIQ FIKRI BIN AMINUDDIN", "8502294 - ABDUL LATIF BIN MOHAMED",
+            "2361789 - AHMAD HAZIQ SYAFIE BIN KHAIRUNIZAM", "2356598 - MOHAMAD FHAIZZUDDIN BIN ABD KADIR", "8502515 - MOHD AMIN ADHA BIN SHAARI",
+            "8500587 - AZHAR HUSAINI BIN GHAZALI", "8500627 - MOHD AZIM MUSA AZMI", "2356768 - AMIR FALIQ BIN MOHD FARUK", "8500142 - THIRUKUMAR A/L VELAYUTHAM",
+            "8501795 - MUHAMMAD AIMAN ESA", "8502410 - ALIFF BIN KHAIRI", "8502399 - MUHAMMAD KHAIRUL AZIZI BIN MAT ALIAS", "8502580 - ASYRAF BIN SULAIMAN",
+            "8502420 - DINIE BIN ABDUL MALIK", "8502512 - MUHAMMAD ASYRAF BIN ABDUL RAHMAN", "8501844 - EDMUND LAI WEI KANG", "8500657 - UNG SING HOE",
+            "8502468 - AHMAD FAREEZ BIN AHMAD FAUZI", "2356594 - EZATUL KHAMSIAH BINTI MUHAMMAD ARIF", "8500322 - ERNY AKMA BAHARUDDIN", "8501839 - WAN EMRAN SHAFIEE BIN WAN MOHAMAD",
+            "8502494 - MUHAMMAD SYAFIQ UZAIR BIN MOHD SAIFUDDIN", "8502412 - DANIEL BIN JUFRI KHOR", "8502440 - MOHAMAD FARHAN BIN MOHAMAD HUSSIN",
+            "2356770 - MOHD HISHAMUDIN BIN MOHAMMED SUHAIMEE", "8502084 - MUHAMMAD FARHAN BIN FADZILAH", "8502028 - ABAS HASSAN", "8502614 - GHAZALI BIN YAYAH",
+            "8502469 - HEIDI BINTI AHMAD SAZALI", "8502442 - MUHAMMAD HAFIZ BIN HISHAM", "8502027 - FATIN SYAIRAH BT MUH PUZI", "8502418 - IKRAM SHAHIDI ABDULLAH",
+            "8502408 - MOHAMAD HILMAN BIN MOHAMAD ROSLAN", "2361494 - MUHAMMAD HAIKAL BIN JAMAL", "2361492 - GOH SHU BIN", "2361497 - SYED IBRAHIM JAMALULLAIL BIN SYED MAHADZIR",
+            "8502495 - NAZAR FIZRI SHAIFUL YAZAN", "8502498 - WONG JING HAN", "8502577 - HASSAN BIN ABU BAKAR", "8501840 - MOHD ZAMI AFIF HARRIANDY B. SUHAIMI",
+            "8501841 - MOKHZANI IBRAHIM", "8501080 - MOHAMED TAJUDDIN BIN ARSATH ALI", "8502406 - TAN YONG JIAT", "8502376 - JOHAN ARIFF BIN ISMAIL",
+            "8502031 - ZAKI UDDIN", "8502510 - IZHAR ZULHISHAM BIN IBRAHIM", "8502581 - HUMAYUN BIN MOHD HUSSEIN", "8502087 - KHAIRUL HELMI B. MOHD NUDIN",
+            "8502409 - MOHAMAD NAQQASH BIN MOHAMAD NASRUDIN", "8502569 - MOHD SADDAM BIN MAHDZIR", "2356596 - NURHAZELIN AQILAH BINTI NORHEIZEL NIZAM MAHFUZ",
+            "8501371 - MOHD ISMAIL HAMDI BIN KU SHAARI", "8501808 - MOHD SHAHRIR BIN HARUN", "8501980 - KAMARUZAMAN HUSSIN", "8500999 - MUHAMMAD IZHAN YUSOFF",
+            "2357983 - Mohamad Danish Akmal Bin Mohamed Iqbal", "8502613 - ROSLI BIN HAMZAH", "2356597 - SYED RAZIQ JAMALAULIL B. SYED RAZIF JAMALAULIL",
+            "8500377 - MD KASIM MD AFANDI", "2356595 - MUHAMMAD IMAN KHAN BIN MOHD NOR KHAN", "8502441 - TEOH KEAH YONG", "8502397 - MOHAMAD MUZAMIL BIN SHAFEE",
+            "8502396 - ABDULLAH ZUBAIR BIN ABDULLAH SANI", "8502179 - NORDDIN OTHMAN", "8502575 - SHAHREIL REZZA BIN MOHAMED SHAFI", "8501912 - NOR SUHARDI ABDUL RAHMAN",
+            "2357985 - Stephen Sigar Salutan", "2352109 - MOHAMAD RIZQIN BIN MOHAMAD RADZI", "2352107 - NOR ALEEMY AZRAM BIN MD NORDIN",
+            "2108558 - MUHAMMAD HILMI AIMAN BIN CHE SUHAIMI", "8500630 - KHAIRIL HAZRI ZULKAFLI", "8501836 - MOHAMAD ROSHAIZU MOHD ROZALI",
+            "8502391 - MUHAMMAD FIRDAUS BIN MOHAMAD ZARAFI", "8500511 - MOHD NADZARI HARON", "8501867 - MOHD TERMIZI HASHIM", "2357984 - Wan Farhan Bin Wan Izani",
+            "2357988 - Rajendra Rao S/O Jairam", "2358001 - Wan Syahmi Safwan Bin Wan Jamaludin", "2358866 - Mohamad Shahmi Bin Shukor",
+            "2358867 - NUR FASHEEHA BINTI ROSLAN", "2358872 - VIVENDRAN A/L RAVI @ THIAGU", "2358873 - MUHAMMAD ARASH BIN JAMAL",
+            "2358874 - MUHAMMAD ARIF BIN SHUIB", "2358875 - KISHEV NAIR A/L SEGARAN NAIR", "8502395 - SHAZRUL IZRAN BIN SALEHUDDIN",
+            "2358877 - ELIJAH SAMICKANOO A/L ISAAC SAMUEL", "2361497 - LESTER SHANE TEY WEI MING", "2358881 - DURANKAR KIRITHARAN",
+            "2358882 - MUHAMMAD AIMAN BIN MOHD HISHAM", "8502624 - AMEERUL ATTRIA BIN ISMADI", "8502622 - TAN TSZE TSHIEN",
+            "2361490 - DINESWARAN A/L K BATHUMA NATHU", "2361493 - TENGKU MUHD NIDZAMUDDIN BIN TENGKU YAHYA", "2361793 - WAN MUHAMAD FAIZ DANI BIN WAN ABDULLAH SANI",
+            "2361794 - PUTERI MAISARAH ATHIRAH BINTI MIOR NOR BADRISHAH", "2361795 - TAN SHU NING", "2361796 - LEE MING YONG",
+            "2107830 - WAN MUZAIRUL WAN MAHAZIR", "361789 - Ahmad Haziq Syafie Bin Khairunizam", "8502174 - Nora Iwana Mohd Rakis",
+            "2360692 - Wan Amirul Asyraf Wan Roslee", "8500492 - Tanalehcimi Jayaveloo", "8502436 - Hidayana Mardi",
+            "2363855 - Jevinprakkash A/l R Selvaretnam", "8500032 - SHARI AFENDI BIN MOHD SIDEK", "8500653 - AKMAR BINTI KAMARUDDIN",
+            "2102501 - Shawaluddin Hamzah Sani", "8500038 - SAIFUL ANUAR MOHD SABRIE", "FY EFB SZB 01", "FY EFB SZB 02", "FY EFB SZB 03", "FY EFB SZB 04",
+            "BACKUP FOR IOSA 7", "BACKUP FOR IOSA 8", "BACKUP FOR IOSA 9", "BACKUP FOR IOSA 10", "BACKUP FOR IOSA 1", "BACKUP FOR IOSA 2",
+            "BACKUP FOR IOSA 5", "BACKUP FOR IOSA 6", "BACKUP FOR IOSA 4", "BACKUP FOR IOSA 11", "BACKUP FOR IOSA 12"
+        ];
+
+        // Populate crew datalist for assigned-to search
+        function populateCrewList() {
+            const datalist = document.getElementById('crewListOptions');
+            if (!datalist) return;
+            datalist.innerHTML = '';
+            crewList.forEach(crew => {
+                const option = document.createElement('option');
+                option.value = crew;
+                datalist.appendChild(option);
+            });
+        }
+
+        // Open Add New User Modal
+        function openAddNewUserModal() {
+            document.getElementById('newUserForm').reset();
+            const modal = new bootstrap.Modal(document.getElementById('addNewUserModal'));
+            modal.show();
+        }
+
+        // Save new user to crew list
+        function saveNewUser() {
+            const userId = document.getElementById('newUserId').value.trim();
+            const userName = document.getElementById('newUserName').value.trim();
+            const designation = document.getElementById('newUserDesignation').value;
+            const remarks = document.getElementById('newUserRemarks').value.trim();
+
+            if (!userId || !userName || !designation) {
+                alert('Please fill in ID, Name, and Designation!');
+                return;
+            }
+
+            let newUser = `${userId} - ${userName} (${designation})`;
+            if (remarks) {
+                newUser += ` | ${remarks}`;
+            }
+            
+            // Check if already exists
+            if (crewList.some(item => item === newUser || item.startsWith(`${userId} - ${userName}`))) {
+                alert('This user already exists in the list!');
+                return;
+            }
+
+            // Add to crew list
+            crewList.push(newUser);
+            crewList.sort();
+
+            // Update datalist
+            populateCrewList();
+
+            // Close modal
+            bootstrap.Modal.getInstance(document.getElementById('addNewUserModal')).hide();
+
+            // Show success message
+            showToast('New user added successfully!', 'success');
+        }
+
+        // Initialize crew list on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            populateCrewList();
+
+            const addAvailability = document.getElementById('ipadAvailability');
+            if (addAvailability) {
+                addAvailability.addEventListener('change', function() {
+                    const assignedToField = document.getElementById('assignedToField');
+                    if (this.value === 'Assigned') {
+                        assignedToField.style.display = 'block';
+                    } else {
+                        assignedToField.style.display = 'none';
+                        document.getElementById('ipadAssignedTo').value = '';
+                    }
+                });
+            }
+
+            const editAvailability = document.getElementById('editIPadAvailability');
+            if (editAvailability) {
+                editAvailability.addEventListener('change', function() {
+                    const assignedToField = document.getElementById('editAssignedToField');
+                    if (this.value === 'Assigned') {
+                        assignedToField.style.display = 'block';
+                    } else {
+                        assignedToField.style.display = 'none';
+                        document.getElementById('editIPadAssignedTo').value = '';
+                    }
+                });
+            }
+        });
+
+        // Open Add iPad Modal
+        function openAddIPadModal() {
+            document.getElementById('addIPadForm').reset();
+            document.getElementById('assignedToField').style.display = 'none';
+            document.getElementById('ipadAssignedTo').value = '';
+            document.getElementById('ipadDesignation').value = '';
+            document.getElementById('ipadRemarks').value = '';
+            document.getElementById('ipadCollectionDate').value = '';
+            const modal = new bootstrap.Modal(document.getElementById('addIPadModal'));
+            modal.show();
+        }
+
+        function focusCrewSearch(inputId) {
+            const input = document.getElementById(inputId);
+            if (input) {
+                input.focus();
+            }
+        }
+
+        // Save new iPad
+        function saveNewIPad() {
+            const serial = document.getElementById('ipadSerial').value.trim();
+            const colour = document.getElementById('ipadColour').value;
+            const version = document.getElementById('ipadVersion').value;
+            const availability = document.getElementById('ipadAvailability').value;
+            const assignedTo = document.getElementById('ipadAssignedTo').value.trim();
+            const designation = document.getElementById('ipadDesignation').value;
+            const remarks = document.getElementById('ipadRemarks').value.trim();
+            const collectionDate = document.getElementById('ipadCollectionDate').value;
+
+            if (!serial || !colour || !version || !availability) {
+                alert('Please fill in all required fields!');
+                return;
+            }
+
+            // Check for duplicate serial number
+            if (iPadDevices.some(d => d.serial === serial)) {
+                alert('An iPad with this serial number already exists!');
+                return;
+            }
+
+            const newDevice = {
+                serial: serial,
+                colour: colour,
+                version: version,
+                availability: availability,
+                assignedTo: availability === 'Assigned' ? assignedTo : '',
+                designation: designation,
+                remarks: remarks,
+                collectionDate: collectionDate
+            };
+
+            iPadDevices.push(newDevice);
+            
+            // Close modal
+            bootstrap.Modal.getInstance(document.getElementById('addIPadModal')).hide();
+            
+            // Refresh table and tracker
+            renderIPadDeviceTable();
+            updateIPadTracker();
+            
+            // Show success message
+            showToast('iPad added successfully!', 'success');
+        }
+
+        // Edit iPad
+        function editIPad(index) {
+            const device = iPadDevices[index];
+            document.getElementById('editIPadIndex').value = index;
+            document.getElementById('editIPadSerial').value = device.serial;
+            document.getElementById('editIPadColour').value = device.colour;
+            document.getElementById('editIPadVersion').value = device.version;
+            document.getElementById('editIPadAvailability').value = device.availability;
+            document.getElementById('editIPadAssignedTo').value = device.assignedTo || '';
+            document.getElementById('editIPadDesignation').value = device.designation || '';
+            document.getElementById('editIPadRemarks').value = device.remarks || '';
+            document.getElementById('editIPadCollectionDate').value = device.collectionDate || '';
+
+            // Show/hide assigned to field
+            const assignedToField = document.getElementById('editAssignedToField');
+            if (device.availability === 'Assigned') {
+                assignedToField.style.display = 'block';
+            } else {
+                assignedToField.style.display = 'none';
+            }
+
+            const modal = new bootstrap.Modal(document.getElementById('editIPadModal'));
+            modal.show();
+        }
+
+        // Update iPad device
+        function updateIPadDevice() {
+            const index = parseInt(document.getElementById('editIPadIndex').value);
+            const serial = document.getElementById('editIPadSerial').value.trim();
+            const colour = document.getElementById('editIPadColour').value;
+            const version = document.getElementById('editIPadVersion').value;
+            const availability = document.getElementById('editIPadAvailability').value;
+            const assignedTo = document.getElementById('editIPadAssignedTo').value.trim();
+            const designation = document.getElementById('editIPadDesignation').value;
+            const remarks = document.getElementById('editIPadRemarks').value.trim();
+            const collectionDate = document.getElementById('editIPadCollectionDate').value;
+
+            if (!serial || !colour || !version || !availability) {
+                alert('Please fill in all required fields!');
+                return;
+            }
+
+            // Check for duplicate serial number (excluding current device)
+            if (iPadDevices.some((d, i) => d.serial === serial && i !== index)) {
+                alert('An iPad with this serial number already exists!');
+                return;
+            }
+
+            iPadDevices[index] = {
+                serial: serial,
+                colour: colour,
+                version: version,
+                availability: availability,
+                assignedTo: availability === 'Assigned' ? assignedTo : '',
+                designation: designation,
+                remarks: remarks,
+                collectionDate: collectionDate
+            };
+
+            // Close modal
+            bootstrap.Modal.getInstance(document.getElementById('editIPadModal')).hide();
+            
+            // Refresh table and tracker
+            renderIPadDeviceTable();
+            updateIPadTracker();
+            
+            // Show success message
+            showToast('iPad updated successfully!', 'success');
+        }
+
+        // Delete iPad
+        function deleteIPad(index) {
+            if (confirm('Are you sure you want to delete this iPad? This action cannot be undone.')) {
+                iPadDevices.splice(index, 1);
+                renderIPadDeviceTable();
+                updateIPadTracker();
+                showToast('iPad deleted successfully!', 'success');
+            }
+        }
+
+        // Toast notification function
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast-notification toast-${type}`;
+            toast.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            const style = document.createElement('style');
+            style.textContent = `
+                .toast-notification {
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: ${type === 'success' ? 'linear-gradient(135deg, #4CAF50, #66bb6a)' : 'linear-gradient(135deg, #f44336, #ef5350)'};
+                    color: white;
+                    padding: 16px 24px;
+                    border-radius: 12px;
+                    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+                    z-index: 9999;
+                    animation: slideIn 0.3s ease;
+                    font-weight: 600;
+                    font-size: 1rem;
+                }
+                @keyframes slideIn {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+            `;
+            document.head.appendChild(style);
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideOut 0.3s ease forwards';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        function renderIPadDeviceTable() {
+            const assignedContainer = document.getElementById('ipadAssignedTableContainer');
+            const otherContainer = document.getElementById('ipadOtherTableContainer');
+            if (!assignedContainer || !otherContainer) return;
+
+            const assignedDevices = iPadDevices.filter(device => device.availability === 'Assigned');
+            const otherDevices = iPadDevices.filter(device => device.availability !== 'Assigned');
+
+            const createRow = (device, index, includeStatus) => {
+                const statusClass = device.availability === 'Available' ? 'success' : 
+                                   device.availability === 'Assigned' ? 'warning' : 
+                                   device.availability === 'Maintenance' ? 'info' : 'secondary';
+                const statusIcon = device.availability === 'Available' ? 'check-circle' : 
+                                  device.availability === 'Assigned' ? 'user-check' : 
+                                  device.availability === 'Maintenance' ? 'wrench' : 'times-circle';
+
+                return `
+                    <tr style="transition: all 0.2s ease;">
+                        <td style="padding: 16px 20px; font-weight: 700; color: #666;">${index + 1}</td>
+                        <td style="padding: 16px 20px; font-weight: 700; color: #333;">
+                            <i class="fas fa-barcode me-2" style="color: #ff8c00;"></i>${device.serial}
+                        </td>
+                        <td style="padding: 16px 20px;">
+                            <span style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 8px; background: #f5f5f5; font-weight: 600; font-size: 0.9rem;">
+                                <i class="fas fa-palette" style="color: #9c27b0;"></i>${device.colour}
+                            </span>
+                        </td>
+                        <td style="padding: 16px 20px; font-weight: 600; color: #333;">
+                            <i class="fas fa-tablet-alt me-2" style="color: #2196F3;"></i>${device.version}
+                        </td>
+                        ${includeStatus ? `
+                        <td style="padding: 16px 20px;">
+                            <span class="badge" style="background: ${statusClass === 'success' ? 'linear-gradient(135deg, #4CAF50, #66bb6a)' : statusClass === 'warning' ? 'linear-gradient(135deg, #ff9800, #ffb74d)' : statusClass === 'info' ? 'linear-gradient(135deg, #2196F3, #64b5f6)' : 'linear-gradient(135deg, #9e9e9e, #bdbdbd)'}; color: white; padding: 8px 14px; border-radius: 20px; font-weight: 700; font-size: 0.85rem;">
+                                <i class="fas fa-${statusIcon} me-1"></i>${device.availability}
+                            </span>
+                        </td>
+                        ` : ''}
+                        <td style="padding: 16px 20px; font-weight: 600; color: ${device.assignedTo ? '#333' : '#999'};">
+                            ${device.assignedTo ? '<i class="fas fa-user me-2" style="color: #ff8c00;"></i>' + device.assignedTo : '<em style="color: #bbb;">Not assigned</em>'}
+                        </td>
+                        <td style="padding: 16px 20px; font-weight: 600; color: ${device.designation ? '#333' : '#999'};">
+                            ${device.designation ? device.designation : '<em style="color: #bbb;">None</em>'}
+                        </td>
+                        <td style="padding: 16px 20px; font-weight: 600; color: ${device.remarks ? '#333' : '#999'};">
+                            ${device.remarks ? device.remarks : '<em style="color: #bbb;">None</em>'}
+                        </td>
+                        <td style="padding: 16px 20px; font-weight: 600; color: ${device.collectionDate ? '#333' : '#999'};">
+                            ${device.collectionDate ? device.collectionDate : '<em style="color: #bbb;">None</em>'}
+                        </td>
+                        <td style="padding: 16px 20px; text-align: center;">
+                            <button class="btn btn-sm me-1" onclick="editIPad(${device._index})" style="background: linear-gradient(135deg, #2196F3, #64b5f6); color: white; border: none; border-radius: 8px; padding: 8px 12px; font-weight: 600; transition: all 0.2s ease;" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm" onclick="deleteIPad(${device._index})" style="background: linear-gradient(135deg, #f44336, #ef5350); color: white; border: none; border-radius: 8px; padding: 8px 12px; font-weight: 600; transition: all 0.2s ease;" title="Delete">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            };
+
+            const buildTable = (title, showStatus, devices) => {
+                const headerColumns = [
+                    '#', 'Serial Number', 'Colour', 'iPad Version',
+                    ...(showStatus ? ['Status'] : []),
+                    'Assigned To', 'Designation', 'Remarks', 'Collection Date', 'Actions'
+                ];
+
+                const headerHtml = headerColumns.map(col => `
+                    <th style="padding: 16px 20px; font-weight: 800; color: #6b3f00; text-transform: uppercase; letter-spacing: 0.5px; font-size: 0.85rem; border-bottom: 2px solid #ffe0b2;">${col}</th>
+                `).join('');
+
+                const rowsHtml = devices.length > 0
+                    ? devices.map((device, index) => createRow(device, index, showStatus)).join('')
+                    : `<tr><td colspan="${headerColumns.length}" style="padding: 24px 20px; color: #777; text-align: center; font-style: italic;">No ${title.toLowerCase()} found.</td></tr>`;
+
+                return `
+                    <div class="card" style="border-radius: 20px; border: none; box-shadow: 0 14px 28px rgba(0,0,0,0.08); overflow: hidden;">
+                        <div class="card-header" style="background: linear-gradient(135deg, #2196F3, #64b5f6); border-radius: 20px 20px 0 0; padding: 18px 24px; border: none;">
+                            <h5 class="mb-0" style="color: white; font-weight: 800; font-size: 1.1rem;"><i class="fas fa-tablet-alt me-2"></i>${title}</h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover mb-0" style="border-collapse: collapse;">
+                                    <thead style="background: linear-gradient(135deg, #e3f2fd, #f0f7ff);">${headerHtml}</thead>
+                                    <tbody style="background: white;">${rowsHtml}</tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            };
+
+            const assignedDevicesWithIndex = assignedDevices.map((device, i) => ({ ...device, _index: iPadDevices.indexOf(device) }));
+            const otherDevicesWithIndex = otherDevices.map((device, i) => ({ ...device, _index: iPadDevices.indexOf(device) }));
+
+            assignedContainer.innerHTML = buildTable('Assigned iPads', false, assignedDevicesWithIndex);
+            otherContainer.innerHTML = buildTable('Available / Maintenance / Retired', true, otherDevicesWithIndex);
+
+            const assignedRows = assignedContainer.querySelectorAll('tbody tr');
+            assignedRows.forEach(row => {
+                row.addEventListener('mouseenter', function() { this.style.background = 'rgba(255, 140, 0, 0.05)'; this.style.transform = 'scale(1.01)'; });
+                row.addEventListener('mouseleave', function() { this.style.background = 'transparent'; this.style.transform = 'scale(1)'; });
+            });
+            const otherRows = otherContainer.querySelectorAll('tbody tr');
+            otherRows.forEach(row => {
+                row.addEventListener('mouseenter', function() { this.style.background = 'rgba(255, 140, 0, 0.05)'; this.style.transform = 'scale(1.01)'; });
+                row.addEventListener('mouseleave', function() { this.style.background = 'transparent'; this.style.transform = 'scale(1)'; });
+            });
+        }
+
+        function updateIPadTracker() {
+            const total = iPadDevices.length;
+            const available = iPadDevices.filter(device => device.availability.toLowerCase() === 'available').length;
+            const assigned = iPadDevices.filter(device => device.availability.toLowerCase() === 'assigned').length;
+
+            const totalEl = document.getElementById('ipadTotalCount');
+            const availableEl = document.getElementById('ipadAvailableCount');
+            const assignedEl = document.getElementById('ipadAssignedCount');
+            const countBadge = document.getElementById('ipadCountBadge');
+
+            if (totalEl) totalEl.textContent = total;
+            if (availableEl) availableEl.textContent = available;
+            if (assignedEl) assignedEl.textContent = assigned;
+            if (countBadge) countBadge.textContent = total;
+        }
+
+        function showDeviceIPad() {
+            clearActiveNav();
+            hideAllSections();
+            document.getElementById('nav-ipad').classList.add('active');
+            document.getElementById('deviceIpadContent').style.display = 'block';
+            document.getElementById('backToHomeBtn').style.display = 'none';
+            document.getElementById('refreshDataBtn').style.display = 'none';
+            document.getElementById('pageTitle').textContent = 'Device Management - iPad';
+            document.getElementById('pageSubtitle').textContent = 'Track iPad availability and crew assignments';
+            document.getElementById('pageSubtitle').style.display = 'block';
+            renderIPadDeviceTable();
+            updateIPadTracker();
+        }
+
+        function showPhoneManagement() {
+            clearActiveNav();
+            hideAllSections();
+            document.getElementById('nav-phone').classList.add('active');
+            document.getElementById('devicePhoneContent').style.display = 'block';
+            document.getElementById('backToHomeBtn').style.display = 'none';
+            document.getElementById('refreshDataBtn').style.display = 'none';
+            document.getElementById('pageTitle').textContent = 'Device Management - Phone';
+            document.getElementById('pageSubtitle').textContent = 'Phone inventory page coming soon';
+            document.getElementById('pageSubtitle').style.display = 'block';
+        }
+
+        // Payment Dashboard Variables
+        let paymentData = [
+            { id: 1, paymentName: 'NAVDB Database Q1', vendor: 'NAVDB B737 Q1 (USD)', category: 'Software & Support Expenses', date: '30-Jan-2026', createdDate: '15-Jan-2026', currency: 'USD', amount: 14640.00, poNumber: 'PO-001', invoiceNumber: 'INV-001' },
+            { id: 2, paymentName: 'NAVDB Database Q1', vendor: 'NAVDB B737 Q1 (EUR)', category: 'Software & Support Expenses', date: '30-Jan-2026', createdDate: '15-Jan-2026', currency: 'EUR', amount: 6997.20, poNumber: 'PO-002', invoiceNumber: 'INV-002' },
+            { id: 3, paymentName: 'ATR Operations Documentation', vendor: 'ATR Ops Doc', category: 'Software & Support Expenses', date: '30-Jan-2026', createdDate: '20-Jan-2026', currency: 'USD', amount: 19485.00, poNumber: 'PO-003', invoiceNumber: 'INV-003' },
+            { id: 4, paymentName: 'Boeing Manual Subscriptions', vendor: 'Boeing Manual Subs', category: 'Software & Support Expenses', date: '21-Jan-2026', createdDate: '10-Jan-2026', currency: 'USD', amount: 19221.80, poNumber: 'PO-004', invoiceNumber: 'INV-004' },
+        ];
+
+        let currencyRates = {
+            'USD': 3.9,
+            'EUR': 4.65,
+            'SGD': 3.5,
+            'PHP': 14.32,
+            'MYR': 1
+        };
+
+        let currentCalendarDate = new Date();
+        let selectedCalendarDate = null;
+        let nextPaymentId = 5;
+
+        function initializePaymentDashboard() {
+            loadPaymentData();
+            loadCurrencyRates();
+            updatePaymentSummary();
+            initializePaymentCalendar();
+            
+            // Show buttons for users
+            document.getElementById('paymentEditToggle').style.display = 'inline-block';
+            document.getElementById('paymentAddReminderBtn').style.display = 'inline-block';
+        }
+
+        function loadPaymentData() {
+            const tbody = document.getElementById('paymentTableBody');
+            tbody.innerHTML = '';
+            
+            const selectedCurrency = document.getElementById('currencySelector').value;
+            let totalAmount = 0;
+            let rowNum = 1;
+            const addPaymentBtn = document.getElementById('addPaymentBtn');
+            const isEditMode = addPaymentBtn && addPaymentBtn.style.display !== 'none';
+
+            paymentData.forEach(payment => {
+                const amountInRM = payment.amount * (currencyRates[payment.currency] || 1);
+                totalAmount += amountInRM;
+                
+                const row = document.createElement('tr');
+                let actionHtml = '';
+                if (isEditMode) {
+                    actionHtml = `
+                        <td style="text-align: center;">
+                            <button class="btn btn-sm btn-warning me-1" onclick="editPaymentItem(${payment.id})" style="font-size: 0.8rem; padding: 4px 8px;">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="deletePaymentItem(${payment.id})" style="font-size: 0.8rem; padding: 4px 8px;">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                }
+                
+                row.innerHTML = `
+                    <td>${rowNum}</td>
+                    <td>${payment.vendor}</td>
+                    <td>${payment.category}</td>
+                    <td>${payment.createdDate || payment.date}</td>
+                    <td>${payment.currency}</td>
+                    <td style="text-align: right; font-weight: 600;">${payment.amount.toFixed(2)}</td>
+                    <td style="text-align: right; font-weight: 600;">RM${amountInRM.toFixed(2)}</td>
+                    ${actionHtml}
+                `;
+                tbody.appendChild(row);
+                rowNum++;
+            });
+
+            // Load expense breakdown
+            loadExpenseBreakdown();
+        }
+
+        function loadPaymentReminderList() {
+            const tbody = document.getElementById('paymentReminderListBody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+            
+            let rowNum = 1;
+            paymentData.forEach(payment => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${rowNum}</td>
+                    <td>${payment.paymentName || payment.vendor}</td>
+                    <td>${payment.vendor}</td>
+                    <td>${payment.category}</td>
+                    <td>${payment.createdDate || 'N/A'}</td>
+                    <td>${payment.date}</td>
+                    <td>${payment.currency}</td>
+                    <td style="text-align: right;">${payment.amount.toFixed(2)}</td>
+                    <td>${payment.poNumber || 'N/A'}</td>
+                    <td>${payment.invoiceNumber || 'N/A'}</td>
+                `;
+                tbody.appendChild(row);
+                rowNum++;
+            });
+        }
+
+        function togglePaymentView(view) {
+            const paymentListCard = document.getElementById('paymentListCard');
+            const paymentReminderListCard = document.getElementById('paymentReminderListCard');
+            const paymentListToggle = document.getElementById('paymentListToggle');
+            const paymentReminderToggle = document.getElementById('paymentReminderToggle');
+            
+            if (view === 'list') {
+                paymentListCard.style.display = 'block';
+                paymentReminderListCard.style.display = 'none';
+                paymentListToggle.style.fontWeight = '700';
+                paymentListToggle.style.color = '#ff8c00';
+                paymentReminderToggle.style.fontWeight = '400';
+                paymentReminderToggle.style.color = '#666';
+            } else {
+                paymentListCard.style.display = 'none';
+                paymentReminderListCard.style.display = 'block';
+                paymentListToggle.style.fontWeight = '400';
+                paymentListToggle.style.color = '#666';
+                paymentReminderToggle.style.fontWeight = '700';
+                paymentReminderToggle.style.color = '#ff8c00';
+                loadPaymentReminderList();
+            }
+        }
+
+        function loadExpenseBreakdown() {
+            const categories = {};
+            const selectedCurrency = document.getElementById('currencySelector').value;
+            let totalAmount = 0;
+
+            paymentData.forEach(payment => {
+                const amountInRM = payment.amount * (currencyRates[payment.currency] || 1);
+                totalAmount += amountInRM;
+                
+                if (!categories[payment.category]) {
+                    categories[payment.category] = 0;
+                }
+                categories[payment.category] += amountInRM;
+            });
+
+            const tbody = document.getElementById('expenseBreakdownBody');
+            tbody.innerHTML = '';
+
+            Object.entries(categories).forEach(([category, amount]) => {
+                const percentage = ((amount / totalAmount) * 100).toFixed(1);
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td style="font-weight: 600;">${category}</td>
+                    <td style="text-align: right; font-weight: 600;">RM${amount.toFixed(2)}</td>
+                    <td style="text-align: right;">${percentage}%</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function convertCurrency(amount, fromCurrency, toCurrency) {
+            const fromRate = currencyRates[fromCurrency] || 1;
+            const toRate = currencyRates[toCurrency] || 1;
+            return amount * fromRate / toRate;
+        }
+
+        function formatCurrencyAmount(amount, currency) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency,
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(amount);
+        }
+
+        function updatePaymentSummary() {
+            const selectedCurrency = document.getElementById('currencySelector').value;
+            let totalAmount = 0;
+            const monthlyTotals = {};
+            const monthAbbrevs = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+            paymentData.forEach(payment => {
+                const amountInSelected = convertCurrency(payment.amount, payment.currency, selectedCurrency);
+                totalAmount += amountInSelected;
+
+                const createdDate = payment.createdDate || payment.date || '';
+                const parts = createdDate.split('-');
+                if (parts.length === 3) {
+                    const month = parts[1];
+                    const year = parts[2];
+                    const monthKey = `${month}-${year}`;
+                    monthlyTotals[monthKey] = (monthlyTotals[monthKey] || 0) + amountInSelected;
+                }
+            });
+
+            document.getElementById('totalAmountDisplay').textContent = formatCurrencyAmount(totalAmount, selectedCurrency);
+            document.getElementById('lastUpdateDisplay').textContent = new Date().toLocaleDateString();
+
+            const monthlySummaryBody = document.getElementById('monthlySummaryBody');
+            const monthlyRows = Object.keys(monthlyTotals)
+                .sort((a, b) => {
+                    const [aMonth, aYear] = a.split('-').map((value, index) => index === 0 ? monthAbbrevs.indexOf(value) : parseInt(value, 10));
+                    const [bMonth, bYear] = b.split('-').map((value, index) => index === 0 ? monthAbbrevs.indexOf(value) : parseInt(value, 10));
+                    if (aYear !== bYear) return aYear - bYear;
+                    return aMonth - bMonth;
+                })
+                .map(key => {
+                    const [month, year] = key.split('-');
+                    const monthLabel = monthAbbrevs[monthAbbrevs.indexOf(month)] || month;
+                    return `
+                        <tr>
+                            <td>${monthLabel} ${year}</td>
+                            <td style="text-align: right; font-weight: 600;">${formatCurrencyAmount(monthlyTotals[key], selectedCurrency)}</td>
+                        </tr>`;
+                })
+                .join('');
+
+            monthlySummaryBody.innerHTML = monthlyRows || '<tr><td colspan="2" style="text-align: center; color: #666;">No monthly summary available</td></tr>';
+            loadPaymentData();
+        }
+
+        function loadCurrencyRates() {
+            const tbody = document.getElementById('currencyRatesBody');
+            tbody.innerHTML = '';
+
+            const currencyNames = {
+                'USD': 'US Dollar',
+                'EUR': 'Euro',
+                'SGD': 'Singapore Dollar',
+                'PHP': 'Philippine Peso',
+                'MYR': 'Malaysian Ringgit'
+            };
+
+            Object.entries(currencyRates).forEach(([code, rate]) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td style="font-weight: 600;">${code}</td>
+                    <td>${currencyNames[code] || code}</td>
+                    <td style="text-align: right; font-weight: 600;">${rate.toFixed(4)}</td>
+                    <td>Real-time</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function initializePaymentCalendar() {
+            renderCalendar();
+        }
+
+        function renderCalendar() {
+            const calendarDiv = document.getElementById('paymentCalendar');
+            const year = currentCalendarDate.getFullYear();
+            const month = currentCalendarDate.getMonth();
+            
+            // Update month/year display
+            document.getElementById('calendarMonthYear').textContent = currentCalendarDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+            
+            // Generate simple calendar view
+            let html = `<div style="text-align: center;">
+                <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-bottom: 15px;">
+                    <div style="font-weight: 700; color: #666; padding: 8px;">Sun</div>
+                    <div style="font-weight: 700; color: #666; padding: 8px;">Mon</div>
+                    <div style="font-weight: 700; color: #666; padding: 8px;">Tue</div>
+                    <div style="font-weight: 700; color: #666; padding: 8px;">Wed</div>
+                    <div style="font-weight: 700; color: #666; padding: 8px;">Thu</div>
+                    <div style="font-weight: 700; color: #666; padding: 8px;">Fri</div>
+                    <div style="font-weight: 700; color: #666; padding: 8px;">Sat</div>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px;">`;
+            
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const daysInMonth = lastDay.getDate();
+            
+            // Add empty cells for days before month starts
+            for (let i = 0; i < firstDay.getDay(); i++) {
+                html += '<div style="padding: 8px; color: #ccc;"></div>';
+            }
+            
+            // Add day cells
+            const today = new Date();
+            for (let day = 1; day <= daysInMonth; day++) {
+                const cellDate = new Date(year, month, day);
+                const dateStr = cellDate.toLocaleDateString('en-GB').replace(/\//g, '-');
+                const dateStrFormat = `${day.toString().padStart(2, '0')}-${(month + 1).toString().padStart(2, '0')}-${year}`;
+                
+                const hasPayment = paymentData.some(p => {
+                    const paymentDate = new Date(p.date);
+                    return paymentDate.getDate() === day && paymentDate.getMonth() === month && paymentDate.getFullYear() === year;
+                });
+                
+                const isToday = day === today.getDate() && month === today.getMonth() && year === today.getFullYear();
+                const isSelected = selectedCalendarDate && day === selectedCalendarDate.getDate() && month === selectedCalendarDate.getMonth() && year === selectedCalendarDate.getFullYear();
+                
+                const bgColor = isToday ? '#ff8c00' : isSelected ? '#ffb74d' : hasPayment ? '#ffe9d6' : 'white';
+                const textColor = isToday ? 'white' : 'black';
+                const borderColor = hasPayment || isSelected ? '#ff8c00' : '#ddd';
+                
+                html += `<div onclick="selectCalendarDate(new Date(${year}, ${month}, ${day})); openAddReminderModal();" style="padding: 12px 8px; border-radius: 8px; font-weight: 600; cursor: pointer; background: ${bgColor}; color: ${textColor}; border: 2px solid ${borderColor}; transition: all 0.2s; text-align: center;" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 4px 8px rgba(255, 140, 0, 0.2)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none';">${day}</div>`;
+            }
+            
+            html += '</div></div>';
+            calendarDiv.innerHTML = html;
+        }
+
+        function previousMonth() {
+            currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1);
+            renderCalendar();
+        }
+
+        function nextMonth() {
+            currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1);
+            renderCalendar();
+        }
+
+        function selectCalendarDate(date) {
+            selectedCalendarDate = date;
+            renderCalendar();
+        }
+
+        function togglePaymentEditMode() {
+            const addPaymentBtn = document.getElementById('addPaymentBtn');
+            const isEditMode = addPaymentBtn && addPaymentBtn.style.display !== 'none';
+            if (isEditMode) {
+                enablePaymentEditMode();
+            } else {
+                promptAdminLogin('editPayment');
+            }
+        }
+
+        function enablePaymentEditMode() {
+            const addPaymentBtn = document.getElementById('addPaymentBtn');
+            const paymentActionHeader = document.getElementById('paymentActionHeader');
+            const paymentEditToggle = document.getElementById('paymentEditToggle');
+            
+            // Check if edit mode is already enabled
+            const isEditMode = addPaymentBtn && addPaymentBtn.style.display !== 'none';
+            
+            if (!isEditMode) {
+                // Show edit mode
+                if (addPaymentBtn) addPaymentBtn.style.display = 'inline-block';
+                if (paymentActionHeader) paymentActionHeader.style.display = 'table-cell';
+                if (paymentEditToggle) paymentEditToggle.innerHTML = '<i class="fas fa-times me-2"></i>Cancel Edit';
+                loadPaymentData();
+            } else {
+                // Hide edit mode
+                if (addPaymentBtn) addPaymentBtn.style.display = 'none';
+                if (paymentActionHeader) paymentActionHeader.style.display = 'none';
+                if (paymentEditToggle) paymentEditToggle.innerHTML = '<i class="fas fa-edit me-2"></i>Edit Payment List';
+                loadPaymentData();
+            }
+        }
+
+        function editPaymentItem(id) {
+            const payment = paymentData.find(p => p.id === id);
+            if (payment) {
+                // Populate the form with existing payment data
+                document.getElementById('reminderPaymentName').value = payment.paymentName || payment.vendor;
+                document.getElementById('reminderVendorName').value = payment.vendor;
+                document.getElementById('reminderAmount').value = payment.amount;
+                document.getElementById('reminderCurrency').value = payment.currency;
+                document.getElementById('reminderPONumber').value = payment.poNumber || '';
+                document.getElementById('reminderInvoiceNumber').value = payment.invoiceNumber || '';
+                document.getElementById('reminderCategory').value = payment.category;
+                document.getElementById('paymentReminderModalLabel').innerHTML = '<i class="fas fa-edit me-2"></i>Edit Payment Reminder';
+                document.getElementById('paymentReminderSubmitBtn').innerHTML = '<i class="fas fa-save me-1"></i>Save';
+                
+                // Format dates to YYYY-MM-DD for HTML5 date inputs
+                const dateParts = payment.date.split('-');
+                const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                const monthNum = monthNames.indexOf(dateParts[1]) + 1;
+                const dateForInput = `${dateParts[2]}-${String(monthNum).padStart(2, '0')}-${dateParts[0]}`;
+                document.getElementById('reminderDate').value = dateForInput;
+                
+                // Set created date if available
+                if (payment.createdDate) {
+                    const createdParts = payment.createdDate.split('-');
+                    const createdMonthNum = monthNames.indexOf(createdParts[1]) + 1;
+                    const createdDateForInput = `${createdParts[2]}-${String(createdMonthNum).padStart(2, '0')}-${createdParts[0]}`;
+                    document.getElementById('reminderCreatedDate').value = createdDateForInput;
+                } else {
+                    document.getElementById('reminderCreatedDate').value = '';
+                }
+                
+                // Store the ID being edited
+                window.editingPaymentId = id;
+                
+                // Show the modal
+                const modal = new bootstrap.Modal(document.getElementById('paymentReminderModal'));
+                modal.show();
+            }
+        }
+
+        function deletePaymentItem(id) {
+            if (confirm('Are you sure you want to delete this payment?')) {
+                paymentData = paymentData.filter(p => p.id !== id);
+                loadPaymentData();
+                updatePaymentSummary();
+                renderCalendar();
+                showNotification('Payment deleted successfully', 'success');
+            }
+        }
+
+        function openAddReminderModal() {
+            // Clear the editing flag
+            window.editingPaymentId = undefined;
+            
+            if (!selectedCalendarDate) {
+                selectedCalendarDate = new Date();
+            }
+            
+            // Format date as YYYY-MM-DD for HTML5 date input
+            const year = selectedCalendarDate.getFullYear();
+            const month = String(selectedCalendarDate.getMonth() + 1).padStart(2, '0');
+            const day = String(selectedCalendarDate.getDate()).padStart(2, '0');
+            const dateStr = `${year}-${month}-${day}`;
+            
+            // Clear form fields completely
+            document.getElementById('paymentReminderForm').reset();
+            document.getElementById('reminderDate').value = dateStr;
+            document.getElementById('paymentReminderModalLabel').innerHTML = '<i class="fas fa-calendar-plus me-2"></i>Add Payment Reminder';
+            document.getElementById('paymentReminderSubmitBtn').innerHTML = '<i class="fas fa-check me-1"></i>Add to List';
+            
+            // Set created date to today
+            const today = new Date();
+            const todayYear = today.getFullYear();
+            const todayMonth = String(today.getMonth() + 1).padStart(2, '0');
+            const todayDay = String(today.getDate()).padStart(2, '0');
+            const todayStr = `${todayYear}-${todayMonth}-${todayDay}`;
+            document.getElementById('reminderCreatedDate').value = todayStr;
+            
+            const modal = new bootstrap.Modal(document.getElementById('paymentReminderModal'));
+            modal.show();
+        }
+
+        function savePaymentReminder() {
+            const paymentName = document.getElementById('reminderPaymentName').value.trim();
+            const vendorName = document.getElementById('reminderVendorName').value.trim();
+            const amount = parseFloat(document.getElementById('reminderAmount').value);
+            const currency = document.getElementById('reminderCurrency').value;
+            const poNumber = document.getElementById('reminderPONumber').value.trim();
+            const invoiceNumber = document.getElementById('reminderInvoiceNumber').value.trim();
+            const category = document.getElementById('reminderCategory').value;
+            const dateStr = document.getElementById('reminderDate').value;
+            const createdDateStr = document.getElementById('reminderCreatedDate').value;
+            
+            // Validation
+            if (!paymentName || !vendorName || !amount || !currency || !category || !dateStr || !createdDateStr) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            // Format date to match existing format (DD-MMM-YYYY)
+            const [year, month, day] = dateStr.split('-');
+            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            const formattedDate = `${day}-${monthNames[parseInt(month) - 1]}-${year}`;
+            
+            // Format created date
+            const [createdYear, createdMonth, createdDay] = createdDateStr.split('-');
+            const formattedCreatedDate = `${createdDay}-${monthNames[parseInt(createdMonth) - 1]}-${createdYear}`;
+            
+            // Check if editing existing payment
+            if (window.editingPaymentId !== undefined) {
+                // Update existing payment
+                const paymentIndex = paymentData.findIndex(p => p.id === window.editingPaymentId);
+                if (paymentIndex !== -1) {
+                    paymentData[paymentIndex] = {
+                        id: window.editingPaymentId,
+                        paymentName: paymentName,
+                        vendor: vendorName,
+                        category: category,
+                        date: formattedDate,
+                        createdDate: formattedCreatedDate,
+                        currency: currency,
+                        amount: amount,
+                        poNumber: poNumber || 'N/A',
+                        invoiceNumber: invoiceNumber || 'N/A'
+                    };
+                    showNotification('Payment updated successfully!', 'success');
+                }
+                window.editingPaymentId = undefined;
+            } else {
+                // Create new payment entry
+                const newPayment = {
+                    id: nextPaymentId++,
+                    paymentName: paymentName,
+                    vendor: vendorName,
+                    category: category,
+                    date: formattedDate,
+                    createdDate: formattedCreatedDate,
+                    currency: currency,
+                    amount: amount,
+                    poNumber: poNumber || 'N/A',
+                    invoiceNumber: invoiceNumber || 'N/A'
+                };
+                
+                // Add to payment data
+                paymentData.push(newPayment);
+                showNotification('Payment reminder added successfully!', 'success');
+            }
+            
+            // Close modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('paymentReminderModal'));
+            modal.hide();
+            
+            // Refresh display
+            loadPaymentData();
+            updatePaymentSummary();
+            renderCalendar();
+        }
+
         function showJSONConverter() {
             clearActiveNav();
+            hideAllSections();
             document.getElementById('nav-jsonconverter').classList.add('active');
             document.getElementById('launcherSection').style.display = 'none';
             document.getElementById('analysisContent').style.display = 'none';
             document.getElementById('delayCodeContent').style.display = 'none';
             document.getElementById('databaseContent').style.display = 'none';
             document.getElementById('chartRevisionContent').style.display = 'none';
+            document.getElementById('paymentDashboardContent').style.display = 'none';
             document.getElementById('jsonConverterContent').style.display = 'block';
             
             // Hide back/refresh buttons
@@ -4870,8 +6279,8 @@
             
             // Simple admin verification (you can replace with actual backend verification)
             // Hardcoded credentials for demo purposes
-            const adminUsername = 'admin';
-            const adminPassword = 'admin123';
+            const adminUsername = 'FYFOTD';
+            const adminPassword = 'firefly@123';
             
             if (username === adminUsername && password === adminPassword) {
                 // Hide modal
@@ -4888,6 +6297,8 @@
                 // Perform the action
                 if (window.pendingAction === 'edit') {
                     enterEditMode();
+                } else if (window.pendingAction === 'editPayment') {
+                    enablePaymentEditMode();
                 }
             } else {
                 showNotification('Invalid username or password', 'danger');
@@ -5632,12 +7043,10 @@
                         <div class="mb-3">
                             <label for="adminUsername" class="form-label fw-bold">Username</label>
                             <input type="text" class="form-control form-control-lg" id="adminUsername" placeholder="Enter admin username" required autofocus>
-                            <small class="form-text text-muted">Demo: username is 'admin'</small>
                         </div>
                         <div class="mb-4">
                             <label for="adminPassword" class="form-label fw-bold">Password</label>
                             <input type="password" class="form-control form-control-lg" id="adminPassword" placeholder="Enter admin password" required>
-                            <small class="form-text text-muted">Demo: password is 'admin123'</small>
                         </div>
                         <button type="submit" class="btn btn-warning w-100 btn-lg fw-bold">
                             <i class="fas fa-sign-in-alt me-2"></i>Login
@@ -5688,5 +7097,371 @@
             </div>
         </div>
     </div>
+
+    <!-- Payment Reminder Modal -->
+    <div class="modal fade" id="paymentReminderModal" tabindex="-1" aria-labelledby="paymentReminderModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="border-radius: 16px; border: 2px solid #ffe9d6; box-shadow: 0 10px 40px rgba(255, 140, 0, 0.2);">
+                <div class="modal-header" style="background: linear-gradient(135deg, #ff8c00 0%, #ffb74d 100%); color: white; border-radius: 14px 14px 0 0; border: none;">
+                    <h5 class="modal-title" id="paymentReminderModalLabel" style="font-weight: 700;">
+                        <i class="fas fa-calendar-plus me-2"></i>Add Payment Reminder
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="padding: 30px;">
+                    <form id="paymentReminderForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold" style="color: #333;">Payment Name <span style="color: red;">*</span></label>
+                                <input type="text" class="form-control" id="reminderPaymentName" placeholder="e.g., Monthly Software License" required style="border-radius: 8px; border: 2px solid #ffe9d6; padding: 10px 14px;">
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold" style="color: #333;">Vendor Name <span style="color: red;">*</span></label>
+                                <input type="text" class="form-control" id="reminderVendorName" placeholder="e.g., NAVDB" required style="border-radius: 8px; border: 2px solid #ffe9d6; padding: 10px 14px;">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold" style="color: #333;">Amount <span style="color: red;">*</span></label>
+                                <input type="number" class="form-control" id="reminderAmount" placeholder="0.00" step="0.01" required style="border-radius: 8px; border: 2px solid #ffe9d6; padding: 10px 14px;">
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold" style="color: #333;">Currency <span style="color: red;">*</span></label>
+                                <select class="form-select" id="reminderCurrency" required style="border-radius: 8px; border: 2px solid #ffe9d6; padding: 10px 14px;">
+                                    <option value="MYR">MYR (Malaysian Ringgit)</option>
+                                    <option value="USD">USD (US Dollar)</option>
+                                    <option value="EUR">EUR (Euro)</option>
+                                    <option value="SGD">SGD (Singapore Dollar)</option>
+                                    <option value="PHP">PHP (Philippine Peso)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold" style="color: #333;">PO Number</label>
+                                <input type="text" class="form-control" id="reminderPONumber" placeholder="e.g., PO-2026-001" style="border-radius: 8px; border: 2px solid #ffe9d6; padding: 10px 14px;">
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold" style="color: #333;">Invoice Number</label>
+                                <input type="text" class="form-control" id="reminderInvoiceNumber" placeholder="e.g., INV-2026-001" style="border-radius: 8px; border: 2px solid #ffe9d6; padding: 10px 14px;">
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold" style="color: #333;">Category <span style="color: red;">*</span></label>
+                            <select class="form-select" id="reminderCategory" required style="border-radius: 8px; border: 2px solid #ffe9d6; padding: 10px 14px;">
+                                <option value="">-- Select Category --</option>
+                                <option value="Software & Support Expenses">Software & Support Expenses</option>
+                                <option value="Maintenance & Repairs">Maintenance & Repairs</option>
+                                <option value="Training & Development">Training & Development</option>
+                                <option value="Travel & Accommodation">Travel & Accommodation</option>
+                                <option value="Utilities & Services">Utilities & Services</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold" style="color: #333;">Expected Date to Payment <span style="color: red;">*</span></label>
+                            <input type="date" class="form-control" id="reminderDate" required style="border-radius: 8px; border: 2px solid #ffe9d6; padding: 10px 14px;">
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold" style="color: #333;">Created Date <span style="color: red;">*</span></label>
+                            <input type="date" class="form-control" id="reminderCreatedDate" required style="border-radius: 8px; border: 2px solid #ffe9d6; padding: 10px 14px;">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer" style="background-color: #f8f9fa; border-top: 1px solid #dee2e6; border-radius: 0 0 14px 14px;">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="border-radius: 8px; padding: 8px 16px; font-weight: 600;">
+                        <i class="fas fa-times me-1"></i>Cancel
+                    </button>
+                    <button type="button" id="paymentReminderSubmitBtn" class="btn btn-primary" onclick="savePaymentReminder()" style="background: linear-gradient(135deg, #ff8c00 0%, #ff9f1a 100%); border: none; border-radius: 8px; padding: 8px 18px; font-weight: 600;">
+                        <i class="fas fa-check me-1"></i>Add to List
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add iPad Modal -->
+    <div class="modal fade" id="addIPadModal" tabindex="-1" aria-labelledby="addIPadModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="border-radius: 20px; border: none; box-shadow: 0 15px 50px rgba(255, 140, 0, 0.25);">
+                <div class="modal-header" style="background: linear-gradient(135deg, #ff8c00 0%, #ffb74d 100%); color: white; border-radius: 20px 20px 0 0; border: none; padding: 24px 28px;">
+                    <h5 class="modal-title" id="addIPadModalLabel" style="font-weight: 800; font-size: 1.3rem;">
+                        <i class="fas fa-tablet-alt me-2"></i>Add New iPad Device
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="padding: 30px;">
+                    <form id="addIPadForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Serial Number <span style="color: red;">*</span></label>
+                                <input type="text" class="form-control" id="ipadSerial" placeholder="e.g., IPD-1005" required style="border-radius: 12px; border: 2px solid #ffe9d6; padding: 14px 16px; font-size: 1rem; transition: all 0.3s ease;">
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Colour <span style="color: red;">*</span></label>
+                                <select class="form-select" id="ipadColour" required style="border-radius: 12px; border: 2px solid #ffe9d6; padding: 14px 16px; font-size: 1rem;">
+                                    <option value="">-- Select Colour --</option>
+                                    <option value="Space Gray">Space Gray</option>
+                                    <option value="Silver">Silver</option>
+                                    <option value="Rose Gold">Rose Gold</option>
+                                    <option value="Gold">Gold</option>
+                                    <option value="Blue">Blue</option>
+                                    <option value="Purple">Purple</option>
+                                    <option value="Starlight">Starlight</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">iPad Version <span style="color: red;">*</span></label>
+                                <select class="form-select" id="ipadVersion" required style="border-radius: 12px; border: 2px solid #ffe9d6; padding: 14px 16px; font-size: 1rem;">
+                                    <option value="">-- Select Version --</option>
+                                    <option value="iPad Pro 12.9">iPad Pro 12.9"</option>
+                                    <option value="iPad Pro 11">iPad Pro 11"</option>
+                                    <option value="iPad Air 5">iPad Air 5</option>
+                                    <option value="iPad Air 4">iPad Air 4</option>
+                                    <option value="iPad Mini 6">iPad Mini 6</option>
+                                    <option value="iPad Mini 5">iPad Mini 5</option>
+                                    <option value="iPad 10">iPad 10</option>
+                                    <option value="iPad 9">iPad 9</option>
+                                    <option value="iPad 8">iPad 8</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Availability <span style="color: red;">*</span></label>
+                                <select class="form-select" id="ipadAvailability" required style="border-radius: 12px; border: 1px solid #dfe3ea; padding: 14px 16px; font-size: 1rem;">
+                                    <option value="Available">Available</option>
+                                    <option value="Assigned">Assigned</option>
+                                    <option value="Maintenance">Maintenance</option>
+                                    <option value="Retired">Retired</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-4" id="assignedToField" style="display: none;">
+                            <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Assigned To <span style="color: red;">*</span></label>
+                            <div class="input-group" style="gap: 10px;">
+                                <input type="text" class="form-control" id="ipadAssignedTo" list="crewListOptions" placeholder="Search crew name or ID..." autocomplete="off" style="border-radius: 12px; border: 1px solid #dfe3ea; padding: 14px 16px; font-size: 1rem;" />
+                                <button type="button" class="btn btn-outline-secondary" style="border-radius: 12px; min-width: 120px;" onclick="focusCrewSearch('ipadAssignedTo')">
+                                    <i class="fas fa-search me-2"></i>Search
+                                </button>
+                            </div>
+                            <datalist id="crewListOptions"></datalist>
+                            <div class="mt-2"><small class="text-muted">Can’t find the crew member? <a href="javascript:void(0)" onclick="openAddNewUserModal()">Add new flight crew</a>.</small></div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Designation</label>
+                            <select class="form-select" id="ipadDesignation" style="border-radius: 12px; border: 1px solid #dfe3ea; padding: 14px 16px; font-size: 1rem;">
+                                <option value="">-- Select Designation --</option>
+                                <option value="ATR Captain">ATR Captain</option>
+                                <option value="B737 Captain">B737 Captain</option>
+                                <option value="ATR FO">ATR FO</option>
+                                <option value="B737 FO">B737 FO</option>
+                                <option value="Office Staff">Office Staff</option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Remarks</label>
+                            <textarea class="form-control" id="ipadRemarks" rows="3" placeholder="Optional remarks about this assignment..." style="border-radius: 12px; border: 1px solid #dfe3ea; padding: 14px 16px; font-size: 1rem;"></textarea>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Collection Date</label>
+                            <input type="date" class="form-control" id="ipadCollectionDate" style="border-radius: 12px; border: 1px solid #dfe3ea; padding: 14px 16px; font-size: 1rem;" />
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer" style="background-color: #f8f9fa; border-top: 1px solid #dee2e6; border-radius: 0 0 20px 20px; padding: 20px 28px;">
+                    <button type="button" class="btn btn-lg btn-secondary" data-bs-dismiss="modal" style="border-radius: 12px; padding: 12px 24px; font-weight: 600; font-size: 1rem;">
+                        <i class="fas fa-times me-2"></i>Cancel
+                    </button>
+                    <button type="button" id="addIPadSubmitBtn" class="btn btn-lg" onclick="saveNewIPad()" style="background: linear-gradient(135deg, #ff8c00 0%, #ff9f1a 100%); border: none; border-radius: 12px; padding: 12px 28px; font-weight: 700; font-size: 1rem; color: white; box-shadow: 0 6px 20px rgba(255, 140, 0, 0.35);">
+                        <i class="fas fa-plus-circle me-2"></i>Add iPad
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit iPad Modal -->
+    <div class="modal fade" id="editIPadModal" tabindex="-1" aria-labelledby="editIPadModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="border-radius: 20px; border: none; box-shadow: 0 15px 50px rgba(255, 140, 0, 0.25);">
+                <div class="modal-header" style="background: linear-gradient(135deg, #2196F3 0%, #64b5f6 100%); color: white; border-radius: 20px 20px 0 0; border: none; padding: 24px 28px;">
+                    <h5 class="modal-title" id="editIPadModalLabel" style="font-weight: 800; font-size: 1.3rem;">
+                        <i class="fas fa-edit me-2"></i>Edit iPad Device
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="padding: 30px;">
+                    <form id="editIPadForm">
+                        <input type="hidden" id="editIPadIndex">
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Serial Number <span style="color: red;">*</span></label>
+                                <input type="text" class="form-control" id="editIPadSerial" required style="border-radius: 12px; border: 2px solid #bbdefb; padding: 14px 16px; font-size: 1rem;">
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Colour <span style="color: red;">*</span></label>
+                                <select class="form-select" id="editIPadColour" required style="border-radius: 12px; border: 2px solid #bbdefb; padding: 14px 16px; font-size: 1rem;">
+                                    <option value="Space Gray">Space Gray</option>
+                                    <option value="Silver">Silver</option>
+                                    <option value="Rose Gold">Rose Gold</option>
+                                    <option value="Gold">Gold</option>
+                                    <option value="Blue">Blue</option>
+                                    <option value="Purple">Purple</option>
+                                    <option value="Starlight">Starlight</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">iPad Version <span style="color: red;">*</span></label>
+                                <select class="form-select" id="editIPadVersion" required style="border-radius: 12px; border: 1px solid #dfe3ea; padding: 14px 16px; font-size: 1rem;">
+                                    <option value="iPad Pro 12.9">iPad Pro 12.9"</option>
+                                    <option value="iPad Pro 11">iPad Pro 11"</option>
+                                    <option value="iPad Air 5">iPad Air 5</option>
+                                    <option value="iPad Air 4">iPad Air 4</option>
+                                    <option value="iPad Mini 6">iPad Mini 6</option>
+                                    <option value="iPad Mini 5">iPad Mini 5</option>
+                                    <option value="iPad 10">iPad 10</option>
+                                    <option value="iPad 9">iPad 9</option>
+                                    <option value="iPad 8">iPad 8</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Availability <span style="color: red;">*</span></label>
+                                <select class="form-select" id="editIPadAvailability" required style="border-radius: 12px; border: 1px solid #dfe3ea; padding: 14px 16px; font-size: 1rem;">
+                                    <option value="Available">Available</option>
+                                    <option value="Assigned">Assigned</option>
+                                    <option value="Maintenance">Maintenance</option>
+                                    <option value="Retired">Retired</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-4" id="editAssignedToField" style="display: none;">
+                            <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Assigned To</label>
+                            <div class="input-group" style="gap: 10px;">
+                                <input type="text" class="form-control" id="editIPadAssignedTo" list="crewListOptions" placeholder="Search crew name or ID..." autocomplete="off" style="border-radius: 12px; border: 1px solid #dfe3ea; padding: 14px 16px; font-size: 1rem;" />
+                                <button type="button" class="btn btn-outline-secondary" style="border-radius: 12px; min-width: 120px;" onclick="focusCrewSearch('editIPadAssignedTo')">
+                                    <i class="fas fa-search me-2"></i>Search
+                                </button>
+                            </div>
+                            <div class="mt-2"><small class="text-muted">Can’t find the crew member? <a href="javascript:void(0)" onclick="openAddNewUserModal()">Add new flight crew</a>.</small></div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Designation</label>
+                            <select class="form-select" id="editIPadDesignation" style="border-radius: 12px; border: 1px solid #dfe3ea; padding: 14px 16px; font-size: 1rem;">
+                                <option value="">-- Select Designation --</option>
+                                <option value="ATR Captain">ATR Captain</option>
+                                <option value="B737 Captain">B737 Captain</option>
+                                <option value="ATR FO">ATR FO</option>
+                                <option value="B737 FO">B737 FO</option>
+                                <option value="Office Staff">Office Staff</option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Remarks</label>
+                            <textarea class="form-control" id="editIPadRemarks" rows="3" placeholder="Optional remarks about this assignment..." style="border-radius: 12px; border: 1px solid #dfe3ea; padding: 14px 16px; font-size: 1rem;"></textarea>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Collection Date</label>
+                            <input type="date" class="form-control" id="editIPadCollectionDate" style="border-radius: 12px; border: 1px solid #dfe3ea; padding: 14px 16px; font-size: 1rem;" />
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer" style="background-color: #f8f9fa; border-top: 1px solid #dee2e6; border-radius: 0 0 20px 20px; padding: 20px 28px;">
+                    <button type="button" class="btn btn-lg btn-secondary" data-bs-dismiss="modal" style="border-radius: 12px; padding: 12px 24px; font-weight: 600; font-size: 1rem;">
+                        <i class="fas fa-times me-2"></i>Cancel
+                    </button>
+                    <button type="button" id="editIPadSubmitBtn" class="btn btn-lg" onclick="updateIPadDevice()" style="background: linear-gradient(135deg, #2196F3 0%, #64b5f6 100%); border: none; border-radius: 12px; padding: 12px 28px; font-weight: 700; font-size: 1rem; color: white; box-shadow: 0 6px 20px rgba(33, 150, 243, 0.35);">
+                        <i class="fas fa-save me-2"></i>Save Changes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add New User Modal -->
+    <div class="modal fade" id="addNewUserModal" tabindex="-1" aria-labelledby="addNewUserModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="border-radius: 20px; border: none; box-shadow: 0 15px 50px rgba(33, 150, 243, 0.25);">
+                <div class="modal-header" style="background: linear-gradient(135deg, #2196F3 0%, #64B5F6 100%); color: white; border-radius: 20px 20px 0 0; border: none; padding: 24px 28px;">
+                    <h5 class="modal-title" id="addNewUserModalLabel" style="font-weight: 800; font-size: 1.3rem;">
+                        <i class="fas fa-user-plus me-2"></i>Add New User
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="padding: 30px;">
+                    <form id="newUserForm">
+                        <div class="mb-4">
+                            <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Crew ID <span style="color: red;">*</span></label>
+                            <input type="text" class="form-control" id="newUserId" placeholder="e.g., CA1234" required style="border-radius: 12px; border: 2px solid #bbdefb; padding: 14px 16px; font-size: 1rem;">
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Full Name <span style="color: red;">*</span></label>
+                            <input type="text" class="form-control" id="newUserName" placeholder="e.g., John Smith" required style="border-radius: 12px; border: 2px solid #bbdefb; padding: 14px 16px; font-size: 1rem;">
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Designation <span style="color: red;">*</span></label>
+                            <select class="form-select" id="newUserDesignation" required style="border-radius: 12px; border: 2px solid #bbdefb; padding: 14px 16px; font-size: 1rem;">
+                                <option value="">-- Select Designation --</option>
+                                <option value="ATR Captain">ATR Captain</option>
+                                <option value="B737 Captain">B737 Captain</option>
+                                <option value="ATR FO">ATR FO</option>
+                                <option value="B737 FO">B737 FO</option>
+                                <option value="Office Staff">Office Staff</option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Remarks</label>
+                            <textarea class="form-control" id="newUserRemarks" rows="3" placeholder="Optional remarks about this crew member..." style="border-radius: 12px; border: 2px solid #bbdefb; padding: 14px 16px; font-size: 1rem;"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer" style="background-color: #f8f9fa; border-top: 1px solid #dee2e6; border-radius: 0 0 20px 20px; padding: 20px 28px;">
+                    <button type="button" class="btn btn-lg btn-secondary" data-bs-dismiss="modal" style="border-radius: 12px; padding: 12px 24px; font-weight: 600; font-size: 1rem;">
+                        <i class="fas fa-times me-2"></i>Cancel
+                    </button>
+                    <button type="button" class="btn btn-lg" onclick="saveNewUser()" style="background: linear-gradient(135deg, #2196F3 0%, #42A5F5 100%); border: none; border-radius: 12px; padding: 12px 28px; font-weight: 700; font-size: 1rem; color: white; box-shadow: 0 6px 20px rgba(33, 150, 243, 0.35);">
+                        <i class="fas fa-plus-circle me-2"></i>Add User
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="toastNotification" class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="border-radius: 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.15);">
+            <div class="toast-header" style="border-radius: 12px 12px 0 0;">
+                <strong class="me-auto" id="toastTitle"><i class="fas fa-check-circle me-2"></i>Success</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body" id="toastMessage" style="border-radius: 0 0 12px 12px;">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toast notification function
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toastNotification');
+            const toastTitle = document.getElementById('toastTitle');
+            const toastMessage = document.getElementById('toastMessage');
+            
+            if (type === 'success') {
+                toast.classList.remove('bg-danger');
+                toast.classList.add('bg-success', 'text-white');
+                toastTitle.innerHTML = '<i class="fas fa-check-circle me-2"></i>Success';
+            } else {
+                toast.classList.remove('bg-success');
+                toast.classList.add('bg-danger', 'text-white');
+                toastTitle.innerHTML = '<i class="fas fa-exclamation-circle me-2"></i>Error';
+            }
+            
+            toastMessage.textContent = message;
+            const bsToast = new bootstrap.Toast(toast);
+            bsToast.show();
+        }
+    </script>
 </body>
 </html>

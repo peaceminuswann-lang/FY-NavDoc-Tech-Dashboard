@@ -67,6 +67,26 @@ service cloud.firestore {
 - Username: FYFOTD
 - Password: firefly@123
 
+## Outlook Auto Reminder Setup
+
+1. Open the Payment Dashboard in `index.html`.
+2. Add or update payment reminders and include a valid `Reminder Email`.
+3. Click the `Export Reminders JSON` button in the summary panel.
+4. Save the downloaded file as `payment-reminders.json` in this project folder.
+5. Run the setup script once from PowerShell:
+
+```powershell
+.\setup-outlook-reminder-task.ps1
+```
+
+This registers a Windows scheduled task that runs `send-outlook-reminders.ps1` daily at 9:00 AM under your Windows user account.
+
+6. After setup, you no longer need to run the script manually. Just add reminders in the dashboard and keep `payment-reminders.json` updated.
+
+> Note: Because Outlook runs under your user profile, you should be logged in when the task runs.
+
+> Note: You must still export or update `payment-reminders.json` from the dashboard when you add or edit reminders.
+
 ## Mobile Compatibility
 
 The app is fully responsive and works on:
