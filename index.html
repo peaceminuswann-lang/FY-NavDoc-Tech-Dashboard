@@ -1138,6 +1138,13 @@
             font-weight: 700;
             text-align: left;
             vertical-align: middle;
+            color: #000 !important;
+        }
+
+        .table thead th,
+        .table-responsive table thead th,
+        .dataTables_wrapper .dataTables_scrollHeadInner table thead th {
+            color: #000 !important;
         }
 
         .table-hover tbody tr:hover {
@@ -1228,18 +1235,21 @@
 
         .nav-pills .nav-link.active,
         .nav-pills .show>.nav-link {
-            background: #ff8c00;
-            border-color: #ff8c00;
-            color: #fff;
+            background: #ff8c00 !important;
+            border-color: #ff8c00 !important;
+            color: #fff !important;
         }
 
         .nav-pills .nav-link {
-            color: #7f4f00;
+            color: #7f4f00 !important;
+            font-weight: 700;
+            white-space: nowrap;
+            text-transform: none;
         }
 
         .nav-pills .nav-link:hover {
-            background: #ffc05a;
-            color: #fff;
+            background: #ffc05a !important;
+            color: #fff !important;
         }
 
         h2 {
@@ -1942,7 +1952,7 @@
                 <a href="javascript:void(0);" id="nav-database" class="sidebar-item" onclick="showDatabase()">Database</a>
                 <div class="sidebar-section">Device Management</div>
                 <a href="javascript:void(0);" id="nav-ipad" class="sidebar-item" onclick="showDeviceIPad()">iPad</a>
-                <a href="javascript:void(0);" id="nav-phone" class="sidebar-item" onclick="showPhoneManagement()">Phone</a>
+                <a href="javascript:void(0);" id="nav-phone" class="sidebar-item" onclick="showPhoneManagement()">Phongle Standby</a>
                 <div class="sidebar-section">Tools</div>
                 <a href="javascript:void(0);" id="nav-jsonconverter" class="sidebar-item" onclick="showJSONConverter()">JSON Converter</a>
             </div>
@@ -1954,19 +1964,20 @@
             </button>
             <div class="dashboard-topbar">
                 <div class="topbar-logo">
-                <img src="firefly-logo.png" alt="Firefly Logo">
-            </div>
-            <div class="topbar-actions d-flex align-items-center gap-3">
-                    <button class="btn topbar-btn btn-outline-secondary" id="refreshDataBtn" onclick="location.reload()" style="display: none;">
+                    <img src="firefly-logo.png" alt="Firefly Logo">
+                </div>
+                <div class="topbar-actions d-flex align-items-center gap-2 flex-wrap justify-content-end">
+                    <button class="btn topbar-btn btn-outline-secondary" id="refreshDataBtn" onclick="location.reload()" style="display: none; min-width: 130px;">
                         <i class="fas fa-sync-alt me-2"></i>Refresh Data
                     </button>
-                    <button class="btn topbar-btn btn-outline-secondary" id="backToHomeBtn" onclick="showLauncher()" style="display: none;">
+                    <button class="btn topbar-btn btn-outline-secondary" id="backToHomeBtn" onclick="showLauncher()" style="display: none; min-width: 130px;">
                         <i class="fas fa-arrow-left me-2"></i>Back to Home
                     </button>
                     <button class="btn topbar-btn btn-outline-secondary" onclick="window.location.href='login.html'">
                         Admin Login
                     </button>
                 </div>
+                <input type="file" id="ipadImportFileInput" accept=".xlsx,.xls,.csv" style="display:none" onchange="handleIpadImportFile(event)" />
             </div>
 
             <div class="main-content">
@@ -2068,11 +2079,11 @@
                                             <i class="fas fa-mobile-alt"></i>
                                         </div>
                                         <div>
-                                            <h5 class="app-card-title mb-1">Phone Inventory</h5>
-                                            <small class="text-muted">Device management coming soon</small>
+                                            <h5 class="app-card-title mb-1">Phongle Standby</h5>
+                                            <small class="text-muted">Manage standby mobile phones by aircraft</small>
                                         </div>
                                     </div>
-                                    <p class="app-card-text">Manage phone inventory and assignment details once ready.</p>
+                                    <p class="app-card-text">Manage standby mobile phones by aircraft and keep availability updated.</p>
                                 </a>
                             </div>
                         </div>
@@ -2418,22 +2429,13 @@
                 </div>
 
                 <div id="deviceIpadContent" style="display: none;">
-                    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
-                        <button class="btn btn-outline-secondary" onclick="showLauncher()">
-                            <i class="fas fa-arrow-left me-2"></i>Back to Home
-                        </button>
+                    <div class="d-flex flex-column align-items-center justify-content-center mb-4 gap-3" style="text-align: center;">
                         <div>
                             <h2 class="mb-1" style="font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, #ff8c00, #ff6b35); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin: 0;">
                                 <i class="fas fa-tablet-alt me-2" style="color: #ff8c00; -webkit-text-fill-color: initial;"></i>iPad Inventory
                             </h2>
                             <p class="text-muted mb-0" style="font-size: 1rem; font-weight: 500;">Flight crew device assignment and availability tracker</p>
                         </div>
-                        <button class="btn btn-lg" onclick="openAddIPadModal()" style="background: linear-gradient(135deg, #ff8c00, #ff9f1a); color: white; border: none; border-radius: 14px; padding: 12px 28px; font-weight: 700; box-shadow: 0 8px 25px rgba(255, 140, 0, 0.35); transition: all 0.3s ease; margin-right: 12px;">
-                            <i class="fas fa-plus-circle me-2"></i>Add New iPad
-                        </button>
-                        <button class="btn btn-lg btn-outline-primary" onclick="openAddNewUserModal()" style="border-radius: 14px; padding: 12px 28px; font-weight: 700;">
-                            <i class="fas fa-user-plus me-2"></i>Add New Flight Crew
-                        </button>
                     </div>
 
                     <div class="row g-3 mb-4">
@@ -2490,6 +2492,31 @@
                             </div>
                         </div>
                         <div class="card-body" style="padding: 0;">
+                            <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 p-4" style="background: #fafafa; border-bottom: 1px solid #ebedef;">
+                                <div class="d-flex flex-wrap align-items-center gap-2" style="flex: 1; min-width: 320px;">
+                                    <div class="search-box" style="max-width: 520px; width: 100%;">
+                                        <i class="fas fa-search"></i>
+                                        <input type="text" id="ipadSearchInput" placeholder="Search by serial, crew name, designation or status..." />
+                                    </div>
+                                    <button class="btn btn-outline-primary" onclick="filterIPadDevices()" style="border-radius: 14px; padding: 12px 24px; font-weight: 700; min-width: 140px;">
+                                        <i class="fas fa-search me-2"></i>Search
+                                    </button>
+                                </div>
+                                <div class="d-flex flex-wrap align-items-center gap-2 justify-content-end" style="min-width: 320px;">
+                                    <button class="btn btn-success" id="downloadIpadTemplateBtn" onclick="downloadIPadTemplate()" style="display: none; min-width: 150px; background: linear-gradient(135deg, #2ca02c, #4caf50); border: none; color: white;">
+                                        <i class="fas fa-download me-2"></i>Download Template
+                                    </button>
+                                    <button class="btn btn-warning" id="importIpadExcelTopbarBtn" onclick="triggerIpadImportFile()" style="display: none; min-width: 150px; background: linear-gradient(135deg, #f39c12, #ffb74d); border: none; color: white;">
+                                        <i class="fas fa-file-import me-2"></i>Import Excel
+                                    </button>
+                                    <button class="btn btn-primary" id="addNewIPadTopbarBtn" onclick="openAddIPadModal()" style="display: none; min-width: 150px; background: linear-gradient(135deg, #ff8c00, #ff9f1a); border: none; color: white;">
+                                        <i class="fas fa-plus-circle me-2"></i>Add New iPad
+                                    </button>
+                                    <button class="btn btn-outline-primary" id="addNewFlightCrewTopbarBtn" onclick="openAddNewUserModal()" style="display: none; min-width: 150px;">
+                                        <i class="fas fa-user-plus me-2"></i>Add New Flight Crew
+                                    </button>
+                                </div>
+                            </div>
                             <div id="ipadAssignedTableContainer"></div>
                             <div id="ipadOtherTableContainer" class="mt-4"></div>
                         </div>
@@ -2497,19 +2524,177 @@
                 </div>
 
                 <div id="devicePhoneContent" style="display: none;">
-                    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
-                        <button class="btn btn-outline-secondary" onclick="showLauncher()">
-                            <i class="fas fa-arrow-left me-2"></i>Back to Home
-                        </button>
+                    <div class="d-flex flex-column align-items-center justify-content-center mb-4 gap-3" style="text-align: center;">
                         <div>
-                            <h2 class="mb-1">Phone Inventory</h2>
-                            <p class="text-muted mb-0">Phone inventory page will be available once details are ready.</p>
+                            <h2 class="mb-1" style="font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, #00b0ff, #1e88e5); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0;">
+                                <i class="fas fa-mobile-alt me-2" style="color: #1e88e5; -webkit-text-fill-color: initial;"></i>Phongle & iPad Standby Management
+                            </h2>
+                            <p class="text-muted mb-0" style="font-size: 1rem; font-weight: 500;">Manage standby mobile phones and assign them by aircraft.</p>
                         </div>
-                        <div></div>
                     </div>
 
-                    <div class="alert alert-warning">
-                        <strong>Phone inventory</strong> is coming soon. I added this section so we can expand it once you provide the phone details.
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-4">
+                            <div class="card p-4" style="border-radius: 20px; border: none; box-shadow: 0 12px 30px rgba(0, 123, 255, 0.14); background: linear-gradient(135deg, #e3f2fd 0%, #f1f8ff 100%);">
+                                <div style="display: flex; align-items: center; gap: 15px;">
+                                    <div style="background: linear-gradient(135deg, #0288d1, #03a9f4); width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; box-shadow: 0 6px 15px rgba(2, 136, 209, 0.3);">
+                                        <i class="fas fa-mobile-alt"></i>
+                                    </div>
+                                    <div>
+                                        <div class="metric-label" style="font-size: 0.85rem; color: #0d47a1; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Total Phones</div>
+                                        <div class="metric-value" id="phoneTotalCount" style="font-size: 2.2rem; color: #0d47a1;">0</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card p-4" style="border-radius: 20px; border: none; box-shadow: 0 12px 30px rgba(76, 175, 80, 0.15); background: linear-gradient(135deg, #e8f5e9 0%, #eefaf1 100%);">
+                                <div style="display: flex; align-items: center; gap: 15px;">
+                                    <div style="background: linear-gradient(135deg, #43a047, #66bb6a); width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; box-shadow: 0 6px 15px rgba(76, 175, 80, 0.3);">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                    <div>
+                                        <div class="metric-label" style="font-size: 0.85rem; color: #2e7d32; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Available</div>
+                                        <div class="metric-value" id="phoneAvailableCount" style="font-size: 2.2rem; color: #43a047;">0</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card p-4" style="border-radius: 20px; border: none; box-shadow: 0 12px 30px rgba(244, 67, 54, 0.15); background: linear-gradient(135deg, #ffebee 0%, #ffebee 100%);">
+                                <div style="display: flex; align-items: center; gap: 15px;">
+                                    <div style="background: linear-gradient(135deg, #d32f2f, #ef5350); width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; box-shadow: 0 6px 15px rgba(244, 67, 54, 0.3);">
+                                        <i class="fas fa-plane"></i>
+                                    </div>
+                                    <div>
+                                        <div class="metric-label" style="font-size: 0.85rem; color: #b71c1c; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Assigned</div>
+                                        <div class="metric-value" id="phoneAssignedCount" style="font-size: 2.2rem; color: #d32f2f;">0</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-4">
+                            <div class="card p-4" style="border-radius: 20px; border: none; box-shadow: 0 12px 30px rgba(0, 123, 255, 0.14); background: linear-gradient(135deg, #e3f2fd 0%, #f1f8ff 100%);">
+                                <div style="display: flex; align-items: center; gap: 15px;">
+                                    <div style="background: linear-gradient(135deg, #0288d1, #03a9f4); width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; box-shadow: 0 6px 15px rgba(2, 136, 209, 0.3);">
+                                        <i class="fas fa-tablet-alt"></i>
+                                    </div>
+                                    <div>
+                                        <div class="metric-label" style="font-size: 0.85rem; color: #0d47a1; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Total iPads</div>
+                                        <div class="metric-value" id="ipadStandbyTotalCount" style="font-size: 2.2rem; color: #0d47a1;">0</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card p-4" style="border-radius: 20px; border: none; box-shadow: 0 12px 30px rgba(76, 175, 80, 0.15); background: linear-gradient(135deg, #e8f5e9 0%, #eefaf1 100%);">
+                                <div style="display: flex; align-items: center; gap: 15px;">
+                                    <div style="background: linear-gradient(135deg, #43a047, #66bb6a); width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; box-shadow: 0 6px 15px rgba(76, 175, 80, 0.3);">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                    <div>
+                                        <div class="metric-label" style="font-size: 0.85rem; color: #2e7d32; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Available</div>
+                                        <div class="metric-value" id="ipadStandbyAvailableCount" style="font-size: 2.2rem; color: #43a047;">0</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card p-4" style="border-radius: 20px; border: none; box-shadow: 0 12px 30px rgba(244, 67, 54, 0.15); background: linear-gradient(135deg, #ffebee 0%, #ffebee 100%);">
+                                <div style="display: flex; align-items: center; gap: 15px;">
+                                    <div style="background: linear-gradient(135deg, #d32f2f, #ef5350); width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; box-shadow: 0 6px 15px rgba(244, 67, 54, 0.3);">
+                                        <i class="fas fa-plane"></i>
+                                    </div>
+                                    <div>
+                                        <div class="metric-label" style="font-size: 0.85rem; color: #b71c1c; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Assigned</div>
+                                        <div class="metric-value" id="ipadStandbyAssignedCount" style="font-size: 2.2rem; color: #d32f2f;">0</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card" style="border-radius: 20px; border: none; box-shadow: 0 14px 28px rgba(0, 123, 255, 0.12); overflow: hidden;">
+                        <div class="card-header" style="background: linear-gradient(135deg, #0288d1, #03a9f4); border-radius: 20px 20px 0 0; padding: 20px 24px; border: none;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;">
+                                <h5 class="mb-0" style="color: white; font-weight: 800; font-size: 1.2rem;"><i class="fas fa-mobile-alt me-2"></i>Flight Phone Standby Tracking</h5>
+                                <span style="background: rgba(255,255,255,0.25); padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; color: white;"><i class="fas fa-list me-1"></i><span id="phoneCountBadge">0</span> Phones</span>
+                            </div>
+                        </div>
+                        <div class="card-body" style="padding: 0;">
+                            <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 p-4" style="background: #f4fbff; border-bottom: 1px solid #d6e9f8;">
+                                <div class="d-flex flex-wrap align-items-center gap-2" style="flex: 1; min-width: 320px;">
+                                    <div class="search-box" style="max-width: 520px; width: 100%;">
+                                        <i class="fas fa-search"></i>
+                                        <input type="text" id="phoneSearchInput" placeholder="Search by phone name, serial, mobile, aircraft or status..." />
+                                    </div>
+                                    <button class="btn btn-outline-primary" onclick="filterPhoneDevices()" style="border-radius: 14px; padding: 12px 24px; font-weight: 700; min-width: 140px;">
+                                        <i class="fas fa-search me-2"></i>Search
+                                    </button>
+                                </div>
+                                <div class="d-flex flex-wrap align-items-center gap-2 justify-content-end" style="min-width: 320px;">
+                                    <button class="btn btn-primary" id="addNewPhoneBtn" onclick="openAddPhoneModal()" style="min-width: 140px; background: linear-gradient(135deg, #0288d1, #03a9f4); border: none; color: white;">
+                                        <i class="fas fa-plus-circle me-2"></i>Add New Phone
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="phoneAssignedTableContainer"></div>
+                            <div id="phoneOtherTableContainer" class="mt-4"></div>
+                        </div>
+                    </div>
+
+                    <div class="card mt-4" style="border-radius: 20px; border: none; box-shadow: 0 14px 28px rgba(0, 123, 255, 0.12); overflow: hidden;">
+                        <div class="card-header" style="background: linear-gradient(135deg, #1976d2, #42a5f5); border-radius: 20px 20px 0 0; padding: 20px 24px; border: none;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;">
+                                <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                                    <h5 class="mb-0" style="color: white; font-weight: 800; font-size: 1.2rem;"><i class="fas fa-tablet-alt me-2"></i>iPad Standby</h5>
+                                    <span style="background: rgba(255,255,255,0.18); padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; color: white;"><i class="fas fa-list me-1"></i><span id="ipadStandbyCountBadge">0</span> iPads</span>
+                                </div>
+                                <button class="btn btn-light" onclick="openAddIPadStandbyModal()" style="min-width: 170px; border-radius: 14px; font-weight: 700; color: #1976d2;">
+                                    <i class="fas fa-plus-circle me-2"></i>Add iPad Standby
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body" style="padding: 0;">
+                            <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 p-4" style="background: #f1f8ff; border-bottom: 1px solid #dfeafd;">
+                                <div class="d-flex flex-wrap align-items-center gap-2" style="flex: 1; min-width: 320px;">
+                                    <div class="search-box" style="max-width: 520px; width: 100%;">
+                                        <i class="fas fa-search"></i>
+                                        <input type="text" id="ipadStandbySearchInput" placeholder="Search by serial, aircraft, remarks or status..." />
+                                    </div>
+                                    <button class="btn btn-outline-primary" onclick="filterIPadStandbyDevices()" style="border-radius: 14px; padding: 12px 24px; font-weight: 700; min-width: 140px;">
+                                        <i class="fas fa-search me-2"></i>Search
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="ipadStandbyTableContainer"></div>
+                        </div>
+                    </div>
+
+                    <div class="card mt-4" style="border-radius: 20px; border: none; box-shadow: 0 14px 28px rgba(0, 0, 0, 0.08); overflow: hidden;">
+                        <div class="card-header" style="background: linear-gradient(135deg, #455a64, #607d8b); border-radius: 20px 20px 0 0; padding: 20px 24px; border: none;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;">
+                                <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                                    <h5 class="mb-0" style="color: white; font-weight: 800; font-size: 1.2rem;"><i class="fas fa-clipboard-list me-2"></i>Entry Log</h5>
+                                    <span style="background: rgba(255,255,255,0.18); padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; color: white;"><i class="fas fa-history me-1"></i>All entries</span>
+                                </div>
+                                <div class="d-flex flex-wrap align-items-center gap-2" style="min-width: 220px;">
+                                    <div class="search-box" style="max-width: 420px; width: 100%;">
+                                        <i class="fas fa-search"></i>
+                                        <input type="text" id="entryLogSearchInput" placeholder="Search the entry log..." />
+                                    </div>
+                                    <button class="btn btn-outline-light" onclick="filterEntryLog()" style="border-radius: 14px; padding: 12px 20px; font-weight: 700; min-width: 120px; color: white; border-color: rgba(255,255,255,0.5);">
+                                        <i class="fas fa-search me-2"></i>Search
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body" style="padding: 0;">
+                            <div id="entryLogTableContainer"></div>
+                        </div>
                     </div>
                 </div>
 
@@ -3324,6 +3509,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="app.js"></script>
     <script>
         function clearActiveNav() {
@@ -3348,6 +3534,130 @@
                 const el = document.getElementById(id);
                 if (el) el.style.display = 'none';
             });
+            hideIpadTopbarButtons();
+        }
+
+        function hideIpadTopbarButtons() {
+            const topbarButtons = ['addNewIPadTopbarBtn', 'addNewFlightCrewTopbarBtn', 'downloadIpadTemplateBtn', 'importIpadExcelTopbarBtn'];
+            topbarButtons.forEach(id => {
+                const btn = document.getElementById(id);
+                if (btn) btn.style.display = 'none';
+            });
+        }
+
+        function downloadIPadTemplate() {
+            const headers = ['Serial Number', 'Colour', 'iPad Version', 'Availability', 'Assigned To', 'Designation', 'Remarks', 'Collection Date'];
+            const worksheet = XLSX.utils.aoa_to_sheet([headers]);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'iPad Template');
+            XLSX.writeFile(workbook, 'iPad_Import_Template.xlsx');
+        }
+
+        function triggerIpadImportFile() {
+            const importInput = document.getElementById('ipadImportFileInput');
+            if (!importInput) return;
+            importInput.value = '';
+            importInput.click();
+        }
+
+        function handleIpadImportFile(event) {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const sheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[sheetName];
+                    const rows = XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: '' });
+
+                    if (rows.length < 2) {
+                        showToast('No rows found in the imported file.', 'warning');
+                        return;
+                    }
+
+                    const headerRow = rows[0].map(cell => String(cell).trim().toLowerCase().replace(/\s+/g, ''));
+                    const headerMap = {};
+                    headerRow.forEach((title, index) => {
+                        if (!title) return;
+                        if (title.includes('serial')) headerMap[index] = 'serial';
+                        else if (title.includes('colour') || title.includes('color')) headerMap[index] = 'colour';
+                        else if (title.includes('version')) headerMap[index] = 'version';
+                        else if (title.includes('availability')) headerMap[index] = 'availability';
+                        else if (title.includes('assigned')) headerMap[index] = 'assignedTo';
+                        else if (title.includes('designation')) headerMap[index] = 'designation';
+                        else if (title.includes('remarks')) headerMap[index] = 'remarks';
+                        else if (title.includes('collection')) headerMap[index] = 'collectionDate';
+                    });
+
+                    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                    const importedDevices = [];
+
+                    rows.slice(1).forEach((row, rowIndex) => {
+                        const rowData = {};
+                        row.forEach((cell, colIndex) => {
+                            const key = headerMap[colIndex];
+                            if (key) rowData[key] = cell;
+                        });
+
+                        const serial = String(rowData.serial || '').trim();
+                        if (!serial) return;
+
+                        const colour = String(rowData.colour || '').trim();
+                        const version = String(rowData.version || '').trim();
+                        const availability = String(rowData.availability || 'Available').trim() || 'Available';
+                        const assignedTo = String(rowData.assignedTo || '').trim();
+                        const designation = String(rowData.designation || '').trim();
+                        const remarks = String(rowData.remarks || '').trim();
+                        let collectionDate = rowData.collectionDate || '';
+
+                        if (collectionDate instanceof Date) {
+                            const day = String(collectionDate.getDate()).padStart(2, '0');
+                            const month = monthNames[collectionDate.getMonth()];
+                            const year = collectionDate.getFullYear();
+                            collectionDate = `${day}-${month}-${year}`;
+                        } else if (typeof collectionDate === 'number') {
+                            const dateObj = XLSX.SSF.parse_date_code(collectionDate);
+                            if (dateObj) {
+                                const day = String(dateObj.d).padStart(2, '0');
+                                const month = monthNames[dateObj.m - 1] || 'Jan';
+                                const year = dateObj.y;
+                                collectionDate = `${day}-${month}-${year}`;
+                            }
+                        } else {
+                            collectionDate = String(collectionDate).trim();
+                        }
+
+                        importedDevices.push({
+                            serial,
+                            colour,
+                            version,
+                            availability,
+                            assignedTo,
+                            designation,
+                            remarks,
+                            collectionDate
+                        });
+                    });
+
+                    if (!importedDevices.length) {
+                        showToast('No valid iPad rows were imported. Please check the template and try again.', 'warning');
+                        return;
+                    }
+
+                    importedDevices.forEach(device => iPadDevices.push(device));
+                    saveIPadDevicesToStorage();
+                    renderIPadDeviceTable();
+                    updateIPadTracker();
+                    showToast(`${importedDevices.length} iPad rows imported successfully!`, 'success');
+                } catch (error) {
+                    console.error(error);
+                    showToast('Import failed. Please use the provided template and try again.', 'error');
+                }
+            };
+            reader.readAsArrayBuffer(file);
         }
 
         function showLauncher() {
@@ -4351,6 +4661,149 @@
             { serial: 'IPD-1004', colour: 'Rose Gold', version: 'iPad Mini 6', availability: 'Available', assignedTo: '', designation: '', remarks: '', collectionDate: '' }
         ];
 
+        const phoneDevices = [
+            { name: 'FY MOBILE 1', mobile: '60188700216', serial: 'XSAANFDAOJVOZTOB', availability: 'Available', assignedTo: '', remarks: '', uploadDate: '' },
+            { name: 'FY MOBILE 2', mobile: '60188700130', serial: '5H85FQNBKRGER8SO', availability: 'Available', assignedTo: '', remarks: '', uploadDate: '' },
+            { name: 'FY MOBILE 3', mobile: '60188700276', serial: '8POR99R869QGWGV4', availability: 'Available', assignedTo: '', remarks: '', uploadDate: '' },
+            { name: 'FY MOBILE 4', mobile: '60188700161', serial: 'C6X8JR49MRGELF9T', availability: 'Available', assignedTo: '', remarks: '', uploadDate: '' },
+            { name: 'FY MOBILE 5', mobile: '60188700189', serial: 'BQFIZ9INCIU4FUQC', availability: 'Available', assignedTo: '', remarks: '', uploadDate: '' },
+            { name: 'FY MOBILE 6', mobile: '60188700173', serial: 'SKOZ6T5DLZIZ75ZX', availability: 'Available', assignedTo: '', remarks: '', uploadDate: '' },
+            { name: 'FY MOBILE 7', mobile: '60188700172', serial: 'INGUM7OZYHKZQCB6', availability: 'Available', assignedTo: '', remarks: '', uploadDate: '' },
+            { name: 'FY MOBILE 8', mobile: '60188700175', serial: 'Y9X4Z99PMNCELZDA', availability: 'Available', assignedTo: '', remarks: '', uploadDate: '' },
+            { name: 'FY MOBILE 9', mobile: '60188700313', serial: 'NNWSMBHUEENFPNOG', availability: 'Available', assignedTo: '', remarks: '', uploadDate: '' },
+            { name: 'FY MOBILE 10', mobile: '60188700208', serial: 'BMVKGYDERWKZCQXG', availability: 'Available', assignedTo: '', remarks: '', uploadDate: '' },
+            { name: 'FY MOBILE 11', mobile: '60188700291', serial: 'AUVCBMYLFYKRBMS4', availability: 'Available', assignedTo: '', remarks: '', uploadDate: '' },
+            { name: 'FY MOBILE 12', mobile: '60188700192', serial: 'YXGU6H9X5T6PGUT8', availability: 'Available', assignedTo: '', remarks: '', uploadDate: '' },
+            { name: 'FY MOBILE 13', mobile: '60188700195', serial: 'YLD6J77TX8HETOI7', availability: 'Available', assignedTo: '', remarks: '', uploadDate: '' },
+            { name: 'FY MOBILE 14', mobile: '60188700260', serial: 'QKHMLBBAHEYTVOKB', availability: 'Available', assignedTo: '', remarks: '', uploadDate: '' },
+            { name: 'FY MOBILE 15', mobile: '60188700261', serial: 'FIY9ZHMZPBIBZTRJR', availability: 'Available', assignedTo: '', remarks: '', uploadDate: '' },
+            { name: 'FY MOBILE 16', mobile: '60188700298', serial: 'SKYDKJWOSKRAYHI', availability: 'Available', assignedTo: '', remarks: '', uploadDate: '' },
+            { name: 'FY MOBILE 17', mobile: '60188700280', serial: '8DBE5HJZZLEM8LRO', availability: 'Available', assignedTo: '', remarks: '', uploadDate: '' },
+            { name: 'FY MOBILE 18', mobile: '60188700272', serial: 'PZBEZTQOPJDIJV4L', availability: 'Available', assignedTo: '', remarks: '', uploadDate: '' },
+            { name: 'FY MOBILE 19', mobile: '60188700282', serial: 'Y989ZXPFDMOJQWYH', availability: 'Available', assignedTo: '', remarks: '', uploadDate: '' },
+            { name: 'FY MOBILE 20', mobile: '60188700271', serial: 'AU6DQCLRLZ4P759P', availability: 'Available', assignedTo: '', remarks: '', uploadDate: '' }
+        ];
+
+        const iPadStandbyDevices = [];
+        const entryLog = [];
+
+        const aircraftList = [
+            '9MFYI', '9MFYH', '9MFYL', '9MFYD', '9MFYF', '9MFYJ', '9MFYG',
+            '9MMLI', '9MMLH', '9MMLJ', '9MMLF', '9MMLG', 'MH NAVDOC'
+        ];
+
+        function savePhoneDevicesToStorage() {
+            localStorage.setItem('phoneDevices', JSON.stringify(phoneDevices));
+        }
+
+        function loadPhoneDevicesFromStorage() {
+            const savedDevices = localStorage.getItem('phoneDevices');
+            if (savedDevices) {
+                try {
+                    const parsedDevices = JSON.parse(savedDevices);
+                    if (Array.isArray(parsedDevices)) {
+                        const normalized = parsedDevices.map(device => ({
+                            ...device,
+                            uploadDate: device.uploadDate || device.collectionDate || ''
+                        }));
+                        phoneDevices.splice(0, phoneDevices.length, ...normalized);
+                    }
+                } catch (e) {
+                    console.warn('Failed to load phone devices from localStorage', e);
+                }
+            }
+        }
+
+        function saveIPadStandbyDevicesToStorage() {
+            localStorage.setItem('ipadStandbyDevices', JSON.stringify(iPadStandbyDevices));
+        }
+
+        function loadIPadStandbyDevicesFromStorage() {
+            const savedDevices = localStorage.getItem('ipadStandbyDevices');
+            if (savedDevices) {
+                try {
+                    const parsedDevices = JSON.parse(savedDevices);
+                    if (Array.isArray(parsedDevices)) {
+                        iPadStandbyDevices.splice(0, iPadStandbyDevices.length, ...parsedDevices);
+                    }
+                } catch (e) {
+                    console.warn('Failed to load iPad standby devices from localStorage', e);
+                }
+            }
+        }
+
+        function saveEntryLogToStorage() {
+            localStorage.setItem('entryLog', JSON.stringify(entryLog));
+        }
+
+        function loadEntryLogFromStorage() {
+            const savedLog = localStorage.getItem('entryLog');
+            if (savedLog) {
+                try {
+                    const parsedLog = JSON.parse(savedLog);
+                    if (Array.isArray(parsedLog)) {
+                        entryLog.splice(0, entryLog.length, ...parsedLog);
+                    }
+                } catch (e) {
+                    console.warn('Failed to load entry log from localStorage', e);
+                }
+            }
+        }
+
+        function addEntryLog(action, itemType, item) {
+            const timestamp = new Date().toLocaleString();
+            entryLog.unshift({
+                id: Date.now().toString() + Math.random().toString(16).slice(2),
+                timestamp,
+                type: itemType,
+                action,
+                name: item.name || '',
+                mobile: item.mobile || '',
+                serial: item.serial || '',
+                availability: item.availability || '',
+                assignedTo: item.assignedTo || '',
+                remarks: item.remarks || '',
+                uploadDate: item.uploadDate || item.collectionDate || ''
+            });
+            saveEntryLogToStorage();
+        }
+
+        function findCurrentEntryIndex(logEntry) {
+            if (!logEntry) return -1;
+            if (logEntry.type === 'Phone') {
+                return phoneDevices.findIndex(device => device.serial === logEntry.serial && device.mobile === logEntry.mobile);
+            }
+            if (logEntry.type === 'iPad Standby') {
+                return iPadStandbyDevices.findIndex(device => device.serial === logEntry.serial);
+            }
+            return -1;
+        }
+
+        function deleteLogEntry(index) {
+            if (!entryLog[index]) return;
+            if (confirm('Remove this log entry from the history?')) {
+                entryLog.splice(index, 1);
+                saveEntryLogToStorage();
+                renderEntryLogTable();
+                showToast('Log entry removed successfully.', 'success');
+            }
+        }
+
+        function editLogEntry(index) {
+            const logEntry = entryLog[index];
+            if (!logEntry) return;
+            const currentIndex = findCurrentEntryIndex(logEntry);
+            if (currentIndex < 0) {
+                alert('The original entry no longer exists and cannot be edited from the log.');
+                return;
+            }
+            if (logEntry.type === 'Phone') {
+                editPhone(currentIndex);
+            } else if (logEntry.type === 'iPad Standby') {
+                editIPadStandby(currentIndex);
+            }
+        }
+
         // Crew list for dropdown
         const crewList = [
             "8502574 - Yeow Jian How", "8502560 - Nadzreen haziq Mohd Yazid", "8502416 - Ahmed Naim Azli", "8502623 - Mohd Nadzmi Syafiq Mohd Nadzri",
@@ -4425,6 +4878,80 @@
             });
         }
 
+        function populateAircraftList() {
+            const datalist = document.getElementById('aircraftListOptions');
+            if (!datalist) return;
+            datalist.innerHTML = '';
+            aircraftList.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item;
+                datalist.appendChild(option);
+            });
+        }
+
+        function saveCrewListToStorage() {
+            localStorage.setItem('crewList', JSON.stringify(crewList));
+        }
+
+        function loadCrewListFromStorage() {
+            const savedList = localStorage.getItem('crewList');
+            if (savedList) {
+                try {
+                    const parsedList = JSON.parse(savedList);
+                    if (Array.isArray(parsedList)) {
+                        crewList.splice(0, crewList.length, ...parsedList);
+                    }
+                } catch (e) {
+                    console.warn('Failed to load crew list from localStorage', e);
+                }
+            }
+        }
+
+        function saveIPadDevicesToStorage() {
+            localStorage.setItem('ipadDevices', JSON.stringify(iPadDevices));
+        }
+
+        function loadIPadDevicesFromStorage() {
+            const savedDevices = localStorage.getItem('ipadDevices');
+            if (savedDevices) {
+                try {
+                    const parsedDevices = JSON.parse(savedDevices);
+                    if (Array.isArray(parsedDevices)) {
+                        iPadDevices.splice(0, iPadDevices.length, ...parsedDevices);
+                    }
+                } catch (e) {
+                    console.warn('Failed to load iPad devices from localStorage', e);
+                }
+            }
+        }
+
+        function savePaymentDataToStorage() {
+            localStorage.setItem('paymentDashboardData', JSON.stringify(paymentData));
+            localStorage.setItem('paymentDashboardNextId', String(nextPaymentId));
+        }
+
+        function loadPaymentDataFromStorage() {
+            const savedData = localStorage.getItem('paymentDashboardData');
+            if (savedData) {
+                try {
+                    const parsedData = JSON.parse(savedData);
+                    if (Array.isArray(parsedData)) {
+                        paymentData = parsedData;
+                    }
+                } catch (e) {
+                    console.warn('Failed to load payment data from localStorage', e);
+                }
+            }
+
+            const savedNextId = parseInt(localStorage.getItem('paymentDashboardNextId'), 10);
+            if (!Number.isNaN(savedNextId)) {
+                nextPaymentId = savedNextId;
+            } else {
+                const maxId = paymentData.reduce((max, payment) => Math.max(max, payment.id || 0), 0);
+                nextPaymentId = maxId + 1;
+            }
+        }
+
         // Open Add New User Modal
         function openAddNewUserModal() {
             document.getElementById('newUserForm').reset();
@@ -4436,15 +4963,14 @@
         function saveNewUser() {
             const userId = document.getElementById('newUserId').value.trim();
             const userName = document.getElementById('newUserName').value.trim();
-            const designation = document.getElementById('newUserDesignation').value;
             const remarks = document.getElementById('newUserRemarks').value.trim();
 
-            if (!userId || !userName || !designation) {
-                alert('Please fill in ID, Name, and Designation!');
+            if (!userId || !userName) {
+                alert('Please fill in Crew ID and Full Name!');
                 return;
             }
 
-            let newUser = `${userId} - ${userName} (${designation})`;
+            let newUser = `${userId} - ${userName}`;
             if (remarks) {
                 newUser += ` | ${remarks}`;
             }
@@ -4459,7 +4985,8 @@
             crewList.push(newUser);
             crewList.sort();
 
-            // Update datalist
+            // Persist crew list and update datalist
+            saveCrewListToStorage();
             populateCrewList();
 
             // Close modal
@@ -4471,7 +4998,14 @@
 
         // Initialize crew list on page load
         document.addEventListener('DOMContentLoaded', function() {
+            loadCrewListFromStorage();
+            loadIPadDevicesFromStorage();
+            loadPhoneDevicesFromStorage();
+            loadIPadStandbyDevicesFromStorage();
+            loadEntryLogFromStorage();
+            loadPaymentDataFromStorage();
             populateCrewList();
+            renderEntryLogTable();
 
             const addAvailability = document.getElementById('ipadAvailability');
             if (addAvailability) {
@@ -4498,6 +5032,100 @@
                     }
                 });
             }
+
+            const ipadSearchInput = document.getElementById('ipadSearchInput');
+            if (ipadSearchInput) {
+                ipadSearchInput.addEventListener('keypress', function(event) {
+                    if (event.key === 'Enter') {
+                        event.preventDefault();
+                        filterIPadDevices();
+                    }
+                });
+            }
+
+            const phoneSearchInput = document.getElementById('phoneSearchInput');
+            if (phoneSearchInput) {
+                phoneSearchInput.addEventListener('keypress', function(event) {
+                    if (event.key === 'Enter') {
+                        event.preventDefault();
+                        filterPhoneDevices();
+                    }
+                });
+            }
+
+            const ipadStandbySearchInput = document.getElementById('ipadStandbySearchInput');
+            if (ipadStandbySearchInput) {
+                ipadStandbySearchInput.addEventListener('keypress', function(event) {
+                    if (event.key === 'Enter') {
+                        event.preventDefault();
+                        filterIPadStandbyDevices();
+                    }
+                });
+            }
+
+            const entryLogSearchInput = document.getElementById('entryLogSearchInput');
+            if (entryLogSearchInput) {
+                entryLogSearchInput.addEventListener('keypress', function(event) {
+                    if (event.key === 'Enter') {
+                        event.preventDefault();
+                        filterEntryLog();
+                    }
+                });
+            }
+
+            const phoneAvailability = document.getElementById('phoneAvailability');
+            if (phoneAvailability) {
+                phoneAvailability.addEventListener('change', function() {
+                    const assignedToField = document.getElementById('phoneAssignedToField');
+                    if (this.value === 'Assigned') {
+                        assignedToField.style.display = 'block';
+                    } else {
+                        assignedToField.style.display = 'none';
+                        document.getElementById('phoneAssignedTo').value = '';
+                    }
+                });
+            }
+
+            const editPhoneAvailability = document.getElementById('editPhoneAvailability');
+            if (editPhoneAvailability) {
+                editPhoneAvailability.addEventListener('change', function() {
+                    const assignedToField = document.getElementById('editPhoneAssignedToField');
+                    if (this.value === 'Assigned') {
+                        assignedToField.style.display = 'block';
+                    } else {
+                        assignedToField.style.display = 'none';
+                        document.getElementById('editPhoneAssignedTo').value = '';
+                    }
+                });
+            }
+
+            const ipadStandbyAvailability = document.getElementById('ipadStandbyAvailability');
+            if (ipadStandbyAvailability) {
+                ipadStandbyAvailability.addEventListener('change', function() {
+                    const assignedToField = document.getElementById('ipadStandbyAssignedToField');
+                    if (this.value === 'Assigned') {
+                        assignedToField.style.display = 'block';
+                    } else {
+                        assignedToField.style.display = 'none';
+                        document.getElementById('ipadStandbyAssignedTo').value = '';
+                    }
+                });
+            }
+
+            const editIPadStandbyAvailability = document.getElementById('editIPadStandbyAvailability');
+            if (editIPadStandbyAvailability) {
+                editIPadStandbyAvailability.addEventListener('change', function() {
+                    const assignedToField = document.getElementById('editIPadStandbyAssignedToField');
+                    if (this.value === 'Assigned') {
+                        assignedToField.style.display = 'block';
+                    } else {
+                        assignedToField.style.display = 'none';
+                        document.getElementById('editIPadStandbyAssignedTo').value = '';
+                    }
+                });
+            }
+
+            populateAircraftList();
         });
 
         // Open Add iPad Modal
@@ -4510,13 +5138,6 @@
             document.getElementById('ipadCollectionDate').value = '';
             const modal = new bootstrap.Modal(document.getElementById('addIPadModal'));
             modal.show();
-        }
-
-        function focusCrewSearch(inputId) {
-            const input = document.getElementById(inputId);
-            if (input) {
-                input.focus();
-            }
         }
 
         // Save new iPad
@@ -4553,6 +5174,7 @@
             };
 
             iPadDevices.push(newDevice);
+            saveIPadDevicesToStorage();
             
             // Close modal
             bootstrap.Modal.getInstance(document.getElementById('addIPadModal')).hide();
@@ -4624,6 +5246,7 @@
                 collectionDate: collectionDate
             };
 
+            saveIPadDevicesToStorage();
             // Close modal
             bootstrap.Modal.getInstance(document.getElementById('editIPadModal')).hide();
             
@@ -4639,6 +5262,7 @@
         function deleteIPad(index) {
             if (confirm('Are you sure you want to delete this iPad? This action cannot be undone.')) {
                 iPadDevices.splice(index, 1);
+                saveIPadDevicesToStorage();
                 renderIPadDeviceTable();
                 updateIPadTracker();
                 showToast('iPad deleted successfully!', 'success');
@@ -4686,13 +5310,29 @@
             }, 3000);
         }
 
-        function renderIPadDeviceTable() {
+        function renderIPadDeviceTable(searchQuery = '') {
             const assignedContainer = document.getElementById('ipadAssignedTableContainer');
             const otherContainer = document.getElementById('ipadOtherTableContainer');
             if (!assignedContainer || !otherContainer) return;
 
-            const assignedDevices = iPadDevices.filter(device => device.availability === 'Assigned');
-            const otherDevices = iPadDevices.filter(device => device.availability !== 'Assigned');
+            const filterText = searchQuery.trim().toLowerCase();
+            const filteredDevices = filterText
+                ? iPadDevices.filter(device => {
+                    return [
+                        device.serial,
+                        device.colour,
+                        device.version,
+                        device.availability,
+                        device.assignedTo,
+                        device.designation,
+                        device.remarks,
+                        device.collectionDate
+                    ].some(value => value && value.toLowerCase().includes(filterText));
+                })
+                : iPadDevices;
+
+            const assignedDevices = filteredDevices.filter(device => device.availability === 'Assigned');
+            const otherDevices = filteredDevices.filter(device => device.availability !== 'Assigned');
 
             const createRow = (device, index, includeStatus) => {
                 const statusClass = device.availability === 'Available' ? 'success' : 
@@ -4770,7 +5410,7 @@
                         <div class="card-body p-0">
                             <div class="table-responsive">
                                 <table class="table table-hover mb-0" style="border-collapse: collapse;">
-                                    <thead style="background: linear-gradient(135deg, #e3f2fd, #f0f7ff);">${headerHtml}</thead>
+                                    <thead style="background: linear-gradient(135deg, #e3f2fd, #f0f7ff);"><tr>${headerHtml}</tr></thead>
                                     <tbody style="background: white;">${rowsHtml}</tbody>
                                 </table>
                             </div>
@@ -4797,6 +5437,12 @@
             });
         }
 
+        function filterIPadDevices() {
+            const searchInput = document.getElementById('ipadSearchInput');
+            if (!searchInput) return;
+            renderIPadDeviceTable(searchInput.value);
+        }
+
         function updateIPadTracker() {
             const total = iPadDevices.length;
             const available = iPadDevices.filter(device => device.availability.toLowerCase() === 'available').length;
@@ -4813,13 +5459,564 @@
             if (countBadge) countBadge.textContent = total;
         }
 
+        function renderPhoneDeviceTable(searchQuery = '') {
+            const assignedContainer = document.getElementById('phoneAssignedTableContainer');
+            const otherContainer = document.getElementById('phoneOtherTableContainer');
+            if (!assignedContainer || !otherContainer) return;
+
+            const filterText = searchQuery.trim().toLowerCase();
+            const filteredDevices = filterText
+                ? phoneDevices.filter(device => {
+                    return [
+                        device.name,
+                        device.mobile,
+                        device.serial,
+                        device.availability,
+                        device.assignedTo,
+                        device.remarks,
+                        device.uploadDate,
+                        device.collectionDate
+                    ].some(value => value && value.toLowerCase().includes(filterText));
+                })
+                : phoneDevices;
+
+            const assignedDevices = filteredDevices.filter(device => device.availability === 'Assigned');
+            const otherDevices = filteredDevices.filter(device => device.availability !== 'Assigned');
+
+            const createRow = (device, index) => {
+                const statusClass = device.availability === 'Available' ? 'success' : 
+                                   device.availability === 'Assigned' ? 'warning' : 
+                                   device.availability === 'Maintenance' ? 'info' : 'secondary';
+                const statusIcon = device.availability === 'Available' ? 'check-circle' : 
+                                  device.availability === 'Assigned' ? 'plane' : 
+                                  device.availability === 'Maintenance' ? 'wrench' : 'times-circle';
+
+                return `
+                    <tr style="transition: all 0.2s ease;">
+                        <td style="padding: 16px 20px; font-weight: 700; color: #666;">${index + 1}</td>
+                        <td style="padding: 16px 20px; font-weight: 700; color: #333;">${device.name}</td>
+                        <td style="padding: 16px 20px; font-weight: 600; color: #333;">${device.mobile}</td>
+                        <td style="padding: 16px 20px; font-weight: 600; color: #333;">${device.serial}</td>
+                        <td style="padding: 16px 20px;">
+                            <span class="badge" style="background: ${statusClass === 'success' ? 'linear-gradient(135deg, #4CAF50, #66bb6a)' : statusClass === 'warning' ? 'linear-gradient(135deg, #ff9800, #ffb74d)' : statusClass === 'info' ? 'linear-gradient(135deg, #2196F3, #64b5f6)' : 'linear-gradient(135deg, #9e9e9e, #bdbdbd)'}; color: white; padding: 8px 14px; border-radius: 20px; font-weight: 700; font-size: 0.85rem;">
+                                <i class="fas fa-${statusIcon} me-1"></i>${device.availability}
+                            </span>
+                        </td>
+                        <td style="padding: 16px 20px; font-weight: 600; color: ${device.assignedTo ? '#333' : '#999'};">${device.assignedTo ? '<i class="fas fa-plane me-2" style="color: #0288d1;"></i>' + device.assignedTo : '<em style="color: #bbb;">Not assigned</em>'}</td>
+                                <td style="padding: 16px 20px; font-weight: 600; color: ${device.remarks ? '#333' : '#999'};">${device.remarks ? device.remarks : '<em style="color: #bbb;">None</em>'}</td>
+                        <td style="padding: 16px 20px; font-weight: 600; color: ${device.uploadDate ? '#333' : '#999'};">${device.uploadDate ? device.uploadDate : '<em style="color: #bbb;">None</em>'}</td>
+                        <td style="padding: 16px 20px; text-align: center;">
+                            <button class="btn btn-sm me-1" onclick="editPhone(${device._index})" style="background: linear-gradient(135deg, #0288d1, #03a9f4); color: white; border: none; border-radius: 8px; padding: 8px 12px; font-weight: 600; transition: all 0.2s ease;" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm" onclick="deletePhone(${device._index})" style="background: linear-gradient(135deg, #f44336, #ef5350); color: white; border: none; border-radius: 8px; padding: 8px 12px; font-weight: 600; transition: all 0.2s ease;" title="Delete">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            };
+
+            const buildTable = (title, devices) => {
+                const headerColumns = ['#', 'Phone List', 'Mobile Number', 'Serial Number', 'Status', 'Assigned Aircraft', 'Remarks', 'Upload Date', 'Actions'];
+                const headerHtml = headerColumns.map(col => `
+                    <th style="padding: 16px 20px; font-weight: 800; color: #0d47a1; text-transform: uppercase; letter-spacing: 0.5px; font-size: 0.85rem; border-bottom: 2px solid #bbdefb;">${col}</th>
+                `).join('');
+                const rowsHtml = devices.length > 0
+                    ? devices.map((device, index) => createRow(device, index)).join('')
+                    : `<tr><td colspan="${headerColumns.length}" style="padding: 24px 20px; color: #777; text-align: center; font-style: italic;">No ${title.toLowerCase()} found.</td></tr>`;
+
+                return `
+                    <div class="card" style="border-radius: 20px; border: none; box-shadow: 0 14px 28px rgba(0,0,0,0.08); overflow: hidden;">
+                        <div class="card-header" style="background: linear-gradient(135deg, #e3f2fd, #bbdefb); border-radius: 20px 20px 0 0; padding: 18px 24px; border: none;">
+                            <h5 class="mb-0" style="color: #0d47a1; font-weight: 800; font-size: 1.1rem;"><i class="fas fa-mobile-alt me-2"></i>${title}</h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover mb-0" style="border-collapse: collapse;">
+                                    <thead style="background: linear-gradient(135deg, #f0f7ff, #e8f3ff);"><tr>${headerHtml}</tr></thead>
+                                    <tbody style="background: white;">${rowsHtml}</tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            };
+
+            const assignedDevicesWithIndex = assignedDevices.map(device => ({ ...device, _index: phoneDevices.indexOf(device) }));
+            const otherDevicesWithIndex = otherDevices.map(device => ({ ...device, _index: phoneDevices.indexOf(device) }));
+
+            assignedContainer.innerHTML = buildTable('Assigned Phones', assignedDevicesWithIndex);
+            otherContainer.innerHTML = buildTable('Available / Maintenance / Retired', otherDevicesWithIndex);
+
+            const allRows = assignedContainer.querySelectorAll('tbody tr') || [];
+            const otherRows = otherContainer.querySelectorAll('tbody tr');
+            allRows.forEach(row => {
+                row.addEventListener('mouseenter', function() { this.style.background = 'rgba(0, 123, 255, 0.05)'; this.style.transform = 'scale(1.01)'; });
+                row.addEventListener('mouseleave', function() { this.style.background = 'transparent'; this.style.transform = 'scale(1)'; });
+            });
+            otherRows.forEach(row => {
+                row.addEventListener('mouseenter', function() { this.style.background = 'rgba(0, 123, 255, 0.05)'; this.style.transform = 'scale(1.01)'; });
+                row.addEventListener('mouseleave', function() { this.style.background = 'transparent'; this.style.transform = 'scale(1)'; });
+            });
+        }
+
+        function filterPhoneDevices() {
+            const searchInput = document.getElementById('phoneSearchInput');
+            if (!searchInput) return;
+            renderPhoneDeviceTable(searchInput.value);
+        }
+
+        function renderIPadStandbyTable(searchQuery = '') {
+            const container = document.getElementById('ipadStandbyTableContainer');
+            if (!container) return;
+
+            const filterText = searchQuery.trim().toLowerCase();
+            const filteredDevices = filterText
+                ? iPadStandbyDevices.filter(device => {
+                    return [
+                        device.serial,
+                        device.availability,
+                        device.assignedTo,
+                        device.remarks,
+                        device.uploadDate
+                    ].some(value => value && value.toLowerCase().includes(filterText));
+                })
+                : iPadStandbyDevices;
+
+            const createRow = (device, index) => {
+                const statusClass = device.availability === 'Available' ? 'success' : 
+                                   device.availability === 'Assigned' ? 'warning' : 
+                                   device.availability === 'Maintenance' ? 'info' : 'secondary';
+                const statusIcon = device.availability === 'Available' ? 'check-circle' : 
+                                  device.availability === 'Assigned' ? 'plane' : 
+                                  device.availability === 'Maintenance' ? 'wrench' : 'times-circle';
+
+                return `
+                    <tr style="transition: all 0.2s ease;">
+                        <td style="padding: 16px 20px; font-weight: 700; color: #666;">${index + 1}</td>
+                        <td style="padding: 16px 20px; font-weight: 600; color: #333;">${device.serial}</td>
+                        <td style="padding: 16px 20px;">
+                            <span class="badge" style="background: ${statusClass === 'success' ? 'linear-gradient(135deg, #4CAF50, #66bb6a)' : statusClass === 'warning' ? 'linear-gradient(135deg, #ff9800, #ffb74d)' : statusClass === 'info' ? 'linear-gradient(135deg, #2196F3, #64b5f6)' : 'linear-gradient(135deg, #9e9e9e, #bdbdbd)'}; color: white; padding: 8px 14px; border-radius: 20px; font-weight: 700; font-size: 0.85rem;">
+                                <i class="fas fa-${statusIcon} me-1"></i>${device.availability}
+                            </span>
+                        </td>
+                        <td style="padding: 16px 20px; font-weight: 600; color: ${device.assignedTo ? '#333' : '#999'};">${device.assignedTo ? '<i class="fas fa-plane me-2" style="color: #1976d2;"></i>' + device.assignedTo : '<em style="color: #bbb;">Not assigned</em>'}</td>
+                        <td style="padding: 16px 20px; font-weight: 600; color: ${device.remarks ? '#333' : '#999'};">${device.remarks ? device.remarks : '<em style="color: #bbb;">None</em>'}</td>
+                        <td style="padding: 16px 20px; font-weight: 600; color: ${device.uploadDate ? '#333' : '#999'};">${device.uploadDate ? device.uploadDate : '<em style="color: #bbb;">None</em>'}</td>
+                        <td style="padding: 16px 20px; text-align: center;">
+                            <button class="btn btn-sm me-1" onclick="editIPadStandby(${device._index})" style="background: linear-gradient(135deg, #1976d2, #42a5f5); color: white; border: none; border-radius: 8px; padding: 8px 12px; font-weight: 600; transition: all 0.2s ease;" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm" onclick="deleteIPadStandby(${device._index})" style="background: linear-gradient(135deg, #f44336, #ef5350); color: white; border: none; border-radius: 8px; padding: 8px 12px; font-weight: 600; transition: all 0.2s ease;" title="Delete">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            };
+
+            const devicesWithIndex = filteredDevices.map(device => ({ ...device, _index: iPadStandbyDevices.indexOf(device) }));
+            const headerColumns = ['#', 'Serial Number', 'Status', 'Assigned Aircraft', 'Remarks', 'Upload Date', 'Actions'];
+            const headerHtml = headerColumns.map(col => `
+                    <th style="padding: 16px 20px; font-weight: 800; color: #0d47a1; text-transform: uppercase; letter-spacing: 0.5px; font-size: 0.85rem; border-bottom: 2px solid #bbdefb;">${col}</th>
+                `).join('');
+            const rowsHtml = devicesWithIndex.length > 0
+                ? devicesWithIndex.map((device, index) => createRow(device, index)).join('')
+                : `<tr><td colspan="${headerColumns.length}" style="padding: 24px 20px; color: #777; text-align: center; font-style: italic;">No iPad standby entries found.</td></tr>`;
+
+            container.innerHTML = `
+                <div class="card" style="border-radius: 20px; border: none; box-shadow: 0 14px 28px rgba(0,0,0,0.08); overflow: hidden; margin: 0 20px 20px;">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0" style="border-collapse: collapse;">
+                                <thead style="background: linear-gradient(135deg, #e3f2fd, #bbdefb);">${headerHtml}</thead>
+                                <tbody style="background: white;">${rowsHtml}</tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            const rows = container.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                row.addEventListener('mouseenter', function() { this.style.background = 'rgba(0, 123, 255, 0.05)'; this.style.transform = 'scale(1.01)'; });
+                row.addEventListener('mouseleave', function() { this.style.background = 'transparent'; this.style.transform = 'scale(1)'; });
+            });
+        }
+
+        function filterIPadStandbyDevices() {
+            const searchInput = document.getElementById('ipadStandbySearchInput');
+            if (!searchInput) return;
+            renderIPadStandbyTable(searchInput.value);
+        }
+
+        function updateIPadStandbyTracker() {
+            const total = iPadStandbyDevices.length;
+            const available = iPadStandbyDevices.filter(device => device.availability.toLowerCase() === 'available').length;
+            const assigned = iPadStandbyDevices.filter(device => device.availability.toLowerCase() === 'assigned').length;
+
+            const totalEl = document.getElementById('ipadStandbyTotalCount');
+            const availableEl = document.getElementById('ipadStandbyAvailableCount');
+            const assignedEl = document.getElementById('ipadStandbyAssignedCount');
+            const countBadge = document.getElementById('ipadStandbyCountBadge');
+
+            if (totalEl) totalEl.textContent = total;
+            if (availableEl) availableEl.textContent = available;
+            if (assignedEl) assignedEl.textContent = assigned;
+            if (countBadge) countBadge.textContent = total;
+        }
+
+        function filterEntryLog() {
+            const searchInput = document.getElementById('entryLogSearchInput');
+            if (!searchInput) return;
+            renderEntryLogTable(searchInput.value);
+        }
+
+        function renderEntryLogTable(searchQuery = '') {
+            const container = document.getElementById('entryLogTableContainer');
+            if (!container) return;
+
+            const filterText = searchQuery.trim().toLowerCase();
+            const filteredEntries = filterText
+                ? entryLog.filter(entry => {
+                    return [
+                        entry.timestamp,
+                        entry.type,
+                        entry.action,
+                        entry.name || entry.serial || '',
+                        entry.mobile || '',
+                        entry.serial || '',
+                        entry.availability || '',
+                        entry.assignedTo || '',
+                        entry.remarks || '',
+                        entry.uploadDate || ''
+                    ].some(value => value && value.toLowerCase().includes(filterText));
+                })
+                : entryLog;
+
+            const createRow = (entry, index) => {
+                const showName = entry.type === 'Phone' ? entry.name : entry.serial;
+                const showMobile = entry.type === 'Phone' ? entry.mobile : '';
+                const assignedLabel = entry.assignedTo ? entry.assignedTo : '<em style="color: #bbb;">None</em>';
+                const statusClass = entry.availability === 'Available' ? 'success' : entry.availability === 'Assigned' ? 'warning' : entry.availability === 'Maintenance' ? 'info' : 'secondary';
+                const statusIcon = entry.availability === 'Available' ? 'check-circle' : entry.availability === 'Assigned' ? 'plane' : entry.availability === 'Maintenance' ? 'wrench' : 'times-circle';
+                const uploadDate = entry.uploadDate || '';
+                const canEdit = findCurrentEntryIndex(entry) >= 0;
+                const editButton = canEdit ? `
+                        <button class="btn btn-sm me-1" onclick="editLogEntry(${index})" style="background: linear-gradient(135deg, #1976d2, #42a5f5); color: white; border: none; border-radius: 8px; padding: 8px 12px; font-weight: 600; transition: all 0.2s ease;" title="Edit current entry">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    ` : '';
+
+                return `
+                    <tr>
+                        <td style="padding: 16px 20px; font-weight: 700; color: #666;">${index + 1}</td>
+                        <td style="padding: 16px 20px; font-weight: 700; color: #333;">${entry.timestamp}</td>
+                        <td style="padding: 16px 20px; font-weight: 700; color: #333;">${entry.type}</td>
+                        <td style="padding: 16px 20px; font-weight: 700; color: #333;">${entry.action}</td>
+                        <td style="padding: 16px 20px; font-weight: 600; color: #333;">${showName}</td>
+                        <td style="padding: 16px 20px; font-weight: 600; color: #333;">${showMobile}</td>
+                        <td style="padding: 16px 20px;">
+                            <span class="badge" style="background: ${statusClass === 'success' ? 'linear-gradient(135deg, #4CAF50, #66bb6a)' : statusClass === 'warning' ? 'linear-gradient(135deg, #ff9800, #ffb74d)' : statusClass === 'info' ? 'linear-gradient(135deg, #2196F3, #64b5f6)' : 'linear-gradient(135deg, #9e9e9e, #bdbdbd)'}; color: white; padding: 8px 14px; border-radius: 20px; font-weight: 700; font-size: 0.85rem;">
+                                <i class="fas fa-${statusIcon} me-1"></i>${entry.availability || 'Unknown'}
+                            </span>
+                        </td>
+                        <td style="padding: 16px 20px; font-weight: 600; color: ${entry.assignedTo ? '#333' : '#999'};">${assignedLabel}</td>
+                        <td style="padding: 16px 20px; font-weight: 600; color: ${entry.remarks ? '#333' : '#999'};">${entry.remarks ? entry.remarks : '<em style="color: #bbb;">None</em>'}</td>
+                        <td style="padding: 16px 20px; font-weight: 600; color: ${uploadDate ? '#333' : '#999'};">${uploadDate ? uploadDate : '<em style="color: #bbb;">None</em>'}</td>
+                        <td style="padding: 16px 20px; text-align: center;">
+                            ${editButton}
+                            <button class="btn btn-sm" onclick="deleteLogEntry(${index})" style="background: linear-gradient(135deg, #f44336, #ef5350); color: white; border: none; border-radius: 8px; padding: 8px 12px; font-weight: 600; transition: all 0.2s ease;" title="Remove entry from history">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            };
+
+            const headerColumns = ['#', 'Timestamp', 'Type', 'Action', 'Name / Serial', 'Mobile', 'Status', 'Assigned Aircraft / Crew', 'Remarks', 'Upload Date', 'Actions'];
+            const headerHtml = headerColumns.map(col => `
+                    <th style="padding: 16px 20px; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 0.5px; font-size: 0.8rem; border-bottom: 2px solid rgba(255,255,255,0.15);">${col}</th>
+                `).join('');
+            const rowsHtml = filteredEntries.length > 0
+                ? filteredEntries.map(entry => createRow(entry, entryLog.indexOf(entry))).join('')
+                : `<tr><td colspan="${headerColumns.length}" style="padding: 24px 20px; color: #777; text-align: center; font-style: italic;">No log entries found.</td></tr>`;
+
+            container.innerHTML = `
+                <div class="table-responsive" style="overflow-x: auto;">
+                    <table class="table table-hover mb-0" style="border-collapse: collapse; color: #333;">
+                        <thead style="background: linear-gradient(135deg, #455a64, #607d8b);"><tr>${headerHtml}</tr></thead>
+                        <tbody style="background: white;">${rowsHtml}</tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        function editEntry(type, index) {
+            if (type === 'Phone') {
+                editPhone(index);
+            } else if (type === 'iPad Standby') {
+                editIPadStandby(index);
+            }
+        }
+
+        function deleteEntry(type, index) {
+            if (type === 'Phone') {
+                deletePhone(index);
+            } else if (type === 'iPad Standby') {
+                deleteIPadStandby(index);
+            }
+        }
+
+        function updatePhoneTracker() {
+            const total = phoneDevices.length;
+            const available = phoneDevices.filter(device => device.availability.toLowerCase() === 'available').length;
+            const assigned = phoneDevices.filter(device => device.availability.toLowerCase() === 'assigned').length;
+
+            const totalEl = document.getElementById('phoneTotalCount');
+            const availableEl = document.getElementById('phoneAvailableCount');
+            const assignedEl = document.getElementById('phoneAssignedCount');
+            const countBadge = document.getElementById('phoneCountBadge');
+
+            if (totalEl) totalEl.textContent = total;
+            if (availableEl) availableEl.textContent = available;
+            if (assignedEl) assignedEl.textContent = assigned;
+            if (countBadge) countBadge.textContent = total;
+        }
+
+        function openAddPhoneModal() {
+            document.getElementById('addPhoneForm').reset();
+            document.getElementById('phoneAssignedToField').style.display = 'none';
+            document.getElementById('phoneAssignedTo').value = '';
+            const modal = new bootstrap.Modal(document.getElementById('addPhoneModal'));
+            modal.show();
+        }
+
+        function saveNewPhone() {
+            const name = document.getElementById('phoneName').value.trim();
+            const mobile = document.getElementById('phoneMobile').value.trim();
+            const serial = document.getElementById('phoneSerial').value.trim();
+            const availability = document.getElementById('phoneAvailability').value;
+            const assignedTo = document.getElementById('phoneAssignedTo').value.trim();
+            const remarks = document.getElementById('phoneRemarks').value.trim();
+            const uploadDate = document.getElementById('phoneUploadDate').value;
+
+            if (!name || !mobile || !serial || !availability) {
+                alert('Please fill in all required fields!');
+                return;
+            }
+
+            if (phoneDevices.some(d => d.serial === serial)) {
+                alert('A phone with this serial number already exists!');
+                return;
+            }
+
+            phoneDevices.push({
+                name,
+                mobile,
+                serial,
+                availability,
+                assignedTo: availability === 'Assigned' ? assignedTo : '',
+                remarks,
+                uploadDate
+            });
+            savePhoneDevicesToStorage();
+            addEntryLog('Created', 'Phone', phoneDevices[phoneDevices.length - 1]);
+            bootstrap.Modal.getInstance(document.getElementById('addPhoneModal')).hide();
+            renderPhoneDeviceTable();
+            updatePhoneTracker();
+            renderEntryLogTable();
+            showToast('Phone added successfully!', 'success');
+        }
+
+        function editPhone(index) {
+            const device = phoneDevices[index];
+            document.getElementById('editPhoneIndex').value = index;
+            document.getElementById('editPhoneName').value = device.name;
+            document.getElementById('editPhoneMobile').value = device.mobile;
+            document.getElementById('editPhoneSerial').value = device.serial;
+            document.getElementById('editPhoneAvailability').value = device.availability;
+            document.getElementById('editPhoneAssignedTo').value = device.assignedTo || '';
+            document.getElementById('editPhoneRemarks').value = device.remarks || '';
+            document.getElementById('editPhoneUploadDate').value = device.uploadDate || '';
+
+            const assignedToField = document.getElementById('editPhoneAssignedToField');
+            assignedToField.style.display = device.availability === 'Assigned' ? 'block' : 'none';
+
+            const modal = new bootstrap.Modal(document.getElementById('editPhoneModal'));
+            modal.show();
+        }
+
+        function updatePhoneDevice() {
+            const index = parseInt(document.getElementById('editPhoneIndex').value, 10);
+            const name = document.getElementById('editPhoneName').value.trim();
+            const mobile = document.getElementById('editPhoneMobile').value.trim();
+            const serial = document.getElementById('editPhoneSerial').value.trim();
+            const availability = document.getElementById('editPhoneAvailability').value;
+            const assignedTo = document.getElementById('editPhoneAssignedTo').value.trim();
+            const remarks = document.getElementById('editPhoneRemarks').value.trim();
+            const uploadDate = document.getElementById('editPhoneUploadDate').value;
+
+            if (!name || !mobile || !serial || !availability) {
+                alert('Please fill in all required fields!');
+                return;
+            }
+
+            if (phoneDevices.some((d, i) => d.serial === serial && i !== index)) {
+                alert('A phone with this serial number already exists!');
+                return;
+            }
+
+            phoneDevices[index] = {
+                name,
+                mobile,
+                serial,
+                availability,
+                assignedTo: availability === 'Assigned' ? assignedTo : '',
+                remarks,
+                uploadDate
+            };
+            savePhoneDevicesToStorage();
+            addEntryLog('Updated', 'Phone', phoneDevices[index]);
+            bootstrap.Modal.getInstance(document.getElementById('editPhoneModal')).hide();
+            renderPhoneDeviceTable();
+            updatePhoneTracker();
+            renderEntryLogTable();
+            showToast('Phone updated successfully!', 'success');
+        }
+
+        function deletePhone(index) {
+            if (confirm('Are you sure you want to delete this phone? This action cannot be undone.')) {
+                const removed = phoneDevices.splice(index, 1)[0];
+                savePhoneDevicesToStorage();
+                addEntryLog('Deleted', 'Phone', removed);
+                renderPhoneDeviceTable();
+                updatePhoneTracker();
+                renderEntryLogTable();
+                showToast('Phone deleted successfully!', 'success');
+            }
+        }
+
+        function openAddIPadStandbyModal() {
+            const form = document.getElementById('addIPadStandbyForm');
+            if (form) form.reset();
+            const assignedField = document.getElementById('ipadStandbyAssignedToField');
+            if (assignedField) assignedField.style.display = 'none';
+            document.getElementById('ipadStandbyAssignedTo').value = '';
+            const modal = new bootstrap.Modal(document.getElementById('addIPadStandbyModal'));
+            modal.show();
+        }
+
+        function saveNewIPadStandby() {
+            const serial = document.getElementById('ipadStandbySerial').value.trim();
+            const availability = document.getElementById('ipadStandbyAvailability').value;
+            const assignedTo = document.getElementById('ipadStandbyAssignedTo').value.trim();
+            const remarks = document.getElementById('ipadStandbyRemarks').value.trim();
+            const uploadDate = document.getElementById('ipadStandbyUploadDate').value;
+
+            if (!serial || !availability) {
+                alert('Please fill in all required fields!');
+                return;
+            }
+
+            if (iPadStandbyDevices.some(d => d.serial === serial)) {
+                alert('An iPad standby with this serial number already exists!');
+                return;
+            }
+
+            iPadStandbyDevices.push({
+                serial,
+                availability,
+                assignedTo: availability === 'Assigned' ? assignedTo : '',
+                remarks,
+                uploadDate
+            });
+            saveIPadStandbyDevicesToStorage();
+            addEntryLog('Created', 'iPad Standby', iPadStandbyDevices[iPadStandbyDevices.length - 1]);
+            bootstrap.Modal.getInstance(document.getElementById('addIPadStandbyModal')).hide();
+            renderIPadStandbyTable();
+            updateIPadStandbyTracker();
+            renderEntryLogTable();
+            showToast('iPad standby added successfully!', 'success');
+        }
+
+        function editIPadStandby(index) {
+            const device = iPadStandbyDevices[index];
+            if (!device) return;
+            document.getElementById('editIPadStandbyIndex').value = index;
+            document.getElementById('editIPadStandbySerial').value = device.serial;
+            document.getElementById('editIPadStandbyAvailability').value = device.availability;
+            document.getElementById('editIPadStandbyAssignedTo').value = device.assignedTo || '';
+            document.getElementById('editIPadStandbyRemarks').value = device.remarks || '';
+            document.getElementById('editIPadStandbyUploadDate').value = device.uploadDate || '';
+
+            const assignedField = document.getElementById('editIPadStandbyAssignedToField');
+            if (assignedField) {
+                assignedField.style.display = device.availability === 'Assigned' ? 'block' : 'none';
+            }
+
+            const modal = new bootstrap.Modal(document.getElementById('editIPadStandbyModal'));
+            modal.show();
+        }
+
+        function updateIPadStandby() {
+            const index = parseInt(document.getElementById('editIPadStandbyIndex').value, 10);
+            const serial = document.getElementById('editIPadStandbySerial').value.trim();
+            const availability = document.getElementById('editIPadStandbyAvailability').value;
+            const assignedTo = document.getElementById('editIPadStandbyAssignedTo').value.trim();
+            const remarks = document.getElementById('editIPadStandbyRemarks').value.trim();
+            const uploadDate = document.getElementById('editIPadStandbyUploadDate').value;
+
+            if (!serial || !availability) {
+                alert('Please fill in all required fields!');
+                return;
+            }
+
+            if (iPadStandbyDevices.some((d, i) => d.serial === serial && i !== index)) {
+                alert('An iPad standby with this serial number already exists!');
+                return;
+            }
+
+            iPadStandbyDevices[index] = {
+                serial,
+                availability,
+                assignedTo: availability === 'Assigned' ? assignedTo : '',
+                remarks,
+                uploadDate
+            };
+            saveIPadStandbyDevicesToStorage();
+            addEntryLog('Updated', 'iPad Standby', iPadStandbyDevices[index]);
+            bootstrap.Modal.getInstance(document.getElementById('editIPadStandbyModal')).hide();
+            renderIPadStandbyTable();
+            updateIPadStandbyTracker();
+            renderEntryLogTable();
+            showToast('iPad standby updated successfully!', 'success');
+        }
+
+        function deleteIPadStandby(index) {
+            if (confirm('Are you sure you want to delete this iPad standby entry? This action cannot be undone.')) {
+                const removed = iPadStandbyDevices.splice(index, 1)[0];
+                saveIPadStandbyDevicesToStorage();
+                addEntryLog('Deleted', 'iPad Standby', removed);
+                renderIPadStandbyTable();
+                updateIPadStandbyTracker();
+                renderEntryLogTable();
+                showToast('iPad standby deleted successfully!', 'success');
+            }
+        }
+
         function showDeviceIPad() {
             clearActiveNav();
             hideAllSections();
             document.getElementById('nav-ipad').classList.add('active');
             document.getElementById('deviceIpadContent').style.display = 'block';
-            document.getElementById('backToHomeBtn').style.display = 'none';
+            document.getElementById('backToHomeBtn').style.display = 'inline-block';
             document.getElementById('refreshDataBtn').style.display = 'none';
+            document.getElementById('addNewIPadTopbarBtn').style.display = 'inline-flex';
+            document.getElementById('addNewFlightCrewTopbarBtn').style.display = 'inline-flex';
+            document.getElementById('downloadIpadTemplateBtn').style.display = 'inline-flex';
+            document.getElementById('importIpadExcelTopbarBtn').style.display = 'inline-flex';
             document.getElementById('pageTitle').textContent = 'Device Management - iPad';
             document.getElementById('pageSubtitle').textContent = 'Track iPad availability and crew assignments';
             document.getElementById('pageSubtitle').style.display = 'block';
@@ -4832,11 +6029,16 @@
             hideAllSections();
             document.getElementById('nav-phone').classList.add('active');
             document.getElementById('devicePhoneContent').style.display = 'block';
-            document.getElementById('backToHomeBtn').style.display = 'none';
+            document.getElementById('backToHomeBtn').style.display = 'inline-block';
             document.getElementById('refreshDataBtn').style.display = 'none';
-            document.getElementById('pageTitle').textContent = 'Device Management - Phone';
-            document.getElementById('pageSubtitle').textContent = 'Phone inventory page coming soon';
+            document.getElementById('pageTitle').textContent = 'Phongle & iPad Standby Management';
+            document.getElementById('pageSubtitle').textContent = 'Manage mobile phones assigned by aircraft and standby device availability';
             document.getElementById('pageSubtitle').style.display = 'block';
+            renderPhoneDeviceTable();
+            updatePhoneTracker();
+            renderIPadStandbyTable();
+            updateIPadStandbyTracker();
+            renderEntryLogTable();
         }
 
         // Payment Dashboard Variables
@@ -5232,6 +6434,7 @@
         function deletePaymentItem(id) {
             if (confirm('Are you sure you want to delete this payment?')) {
                 paymentData = paymentData.filter(p => p.id !== id);
+                savePaymentDataToStorage();
                 loadPaymentData();
                 updatePaymentSummary();
                 renderCalendar();
@@ -5336,6 +6539,8 @@
                 paymentData.push(newPayment);
                 showNotification('Payment reminder added successfully!', 'success');
             }
+
+            savePaymentDataToStorage();
             
             // Close modal
             const modal = bootstrap.Modal.getInstance(document.getElementById('paymentReminderModal'));
@@ -7229,7 +8434,7 @@
                             </div>
                             <div class="col-md-6 mb-4">
                                 <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Availability <span style="color: red;">*</span></label>
-                                <select class="form-select" id="ipadAvailability" required style="border-radius: 12px; border: 1px solid #dfe3ea; padding: 14px 16px; font-size: 1rem;">
+                                <select class="form-select" id="ipadAvailability" required style="border-radius: 12px; border: 2px solid #ffe9d6; padding: 14px 16px; font-size: 1rem;">
                                     <option value="Available">Available</option>
                                     <option value="Assigned">Assigned</option>
                                     <option value="Maintenance">Maintenance</option>
@@ -7239,12 +8444,7 @@
                         </div>
                         <div class="mb-4" id="assignedToField" style="display: none;">
                             <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Assigned To <span style="color: red;">*</span></label>
-                            <div class="input-group" style="gap: 10px;">
-                                <input type="text" class="form-control" id="ipadAssignedTo" list="crewListOptions" placeholder="Search crew name or ID..." autocomplete="off" style="border-radius: 12px; border: 1px solid #dfe3ea; padding: 14px 16px; font-size: 1rem;" />
-                                <button type="button" class="btn btn-outline-secondary" style="border-radius: 12px; min-width: 120px;" onclick="focusCrewSearch('ipadAssignedTo')">
-                                    <i class="fas fa-search me-2"></i>Search
-                                </button>
-                            </div>
+                            <input type="text" class="form-control" id="ipadAssignedTo" list="crewListOptions" placeholder="Search crew name or ID..." autocomplete="off" style="border-radius: 12px; border: 2px solid #ffe9d6; padding: 14px 16px; font-size: 1rem;" />
                             <datalist id="crewListOptions"></datalist>
                             <div class="mt-2"><small class="text-muted">Can’t find the crew member? <a href="javascript:void(0)" onclick="openAddNewUserModal()">Add new flight crew</a>.</small></div>
                         </div>
@@ -7261,11 +8461,11 @@
                         </div>
                         <div class="mb-4">
                             <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Remarks</label>
-                            <textarea class="form-control" id="ipadRemarks" rows="3" placeholder="Optional remarks about this assignment..." style="border-radius: 12px; border: 1px solid #dfe3ea; padding: 14px 16px; font-size: 1rem;"></textarea>
+                            <textarea class="form-control" id="ipadRemarks" rows="3" placeholder="Optional remarks about this assignment..." style="border-radius: 12px; border: 2px solid #ffe9d6; padding: 14px 16px; font-size: 1rem;"></textarea>
                         </div>
                         <div class="mb-4">
                             <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Collection Date</label>
-                            <input type="date" class="form-control" id="ipadCollectionDate" style="border-radius: 12px; border: 1px solid #dfe3ea; padding: 14px 16px; font-size: 1rem;" />
+                            <input type="date" class="form-control" id="ipadCollectionDate" style="border-radius: 12px; border: 2px solid #ffe9d6; padding: 14px 16px; font-size: 1rem;" />
                         </div>
                     </form>
                 </div>
@@ -7276,6 +8476,217 @@
                     <button type="button" id="addIPadSubmitBtn" class="btn btn-lg" onclick="saveNewIPad()" style="background: linear-gradient(135deg, #ff8c00 0%, #ff9f1a 100%); border: none; border-radius: 12px; padding: 12px 28px; font-weight: 700; font-size: 1rem; color: white; box-shadow: 0 6px 20px rgba(255, 140, 0, 0.35);">
                         <i class="fas fa-plus-circle me-2"></i>Add iPad
                     </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add iPad Standby Modal -->
+    <div class="modal fade" id="addIPadStandbyModal" tabindex="-1" aria-labelledby="addIPadStandbyModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="border-radius: 20px; border: none; box-shadow: 0 15px 50px rgba(25, 118, 210, 0.25);">
+                <div class="modal-header" style="background: linear-gradient(135deg, #1976d2 0%, #42a5f5 100%); color: white; border-radius: 20px 20px 0 0; border: none; padding: 24px 28px;">
+                    <h5 class="modal-title" id="addIPadStandbyModalLabel" style="font-weight: 800; font-size: 1.3rem;"><i class="fas fa-tablet-alt me-2"></i>Add iPad Standby</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="padding: 30px;">
+                    <form id="addIPadStandbyForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Serial Number <span style="color: red;">*</span></label>
+                                <input type="text" class="form-control" id="ipadStandbySerial" placeholder="e.g., IPD-STBY-001" required style="border-radius: 12px; border: 2px solid #e3f2fd; padding: 14px 16px; font-size: 1rem;" />
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Availability <span style="color: red;">*</span></label>
+                                <select class="form-select" id="ipadStandbyAvailability" required style="border-radius: 12px; border: 2px solid #e3f2fd; padding: 14px 16px; font-size: 1rem;">
+                                    <option value="Available">Available</option>
+                                    <option value="Assigned">Assigned</option>
+                                    <option value="Maintenance">Maintenance</option>
+                                    <option value="Retired">Retired</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-4" id="ipadStandbyAssignedToField" style="display: none;">
+                            <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Assigned Aircraft</label>
+                            <input type="text" class="form-control" id="ipadStandbyAssignedTo" list="aircraftListOptions" placeholder="Select aircraft" autocomplete="off" style="border-radius: 12px; border: 2px solid #e3f2fd; padding: 14px 16px; font-size: 1rem;" />
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Remarks</label>
+                            <textarea class="form-control" id="ipadStandbyRemarks" rows="3" placeholder="Optional remarks about this standby iPad..." style="border-radius: 12px; border: 2px solid #e3f2fd; padding: 14px 16px; font-size: 1rem;"></textarea>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Upload Date</label>
+                            <input type="date" class="form-control" id="ipadStandbyUploadDate" style="border-radius: 12px; border: 2px solid #e3f2fd; padding: 14px 16px; font-size: 1rem;" />
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer" style="background-color: #f8f9fa; border-top: 1px solid #dee2e6; border-radius: 0 0 20px 20px; padding: 20px 28px;">
+                    <button type="button" class="btn btn-lg btn-secondary" data-bs-dismiss="modal" style="border-radius: 12px; padding: 12px 24px; font-weight: 600; font-size: 1rem;"><i class="fas fa-times me-2"></i>Cancel</button>
+                    <button type="button" class="btn btn-lg btn-primary" onclick="saveNewIPadStandby()" style="border-radius: 12px; padding: 12px 28px; font-weight: 700; font-size: 1rem; color: white;"><i class="fas fa-plus-circle me-2"></i>Add Standby iPad</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit iPad Standby Modal -->
+    <div class="modal fade" id="editIPadStandbyModal" tabindex="-1" aria-labelledby="editIPadStandbyModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="border-radius: 20px; border: none; box-shadow: 0 15px 50px rgba(25, 118, 210, 0.25);">
+                <div class="modal-header" style="background: linear-gradient(135deg, #1976d2 0%, #42a5f5 100%); color: white; border-radius: 20px 20px 0 0; border: none; padding: 24px 28px;">
+                    <h5 class="modal-title" id="editIPadStandbyModalLabel" style="font-weight: 800; font-size: 1.3rem;"><i class="fas fa-edit me-2"></i>Edit iPad Standby</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="padding: 30px;">
+                    <form id="editIPadStandbyForm">
+                        <input type="hidden" id="editIPadStandbyIndex">
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Serial Number <span style="color: red;">*</span></label>
+                                <input type="text" class="form-control" id="editIPadStandbySerial" required style="border-radius: 12px; border: 2px solid #e3f2fd; padding: 14px 16px; font-size: 1rem;" />
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Availability <span style="color: red;">*</span></label>
+                                <select class="form-select" id="editIPadStandbyAvailability" required style="border-radius: 12px; border: 2px solid #e3f2fd; padding: 14px 16px; font-size: 1rem;">
+                                    <option value="Available">Available</option>
+                                    <option value="Assigned">Assigned</option>
+                                    <option value="Maintenance">Maintenance</option>
+                                    <option value="Retired">Retired</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-4" id="editIPadStandbyAssignedToField" style="display: none;">
+                            <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Assigned Aircraft</label>
+                            <input type="text" class="form-control" id="editIPadStandbyAssignedTo" list="aircraftListOptions" placeholder="Select aircraft" autocomplete="off" style="border-radius: 12px; border: 2px solid #e3f2fd; padding: 14px 16px; font-size: 1rem;" />
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Remarks</label>
+                            <textarea class="form-control" id="editIPadStandbyRemarks" rows="3" style="border-radius: 12px; border: 2px solid #e3f2fd; padding: 14px 16px; font-size: 1rem;"></textarea>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Upload Date</label>
+                            <input type="date" class="form-control" id="editIPadStandbyUploadDate" style="border-radius: 12px; border: 2px solid #e3f2fd; padding: 14px 16px; font-size: 1rem;" />
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer" style="background-color: #f8f9fa; border-top: 1px solid #dee2e6; border-radius: 0 0 20px 20px; padding: 20px 28px;">
+                    <button type="button" class="btn btn-lg btn-secondary" data-bs-dismiss="modal" style="border-radius: 12px; padding: 12px 24px; font-weight: 600; font-size: 1rem;"><i class="fas fa-times me-2"></i>Cancel</button>
+                    <button type="button" class="btn btn-lg btn-primary" onclick="updateIPadStandby()" style="border-radius: 12px; padding: 12px 28px; font-weight: 700; font-size: 1rem; color: white;"><i class="fas fa-save me-2"></i>Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Phone Modal -->
+    <div class="modal fade" id="addPhoneModal" tabindex="-1" aria-labelledby="addPhoneModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="border-radius: 20px; border: none; box-shadow: 0 15px 50px rgba(3, 169, 244, 0.25);">
+                <div class="modal-header" style="background: linear-gradient(135deg, #0288d1 0%, #03a9f4 100%); color: white; border-radius: 20px 20px 0 0; border: none; padding: 24px 28px;">
+                    <h5 class="modal-title" id="addPhoneModalLabel" style="font-weight: 800; font-size: 1.3rem;"><i class="fas fa-mobile-alt me-2"></i>Add New Phone</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="padding: 30px;">
+                    <form id="addPhoneForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Phone List <span style="color: red;">*</span></label>
+                                <input type="text" class="form-control" id="phoneName" placeholder="e.g., FY MOBILE 1" required style="border-radius: 12px; border: 2px solid #e3f2fd; padding: 14px 16px; font-size: 1rem;">
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Mobile Number <span style="color: red;">*</span></label>
+                                <input type="text" class="form-control" id="phoneMobile" placeholder="e.g., 60188700216" required style="border-radius: 12px; border: 2px solid #e3f2fd; padding: 14px 16px; font-size: 1rem;">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Serial Number <span style="color: red;">*</span></label>
+                                <input type="text" class="form-control" id="phoneSerial" placeholder="e.g., XSAANFDAOJVOZTOB" required style="border-radius: 12px; border: 2px solid #e3f2fd; padding: 14px 16px; font-size: 1rem;">
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Availability <span style="color: red;">*</span></label>
+                                <select class="form-select" id="phoneAvailability" required style="border-radius: 12px; border: 2px solid #e3f2fd; padding: 14px 16px; font-size: 1rem;">
+                                    <option value="Available">Available</option>
+                                    <option value="Assigned">Assigned</option>
+                                    <option value="Maintenance">Maintenance</option>
+                                    <option value="Retired">Retired</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-4" id="phoneAssignedToField" style="display: none;">
+                            <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Assigned Aircraft</label>
+                            <input type="text" class="form-control" id="phoneAssignedTo" list="aircraftListOptions" placeholder="Select aircraft" autocomplete="off" style="border-radius: 12px; border: 2px solid #e3f2fd; padding: 14px 16px; font-size: 1rem;" />
+                            <datalist id="aircraftListOptions"></datalist>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Remarks</label>
+                            <textarea class="form-control" id="phoneRemarks" rows="3" placeholder="Optional remarks about this standby phone..." style="border-radius: 12px; border: 2px solid #e3f2fd; padding: 14px 16px; font-size: 1rem;"></textarea>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Upload Date</label>
+                            <input type="date" class="form-control" id="phoneUploadDate" style="border-radius: 12px; border: 2px solid #e3f2fd; padding: 14px 16px; font-size: 1rem;" />
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer" style="background-color: #f8f9fa; border-top: 1px solid #dee2e6; border-radius: 0 0 20px 20px; padding: 20px 28px;">
+                    <button type="button" class="btn btn-lg btn-secondary" data-bs-dismiss="modal" style="border-radius: 12px; padding: 12px 24px; font-weight: 600; font-size: 1rem;"><i class="fas fa-times me-2"></i>Cancel</button>
+                    <button type="button" class="btn btn-lg btn-primary" onclick="saveNewPhone()" style="border-radius: 12px; padding: 12px 28px; font-weight: 700; font-size: 1rem; color: white;"><i class="fas fa-plus-circle me-2"></i>Add Phone</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Phone Modal -->
+    <div class="modal fade" id="editPhoneModal" tabindex="-1" aria-labelledby="editPhoneModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="border-radius: 20px; border: none; box-shadow: 0 15px 50px rgba(3, 169, 244, 0.25);">
+                <div class="modal-header" style="background: linear-gradient(135deg, #0288d1 0%, #03a9f4 100%); color: white; border-radius: 20px 20px 0 0; border: none; padding: 24px 28px;">
+                    <h5 class="modal-title" id="editPhoneModalLabel" style="font-weight: 800; font-size: 1.3rem;"><i class="fas fa-edit me-2"></i>Edit Phone</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="padding: 30px;">
+                    <form id="editPhoneForm">
+                        <input type="hidden" id="editPhoneIndex">
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Phone List <span style="color: red;">*</span></label>
+                                <input type="text" class="form-control" id="editPhoneName" required style="border-radius: 12px; border: 2px solid #e3f2fd; padding: 14px 16px; font-size: 1rem;">
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Mobile Number <span style="color: red;">*</span></label>
+                                <input type="text" class="form-control" id="editPhoneMobile" required style="border-radius: 12px; border: 2px solid #e3f2fd; padding: 14px 16px; font-size: 1rem;">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Serial Number <span style="color: red;">*</span></label>
+                                <input type="text" class="form-control" id="editPhoneSerial" required style="border-radius: 12px; border: 2px solid #e3f2fd; padding: 14px 16px; font-size: 1rem;">
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Availability <span style="color: red;">*</span></label>
+                                <select class="form-select" id="editPhoneAvailability" required style="border-radius: 12px; border: 2px solid #e3f2fd; padding: 14px 16px; font-size: 1rem;">
+                                    <option value="Available">Available</option>
+                                    <option value="Assigned">Assigned</option>
+                                    <option value="Maintenance">Maintenance</option>
+                                    <option value="Retired">Retired</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-4" id="editPhoneAssignedToField" style="display: none;">
+                            <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Assigned Aircraft</label>
+                            <input type="text" class="form-control" id="editPhoneAssignedTo" list="aircraftListOptions" placeholder="Select aircraft" autocomplete="off" style="border-radius: 12px; border: 2px solid #e3f2fd; padding: 14px 16px; font-size: 1rem;" />
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Remarks</label>
+                            <textarea class="form-control" id="editPhoneRemarks" rows="3" style="border-radius: 12px; border: 2px solid #e3f2fd; padding: 14px 16px; font-size: 1rem;"></textarea>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Upload Date</label>
+                            <input type="date" class="form-control" id="editPhoneUploadDate" style="border-radius: 12px; border: 2px solid #e3f2fd; padding: 14px 16px; font-size: 1rem;" />
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer" style="background-color: #f8f9fa; border-top: 1px solid #dee2e6; border-radius: 0 0 20px 20px; padding: 20px 28px;">
+                    <button type="button" class="btn btn-lg btn-secondary" data-bs-dismiss="modal" style="border-radius: 12px; padding: 12px 24px; font-weight: 600; font-size: 1rem;"><i class="fas fa-times me-2"></i>Cancel</button>
+                    <button type="button" class="btn btn-lg btn-primary" onclick="updatePhoneDevice()" style="border-radius: 12px; padding: 12px 28px; font-weight: 700; font-size: 1rem; color: white;"><i class="fas fa-save me-2"></i>Save Changes</button>
                 </div>
             </div>
         </div>
@@ -7315,7 +8726,7 @@
                         <div class="row">
                             <div class="col-md-6 mb-4">
                                 <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">iPad Version <span style="color: red;">*</span></label>
-                                <select class="form-select" id="editIPadVersion" required style="border-radius: 12px; border: 1px solid #dfe3ea; padding: 14px 16px; font-size: 1rem;">
+                                <select class="form-select" id="editIPadVersion" required style="border-radius: 12px; border: 2px solid #bbdefb; padding: 14px 16px; font-size: 1rem;">
                                     <option value="iPad Pro 12.9">iPad Pro 12.9"</option>
                                     <option value="iPad Pro 11">iPad Pro 11"</option>
                                     <option value="iPad Air 5">iPad Air 5</option>
@@ -7329,7 +8740,7 @@
                             </div>
                             <div class="col-md-6 mb-4">
                                 <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Availability <span style="color: red;">*</span></label>
-                                <select class="form-select" id="editIPadAvailability" required style="border-radius: 12px; border: 1px solid #dfe3ea; padding: 14px 16px; font-size: 1rem;">
+                                <select class="form-select" id="editIPadAvailability" required style="border-radius: 12px; border: 2px solid #bbdefb; padding: 14px 16px; font-size: 1rem;">
                                     <option value="Available">Available</option>
                                     <option value="Assigned">Assigned</option>
                                     <option value="Maintenance">Maintenance</option>
@@ -7339,12 +8750,7 @@
                         </div>
                         <div class="mb-4" id="editAssignedToField" style="display: none;">
                             <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Assigned To</label>
-                            <div class="input-group" style="gap: 10px;">
-                                <input type="text" class="form-control" id="editIPadAssignedTo" list="crewListOptions" placeholder="Search crew name or ID..." autocomplete="off" style="border-radius: 12px; border: 1px solid #dfe3ea; padding: 14px 16px; font-size: 1rem;" />
-                                <button type="button" class="btn btn-outline-secondary" style="border-radius: 12px; min-width: 120px;" onclick="focusCrewSearch('editIPadAssignedTo')">
-                                    <i class="fas fa-search me-2"></i>Search
-                                </button>
-                            </div>
+                            <input type="text" class="form-control" id="editIPadAssignedTo" list="crewListOptions" placeholder="Search crew name or ID..." autocomplete="off" style="border-radius: 12px; border: 2px solid #bbdefb; padding: 14px 16px; font-size: 1rem;" />
                             <div class="mt-2"><small class="text-muted">Can’t find the crew member? <a href="javascript:void(0)" onclick="openAddNewUserModal()">Add new flight crew</a>.</small></div>
                         </div>
                         <div class="mb-4">
@@ -7360,11 +8766,11 @@
                         </div>
                         <div class="mb-4">
                             <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Remarks</label>
-                            <textarea class="form-control" id="editIPadRemarks" rows="3" placeholder="Optional remarks about this assignment..." style="border-radius: 12px; border: 1px solid #dfe3ea; padding: 14px 16px; font-size: 1rem;"></textarea>
+                            <textarea class="form-control" id="editIPadRemarks" rows="3" placeholder="Optional remarks about this assignment..." style="border-radius: 12px; border: 2px solid #bbdefb; padding: 14px 16px; font-size: 1rem;"></textarea>
                         </div>
                         <div class="mb-4">
                             <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Collection Date</label>
-                            <input type="date" class="form-control" id="editIPadCollectionDate" style="border-radius: 12px; border: 1px solid #dfe3ea; padding: 14px 16px; font-size: 1rem;" />
+                            <input type="date" class="form-control" id="editIPadCollectionDate" style="border-radius: 12px; border: 2px solid #bbdefb; padding: 14px 16px; font-size: 1rem;" />
                         </div>
                     </form>
                 </div>
@@ -7399,17 +8805,6 @@
                         <div class="mb-4">
                             <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Full Name <span style="color: red;">*</span></label>
                             <input type="text" class="form-control" id="newUserName" placeholder="e.g., John Smith" required style="border-radius: 12px; border: 2px solid #bbdefb; padding: 14px 16px; font-size: 1rem;">
-                        </div>
-                        <div class="mb-4">
-                            <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Designation <span style="color: red;">*</span></label>
-                            <select class="form-select" id="newUserDesignation" required style="border-radius: 12px; border: 2px solid #bbdefb; padding: 14px 16px; font-size: 1rem;">
-                                <option value="">-- Select Designation --</option>
-                                <option value="ATR Captain">ATR Captain</option>
-                                <option value="B737 Captain">B737 Captain</option>
-                                <option value="ATR FO">ATR FO</option>
-                                <option value="B737 FO">B737 FO</option>
-                                <option value="Office Staff">Office Staff</option>
-                            </select>
                         </div>
                         <div class="mb-4">
                             <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Remarks</label>
