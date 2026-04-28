@@ -2828,9 +2828,14 @@
                                         <i class="fas fa-chart-line me-2"></i>Chart Revision - Edit Mode
                                     </h5>
                                 </div>
-                                <button class="btn btn-danger btn-sm" onclick="showChartLoginModal()" style="padding: 8px 16px; font-weight: 600;">
-                                    <i class="fas fa-lock me-2"></i>Logout
-                                </button>
+                                <div style="display: flex; gap: 10px; align-items: center;">
+                                    <button class="btn btn-info btn-sm" onclick="syncChartRevisionEditData()" style="padding: 8px 16px; font-weight: 600; color: white;">
+                                        <i class="fas fa-sync me-2"></i>Sync
+                                    </button>
+                                    <button class="btn btn-danger btn-sm" onclick="showChartLoginModal()" style="padding: 8px 16px; font-weight: 600;">
+                                        <i class="fas fa-lock me-2"></i>Logout
+                                    </button>
+                                </div>
                             </div>
 
                             <!-- Flight Viewer Website Access -->
@@ -8458,6 +8463,23 @@
                 showNotification('<i class="fas fa-check-circle me-2"></i>Payment data synced successfully!', 'success');
             } catch (error) {
                 console.error('Error syncing payment data:', error);
+                showNotification('<i class="fas fa-exclamation-circle me-2"></i>Error syncing data: ' + error.message, 'danger');
+            }
+        }
+        
+        async function syncChartRevisionEditData() {
+            try {
+                showNotification('<i class="fas fa-sync me-2" style="animation: spin 2s linear infinite;"></i>Syncing latest chart revision data...', 'info');
+                const savedData = await getSyncedData('chartRevisionData');
+                if (savedData) {
+                    localStorage.setItem('chartRevisionData', JSON.stringify(savedData));
+                    loadChartEditData();
+                    showNotification('<i class="fas fa-check-circle me-2"></i>Chart revision edit data synced successfully!', 'success');
+                } else {
+                    showNotification('<i class="fas fa-exclamation-circle me-2"></i>No chart revision data found in Supabase.', 'warning');
+                }
+            } catch (error) {
+                console.error('Error syncing chart revision edit data:', error);
                 showNotification('<i class="fas fa-exclamation-circle me-2"></i>Error syncing data: ' + error.message, 'danger');
             }
         }
