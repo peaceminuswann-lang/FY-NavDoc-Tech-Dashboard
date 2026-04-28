@@ -2431,96 +2431,102 @@
                     </div>
                 </div>
 
-                <div id="deviceIpadContent" style="display: none;">
-                    <div class="d-flex flex-column align-items-center justify-content-center mb-4 gap-3" style="text-align: center;">
-                        <div>
-                            <h2 class="mb-1" style="font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, #ff8c00, #ff6b35); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin: 0;">
-                                <i class="fas fa-tablet-alt me-2" style="color: #ff8c00; -webkit-text-fill-color: initial;"></i>iPad Inventory
-                            </h2>
-                            <p class="text-muted mb-0" style="font-size: 1rem; font-weight: 500;">Flight crew device assignment and availability tracker</p>
+                <div id="deviceIpadContent" style="display: none; padding: 24px;">
+                    <!-- Header Section -->
+                    <div style="background: linear-gradient(135deg, #ff8c00 0%, #ff6b35 100%); border-radius: 20px; padding: 40px; margin-bottom: 32px; box-shadow: 0 10px 40px rgba(255, 140, 0, 0.2);">
+                        <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 16px;">
+                            <div style="background: rgba(255, 255, 255, 0.2); width: 70px; height: 70px; border-radius: 18px; display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem; backdrop-filter: blur(10px);">
+                                <i class="fas fa-tablet-alt"></i>
+                            </div>
+                            <div>
+                                <h2 style="color: white; font-weight: 900; margin: 0; font-size: 2.2rem;">iPad Inventory</h2>
+                                <p style="color: rgba(255, 255, 255, 0.85); margin: 8px 0 0 0; font-size: 1rem; font-weight: 500;">Flight crew device assignment & availability</p>
+                            </div>
                         </div>
                     </div>
 
+                    <!-- Metrics Row -->
                     <div class="row g-3 mb-4">
-                        <div class="col-md-4">
-                            <div class="card p-4" style="border-radius: 20px; border: none; box-shadow: 0 12px 30px rgba(255, 140, 0, 0.15); background: linear-gradient(135deg, #fff7eb 0%, #fff0d6 100%);">
-                                <div style="display: flex; align-items: center; gap: 15px;">
-                                    <div style="background: linear-gradient(135deg, #ff8c00, #ffb74d); width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; box-shadow: 0 6px 15px rgba(255, 140, 0, 0.3);">
-                                        <i class="fas fa-tablet-alt"></i>
-                                    </div>
-                                    <div>
-                                        <div class="metric-label" style="font-size: 0.85rem; color: #8a5a00; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Total iPads</div>
-                                        <div class="metric-value" id="ipadTotalCount" style="font-size: 2.2rem; color: #ff8c00;">0</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card p-4" style="border-radius: 20px; border: none; box-shadow: 0 12px 30px rgba(73, 163, 81, 0.15); background: linear-gradient(135deg, #effaf2 0%, #dff5e6 100%);">
-                                <div style="display: flex; align-items: center; gap: 15px;">
-                                    <div style="background: linear-gradient(135deg, #4CAF50, #66bb6a); width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; box-shadow: 0 6px 15px rgba(76, 175, 80, 0.3);">
-                                        <i class="fas fa-check-circle"></i>
-                                    </div>
-                                    <div>
-                                        <div class="metric-label" style="font-size: 0.85rem; color: #2e7d32; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Available</div>
-                                        <div class="metric-value" id="ipadAvailableCount" style="font-size: 2.2rem; color: #4CAF50;">0</div>
+                        <div class="col-md-4 col-sm-6">
+                            <div class="card" style="border: none; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 24px rgba(255, 140, 0, 0.12); transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 12px 32px rgba(255, 140, 0, 0.18)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 24px rgba(255, 140, 0, 0.12)'">
+                                <div style="background: linear-gradient(135deg, #fff7eb 0%, #fff0d6 100%); padding: 24px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;">
+                                        <div>
+                                            <div style="font-size: 0.75rem; color: #8a5a00; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 8px;">Total iPads</div>
+                                            <div style="font-size: 2.4rem; font-weight: 900; color: #ff8c00;" id="ipadTotalCount">0</div>
+                                        </div>
+                                        <div style="background: linear-gradient(135deg, #ff8c00, #ffb74d); width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.3rem; box-shadow: 0 6px 16px rgba(255, 140, 0, 0.3);"><i class="fas fa-tablet-alt"></i></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="card p-4" style="border-radius: 20px; border: none; box-shadow: 0 12px 30px rgba(214, 61, 61, 0.15); background: linear-gradient(135deg, #fff1f1 0%, #ffe0e0 100%);">
-                                <div style="display: flex; align-items: center; gap: 15px;">
-                                    <div style="background: linear-gradient(135deg, #f44336, #ef5350); width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; box-shadow: 0 6px 15px rgba(244, 67, 54, 0.3);">
-                                        <i class="fas fa-user-check"></i>
+                        <div class="col-md-4 col-sm-6">
+                            <div class="card" style="border: none; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 24px rgba(76, 175, 80, 0.12); transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 12px 32px rgba(76, 175, 80, 0.18)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 24px rgba(76, 175, 80, 0.12)'">
+                                <div style="background: linear-gradient(135deg, #effaf2 0%, #dff5e6 100%); padding: 24px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;">
+                                        <div>
+                                            <div style="font-size: 0.75rem; color: #2e7d32; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 8px;">Available</div>
+                                            <div style="font-size: 2.4rem; font-weight: 900; color: #4CAF50;" id="ipadAvailableCount">0</div>
+                                        </div>
+                                        <div style="background: linear-gradient(135deg, #4CAF50, #66bb6a); width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.3rem; box-shadow: 0 6px 16px rgba(76, 175, 80, 0.3);"><i class="fas fa-check-circle"></i></div>
                                     </div>
-                                    <div>
-                                        <div class="metric-label" style="font-size: 0.85rem; color: #c62828; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Assigned</div>
-                                        <div class="metric-value" id="ipadAssignedCount" style="font-size: 2.2rem; color: #f44336;">0</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-6">
+                            <div class="card" style="border: none; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 24px rgba(244, 67, 54, 0.12); transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 12px 32px rgba(244, 67, 54, 0.18)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 24px rgba(244, 67, 54, 0.12)'">
+                                <div style="background: linear-gradient(135deg, #fff1f1 0%, #ffe0e0 100%); padding: 24px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;">
+                                        <div>
+                                            <div style="font-size: 0.75rem; color: #c62828; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 8px;">Assigned</div>
+                                            <div style="font-size: 2.4rem; font-weight: 900; color: #f44336;" id="ipadAssignedCount">0</div>
+                                        </div>
+                                        <div style="background: linear-gradient(135deg, #f44336, #ef5350); width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.3rem; box-shadow: 0 6px 16px rgba(244, 67, 54, 0.3);"><i class="fas fa-user-check"></i></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="card" style="border-radius: 20px; border: none; box-shadow: 0 14px 28px rgba(255, 140, 0, 0.1); overflow: hidden;">
-                        <div class="card-header" style="background: linear-gradient(135deg, #ff8c00, #ffb74d); border-radius: 20px 20px 0 0; padding: 20px 24px; border: none;">
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <h5 class="mb-0" style="color: white; font-weight: 800; font-size: 1.2rem;">
-                                    <i class="fas fa-users me-2"></i>Flight Crew iPad Assignment
-                                </h5>
-                                <span style="background: rgba(255,255,255,0.25); padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; color: white;">
-                                    <i class="fas fa-list me-1"></i><span id="ipadCountBadge">0</span> Devices
-                                </span>
+                    <!-- Main Content Card -->
+                    <div class="card" style="border: none; border-radius: 18px; box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08); overflow: hidden;">
+                        <div style="background: linear-gradient(135deg, #ff8c00, #ffb74d); padding: 28px 32px; border: none;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+                                <div>
+                                    <h5 style="color: white; font-weight: 800; font-size: 1.25rem; margin: 0; display: flex; align-items: center; gap: 12px;"><i class="fas fa-users"></i>Flight Crew Devices</h5>
+                                </div>
+                                <span style="background: rgba(255,255,255,0.25); padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; color: white; backdrop-filter: blur(10px);"><i class="fas fa-list me-2"></i><span id="ipadCountBadge">0</span> Devices</span>
                             </div>
                         </div>
                         <div class="card-body" style="padding: 0;">
-                            <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 p-4" style="background: #fafafa; border-bottom: 1px solid #ebedef;">
-                                <div class="d-flex flex-wrap align-items-center gap-2" style="flex: 1; min-width: 320px;">
-                                    <div class="search-box" style="max-width: 520px; width: 100%;">
-                                        <i class="fas fa-search"></i>
-                                        <input type="text" id="ipadSearchInput" placeholder="Search by serial, crew name, designation or status..." />
+                            <div style="background: #fafbfc; padding: 24px 28px; border-bottom: 1px solid #e8ecf1;">
+                                <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                                    <div style="flex: 1; min-width: 280px; display: flex; gap: 12px; align-items: center;">
+                                        <div class="search-box" style="flex: 1; max-width: 480px;">
+                                            <i class="fas fa-search"></i>
+                                            <input type="text" id="ipadSearchInput" placeholder="Search devices..." style="font-size: 0.95rem;" />
+                                        </div>
+                                        <button class="btn" onclick="filterIPadDevices()" style="border-radius: 10px; padding: 10px 20px; font-weight: 700; font-size: 0.9rem; background: #ff8c00; color: white; border: none; transition: all 0.2s;" onmouseover="this.style.background='#ff7a00'" onmouseout="this.style.background='#ff8c00'">
+                                            <i class="fas fa-search me-2"></i>Search
+                                        </button>
                                     </div>
-                                    <button class="btn btn-outline-primary" onclick="filterIPadDevices()" style="border-radius: 14px; padding: 12px 24px; font-weight: 700; min-width: 140px;">
-                                        <i class="fas fa-search me-2"></i>Search
-                                    </button>
-                                </div>
-                                <div class="d-flex flex-wrap align-items-center gap-2 justify-content-end" style="min-width: 320px;">
-                                    <button class="btn btn-info" id="syncIpadBtn" onclick="syncIPadDeviceData()" style="min-width: 150px; color: white;">
-                                        <i class="fas fa-sync me-2"></i>Sync
-                                    </button>
-                                    <button class="btn btn-success" id="downloadIpadTemplateBtn" onclick="downloadIPadTemplate()" style="display: none; min-width: 150px; background: linear-gradient(135deg, #2ca02c, #4caf50); border: none; color: white;">
-                                        <i class="fas fa-download me-2"></i>Download Template
-                                    </button>
-                                    <button class="btn btn-warning" id="importIpadExcelTopbarBtn" onclick="triggerIpadImportFile()" style="display: none; min-width: 150px; background: linear-gradient(135deg, #f39c12, #ffb74d); border: none; color: white;">
-                                        <i class="fas fa-file-import me-2"></i>Import Excel
-                                    </button>
-                                    <button class="btn btn-primary" id="addNewIPadTopbarBtn" onclick="openAddIPadModal()" style="display: none; min-width: 150px; background: linear-gradient(135deg, #ff8c00, #ff9f1a); border: none; color: white;">
-                                        <i class="fas fa-plus-circle me-2"></i>Add New iPad
-                                    </button>
-                                    <button class="btn btn-outline-primary" id="addNewFlightCrewTopbarBtn" onclick="openAddNewUserModal()" style="display: none; min-width: 150px;">
-                                        <i class="fas fa-user-plus me-2"></i>Add New Flight Crew
-                                    </button>
+                                    <div class="d-flex flex-wrap gap-2" style="justify-content: flex-end;">
+                                        <button class="btn btn-info" id="syncIpadBtn" onclick="syncIPadDeviceData()" style="min-width: 140px; background: #2196F3; border: none; color: white; border-radius: 10px; font-weight: 700; transition: all 0.2s;" onmouseover="this.style.background='#1976D2'" onmouseout="this.style.background='#2196F3'">
+                                            <i class="fas fa-cloud-download-alt me-2"></i>Sync
+                                        </button>
+                                        <button class="btn" id="downloadIpadTemplateBtn" onclick="downloadIPadTemplate()" style="display: none; min-width: 140px; background: #4CAF50; border: none; color: white; border-radius: 10px; font-weight: 700; transition: all 0.2s;" onmouseover="this.style.background='#45a049'" onmouseout="this.style.background='#4CAF50'">
+                                            <i class="fas fa-download me-2"></i>Template
+                                        </button>
+                                        <button class="btn" id="importIpadExcelTopbarBtn" onclick="triggerIpadImportFile()" style="display: none; min-width: 140px; background: #FF9800; border: none; color: white; border-radius: 10px; font-weight: 700; transition: all 0.2s;" onmouseover="this.style.background='#F57C00'" onmouseout="this.style.background='#FF9800'">
+                                            <i class="fas fa-file-import me-2"></i>Import
+                                        </button>
+                                        <button class="btn" id="addNewIPadTopbarBtn" onclick="openAddIPadModal()" style="display: none; min-width: 140px; background: #ff8c00; border: none; color: white; border-radius: 10px; font-weight: 700; transition: all 0.2s;" onmouseover="this.style.background='#ff7a00'" onmouseout="this.style.background='#ff8c00'">
+                                            <i class="fas fa-plus me-2"></i>Add iPad
+                                        </button>
+                                        <button class="btn btn-outline-primary" id="addNewFlightCrewTopbarBtn" onclick="openAddNewUserModal()" style="display: none; min-width: 140px; border-radius: 10px; font-weight: 700;">
+                                            <i class="fas fa-user-plus me-2"></i>Add Crew
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                             <div id="ipadAssignedTableContainer"></div>
@@ -2529,125 +2535,134 @@
                     </div>
                 </div>
 
-                <div id="devicePhoneContent" style="display: none;">
-                    <div class="d-flex flex-column align-items-center justify-content-center mb-4 gap-3" style="text-align: center;">
-                        <div>
-                            <h2 class="mb-1" style="font-size: 2rem; font-weight: 800; background: linear-gradient(135deg, #00b0ff, #1e88e5); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0;">
-                                <i class="fas fa-mobile-alt me-2" style="color: #1e88e5; -webkit-text-fill-color: initial;"></i>Phongle & iPad Standby Management
-                            </h2>
-                            <p class="text-muted mb-0" style="font-size: 1rem; font-weight: 500;">Manage standby mobile phones and assign them by aircraft.</p>
+                <div id="devicePhoneContent" style="display: none; padding: 24px;">
+                    <!-- Header Section -->
+                    <div style="background: linear-gradient(135deg, #1e88e5 0%, #1565c0 100%); border-radius: 20px; padding: 40px; margin-bottom: 32px; box-shadow: 0 10px 40px rgba(30, 136, 229, 0.2);">
+                        <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 16px;">
+                            <div style="background: rgba(255, 255, 255, 0.2); width: 70px; height: 70px; border-radius: 18px; display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem; backdrop-filter: blur(10px);"><i class="fas fa-mobile-alt"></i></div>
+                            <div>
+                                <h2 style="color: white; font-weight: 900; margin: 0; font-size: 2.2rem;">Device Management</h2>
+                                <p style="color: rgba(255, 255, 255, 0.85); margin: 8px 0 0 0; font-size: 1rem; font-weight: 500;">Manage mobile phones & standby devices by aircraft</p>
+                            </div>
                         </div>
                     </div>
 
+                    <!-- Phone Metrics Row -->
                     <div class="row g-3 mb-4">
-                        <div class="col-md-4">
-                            <div class="card p-4" style="border-radius: 20px; border: none; box-shadow: 0 12px 30px rgba(0, 123, 255, 0.14); background: linear-gradient(135deg, #e3f2fd 0%, #f1f8ff 100%);">
-                                <div style="display: flex; align-items: center; gap: 15px;">
-                                    <div style="background: linear-gradient(135deg, #0288d1, #03a9f4); width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; box-shadow: 0 6px 15px rgba(2, 136, 209, 0.3);">
-                                        <i class="fas fa-mobile-alt"></i>
-                                    </div>
-                                    <div>
-                                        <div class="metric-label" style="font-size: 0.85rem; color: #0d47a1; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Total Phones</div>
-                                        <div class="metric-value" id="phoneTotalCount" style="font-size: 2.2rem; color: #0d47a1;">0</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card p-4" style="border-radius: 20px; border: none; box-shadow: 0 12px 30px rgba(76, 175, 80, 0.15); background: linear-gradient(135deg, #e8f5e9 0%, #eefaf1 100%);">
-                                <div style="display: flex; align-items: center; gap: 15px;">
-                                    <div style="background: linear-gradient(135deg, #43a047, #66bb6a); width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; box-shadow: 0 6px 15px rgba(76, 175, 80, 0.3);">
-                                        <i class="fas fa-check-circle"></i>
-                                    </div>
-                                    <div>
-                                        <div class="metric-label" style="font-size: 0.85rem; color: #2e7d32; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Available</div>
-                                        <div class="metric-value" id="phoneAvailableCount" style="font-size: 2.2rem; color: #43a047;">0</div>
+                        <div class="col-md-4 col-sm-6">
+                            <div class="card" style="border: none; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 24px rgba(255, 140, 0, 0.12); transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 12px 32px rgba(255, 140, 0, 0.18)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 24px rgba(255, 140, 0, 0.12)'">
+                                <div style="background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); padding: 24px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;">
+                                        <div>
+                                            <div style="font-size: 0.75rem; color: #e65100; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 8px;">Total Phones</div>
+                                            <div style="font-size: 2.4rem; font-weight: 900; color: #ff8c00;" id="phoneTotalCount">0</div>
+                                        </div>
+                                        <div style="background: linear-gradient(135deg, #ff8c00, #ff6b35); width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.3rem; box-shadow: 0 6px 16px rgba(255, 107, 53, 0.3);"><i class="fas fa-mobile-alt"></i></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="card p-4" style="border-radius: 20px; border: none; box-shadow: 0 12px 30px rgba(244, 67, 54, 0.15); background: linear-gradient(135deg, #ffebee 0%, #ffebee 100%);">
-                                <div style="display: flex; align-items: center; gap: 15px;">
-                                    <div style="background: linear-gradient(135deg, #d32f2f, #ef5350); width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; box-shadow: 0 6px 15px rgba(244, 67, 54, 0.3);">
-                                        <i class="fas fa-plane"></i>
+                        <div class="col-md-4 col-sm-6">
+                            <div class="card" style="border: none; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 24px rgba(76, 175, 80, 0.12); transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 12px 32px rgba(76, 175, 80, 0.18)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 24px rgba(76, 175, 80, 0.12)'">
+                                <div style="background: linear-gradient(135deg, #e8f5e9 0%, #eefaf1 100%); padding: 24px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;">
+                                        <div>
+                                            <div style="font-size: 0.75rem; color: #2e7d32; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 8px;">Available</div>
+                                            <div style="font-size: 2.4rem; font-weight: 900; color: #43a047;" id="phoneAvailableCount">0</div>
+                                        </div>
+                                        <div style="background: linear-gradient(135deg, #43a047, #66bb6a); width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.3rem; box-shadow: 0 6px 16px rgba(76, 175, 80, 0.3);"><i class="fas fa-check-circle"></i></div>
                                     </div>
-                                    <div>
-                                        <div class="metric-label" style="font-size: 0.85rem; color: #b71c1c; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Assigned</div>
-                                        <div class="metric-value" id="phoneAssignedCount" style="font-size: 2.2rem; color: #d32f2f;">0</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-6">
+                            <div class="card" style="border: none; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 24px rgba(211, 47, 47, 0.12); transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 12px 32px rgba(211, 47, 47, 0.18)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 24px rgba(211, 47, 47, 0.12)'">
+                                <div style="background: linear-gradient(135deg, #ffebee 0%, #ffebee 100%); padding: 24px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;">
+                                        <div>
+                                            <div style="font-size: 0.75rem; color: #b71c1c; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 8px;">Assigned</div>
+                                            <div style="font-size: 2.4rem; font-weight: 900; color: #d32f2f;" id="phoneAssignedCount">0</div>
+                                        </div>
+                                        <div style="background: linear-gradient(135deg, #d32f2f, #ef5350); width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.3rem; box-shadow: 0 6px 16px rgba(211, 47, 47, 0.3);"><i class="fas fa-plane"></i></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
+                    <!-- iPad Standby Metrics Row -->
                     <div class="row g-3 mb-4">
-                        <div class="col-md-4">
-                            <div class="card p-4" style="border-radius: 20px; border: none; box-shadow: 0 12px 30px rgba(0, 123, 255, 0.14); background: linear-gradient(135deg, #e3f2fd 0%, #f1f8ff 100%);">
-                                <div style="display: flex; align-items: center; gap: 15px;">
-                                    <div style="background: linear-gradient(135deg, #0288d1, #03a9f4); width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; box-shadow: 0 6px 15px rgba(2, 136, 209, 0.3);">
-                                        <i class="fas fa-tablet-alt"></i>
-                                    </div>
-                                    <div>
-                                        <div class="metric-label" style="font-size: 0.85rem; color: #0d47a1; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Total iPads</div>
-                                        <div class="metric-value" id="ipadStandbyTotalCount" style="font-size: 2.2rem; color: #0d47a1;">0</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card p-4" style="border-radius: 20px; border: none; box-shadow: 0 12px 30px rgba(76, 175, 80, 0.15); background: linear-gradient(135deg, #e8f5e9 0%, #eefaf1 100%);">
-                                <div style="display: flex; align-items: center; gap: 15px;">
-                                    <div style="background: linear-gradient(135deg, #43a047, #66bb6a); width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; box-shadow: 0 6px 15px rgba(76, 175, 80, 0.3);">
-                                        <i class="fas fa-check-circle"></i>
-                                    </div>
-                                    <div>
-                                        <div class="metric-label" style="font-size: 0.85rem; color: #2e7d32; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Available</div>
-                                        <div class="metric-value" id="ipadStandbyAvailableCount" style="font-size: 2.2rem; color: #43a047;">0</div>
+                        <div class="col-md-4 col-sm-6">
+                            <div class="card" style="border: none; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 24px rgba(255, 140, 0, 0.12); transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 12px 32px rgba(255, 140, 0, 0.18)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 24px rgba(255, 140, 0, 0.12)'">
+                                <div style="background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); padding: 24px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;">
+                                        <div>
+                                            <div style="font-size: 0.75rem; color: #e65100; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 8px;">iPad Standby</div>
+                                            <div style="font-size: 2.4rem; font-weight: 900; color: #ff8c00;" id="ipadStandbyTotalCount">0</div>
+                                        </div>
+                                        <div style="background: linear-gradient(135deg, #ff8c00, #ff6b35); width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.3rem; box-shadow: 0 6px 16px rgba(255, 107, 53, 0.3);"><i class="fas fa-tablet-alt"></i></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="card p-4" style="border-radius: 20px; border: none; box-shadow: 0 12px 30px rgba(244, 67, 54, 0.15); background: linear-gradient(135deg, #ffebee 0%, #ffebee 100%);">
-                                <div style="display: flex; align-items: center; gap: 15px;">
-                                    <div style="background: linear-gradient(135deg, #d32f2f, #ef5350); width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; box-shadow: 0 6px 15px rgba(244, 67, 54, 0.3);">
-                                        <i class="fas fa-plane"></i>
+                        <div class="col-md-4 col-sm-6">
+                            <div class="card" style="border: none; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 24px rgba(76, 175, 80, 0.12); transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 12px 32px rgba(76, 175, 80, 0.18)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 24px rgba(76, 175, 80, 0.12)'">
+                                <div style="background: linear-gradient(135deg, #e8f5e9 0%, #eefaf1 100%); padding: 24px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;">
+                                        <div>
+                                            <div style="font-size: 0.75rem; color: #2e7d32; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 8px;">Available</div>
+                                            <div style="font-size: 2.4rem; font-weight: 900; color: #43a047;" id="ipadStandbyAvailableCount">0</div>
+                                        </div>
+                                        <div style="background: linear-gradient(135deg, #43a047, #66bb6a); width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.3rem; box-shadow: 0 6px 16px rgba(76, 175, 80, 0.3);"><i class="fas fa-check-circle"></i></div>
                                     </div>
-                                    <div>
-                                        <div class="metric-label" style="font-size: 0.85rem; color: #b71c1c; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Assigned</div>
-                                        <div class="metric-value" id="ipadStandbyAssignedCount" style="font-size: 2.2rem; color: #d32f2f;">0</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-6">
+                            <div class="card" style="border: none; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 24px rgba(211, 47, 47, 0.12); transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 12px 32px rgba(211, 47, 47, 0.18)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 24px rgba(211, 47, 47, 0.12)'">
+                                <div style="background: linear-gradient(135deg, #ffebee 0%, #ffebee 100%); padding: 24px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;">
+                                        <div>
+                                            <div style="font-size: 0.75rem; color: #b71c1c; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 8px;">Assigned</div>
+                                            <div style="font-size: 2.4rem; font-weight: 900; color: #d32f2f;" id="ipadStandbyAssignedCount">0</div>
+                                        </div>
+                                        <div style="background: linear-gradient(135deg, #d32f2f, #ef5350); width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.3rem; box-shadow: 0 6px 16px rgba(211, 47, 47, 0.3);"><i class="fas fa-plane"></i></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="card" style="border-radius: 20px; border: none; box-shadow: 0 14px 28px rgba(0, 123, 255, 0.12); overflow: hidden;">
-                        <div class="card-header" style="background: linear-gradient(135deg, #0288d1, #03a9f4); border-radius: 20px 20px 0 0; padding: 20px 24px; border: none;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;">
-                                <h5 class="mb-0" style="color: white; font-weight: 800; font-size: 1.2rem;"><i class="fas fa-mobile-alt me-2"></i>Flight Phone Standby Tracking</h5>
-                                <span style="background: rgba(255,255,255,0.25); padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; color: white;"><i class="fas fa-list me-1"></i><span id="phoneCountBadge">0</span> Phones</span>
+                    <!-- Mobile Phones Section -->
+                    <div class="card" style="border: none; border-radius: 18px; box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08); overflow: hidden; margin-bottom: 28px;">
+                        <div style="background: linear-gradient(135deg, #ff8c00, #ff6b35); padding: 28px 32px; border: none;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+                                <div>
+                                    <h5 style="color: white; font-weight: 800; font-size: 1.25rem; margin: 0; display: flex; align-items: center; gap: 12px;"><i class="fas fa-mobile-alt"></i>Mobile Phones</h5>
+                                </div>
+                                <span style="background: rgba(255,255,255,0.25); padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; color: white; backdrop-filter: blur(10px);"><i class="fas fa-list me-2"></i><span id="phoneCountBadge">0</span> Phones</span>
                             </div>
                         </div>
                         <div class="card-body" style="padding: 0;">
-                            <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 p-4" style="background: #f4fbff; border-bottom: 1px solid #d6e9f8;">
-                                <div class="d-flex flex-wrap align-items-center gap-2" style="flex: 1; min-width: 320px;">
-                                    <div class="search-box" style="max-width: 520px; width: 100%;">
-                                        <i class="fas fa-search"></i>
-                                        <input type="text" id="phoneSearchInput" placeholder="Search by phone name, serial, mobile, aircraft or status..." />
+                            <div style="background: #fff8f0; padding: 24px 28px; border-bottom: 1px solid #ffe0c9;">
+                                <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                                    <div style="flex: 1; min-width: 280px; display: flex; gap: 12px; align-items: center;">
+                                        <div class="search-box" style="flex: 1; max-width: 480px;">
+                                            <i class="fas fa-search"></i>
+                                            <input type="text" id="phoneSearchInput" placeholder="Search phones..." style="font-size: 0.95rem;" />
+                                        </div>
+                                        <button class="btn" onclick="filterPhoneDevices()" style="border-radius: 10px; padding: 10px 20px; font-weight: 700; font-size: 0.9rem; background: #ff8c00; color: white; border: none; transition: all 0.2s;" onmouseover="this.style.background='#e67e00'" onmouseout="this.style.background='#ff8c00'">
+                                            <i class="fas fa-search me-2"></i>Search
+                                        </button>
                                     </div>
-                                    <button class="btn btn-outline-primary" onclick="filterPhoneDevices()" style="border-radius: 14px; padding: 12px 24px; font-weight: 700; min-width: 140px;">
-                                        <i class="fas fa-search me-2"></i>Search
-                                    </button>
-                                </div>
-                                <div class="d-flex flex-wrap align-items-center gap-2 justify-content-end" style="min-width: 320px;">
-                                    <button class="btn btn-info" id="syncPhoneBtn" onclick="syncPhoneDeviceData()" style="min-width: 140px; color: white;">
-                                        <i class="fas fa-sync me-2"></i>Sync
-                                    </button>
-                                    <button class="btn btn-primary" id="addNewPhoneBtn" onclick="openAddPhoneModal()" style="min-width: 140px; background: linear-gradient(135deg, #0288d1, #03a9f4); border: none; color: white;">
-                                        <i class="fas fa-plus-circle me-2"></i>Add New Phone
-                                    </button>
+                                    <div class="d-flex flex-wrap gap-2" style="justify-content: flex-end;">
+                                        <button class="btn" id="syncPhoneBtn" onclick="syncPhoneDeviceData()" style="min-width: 140px; background: #ff9e1f; border: none; color: white; border-radius: 10px; font-weight: 700; transition: all 0.2s;" onmouseover="this.style.background='#e67e00'" onmouseout="this.style.background='#ff9e1f'">
+                                            <i class="fas fa-cloud-download-alt me-2"></i>Sync
+                                        </button>
+                                        <button class="btn" id="addNewPhoneBtn" onclick="openAddPhoneModal()" style="min-width: 140px; background: #ff8c00; border: none; color: white; border-radius: 10px; font-weight: 700; transition: all 0.2s;" onmouseover="this.style.background='#e67e00'" onmouseout="this.style.background='#ff8c00'">
+                                            <i class="fas fa-plus me-2"></i>Add Phone
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                             <div id="phoneAssignedTableContainer"></div>
@@ -2655,60 +2670,65 @@
                         </div>
                     </div>
 
-                    <div class="card mt-4" style="border-radius: 20px; border: none; box-shadow: 0 14px 28px rgba(0, 123, 255, 0.12); overflow: hidden;">
-                        <div class="card-header" style="background: linear-gradient(135deg, #1976d2, #42a5f5); border-radius: 20px 20px 0 0; padding: 20px 24px; border: none;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;">
-                                <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
-                                    <h5 class="mb-0" style="color: white; font-weight: 800; font-size: 1.2rem;"><i class="fas fa-tablet-alt me-2"></i>iPad Standby</h5>
-                                    <span style="background: rgba(255,255,255,0.18); padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; color: white;"><i class="fas fa-list me-1"></i><span id="ipadStandbyCountBadge">0</span> iPads</span>
+                    <!-- iPad Standby Section -->
+                    <div class="card" style="border: none; border-radius: 18px; box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08); overflow: hidden; margin-bottom: 28px;">
+                        <div style="background: linear-gradient(135deg, #ffa500, #ff8c00); padding: 28px 32px; border: none;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+                                <div>
+                                    <h5 style="color: white; font-weight: 800; font-size: 1.25rem; margin: 0; display: flex; align-items: center; gap: 12px;"><i class="fas fa-tablet-alt"></i>iPad Standby</h5>
                                 </div>
-                                <div style="display: flex; gap: 10px;">
-                                    <button class="btn btn-light" id="syncIpadStandbyBtn" onclick="syncIPadStandbyTableOnly()" style="border-radius: 14px; font-weight: 700; color: #1976d2;">
-                                        <i class="fas fa-sync me-2"></i>Sync
-                                    </button>
-                                    <button class="btn btn-light" onclick="openAddIPadStandbyModal()" style="min-width: 170px; border-radius: 14px; font-weight: 700; color: #1976d2;">
-                                        <i class="fas fa-plus-circle me-2"></i>Add iPad Standby
-                                    </button>
-                                </div>
+                                <span style="background: rgba(255,255,255,0.25); padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; color: white; backdrop-filter: blur(10px);"><i class="fas fa-list me-2"></i><span id="ipadStandbyCountBadge">0</span> Units</span>
                             </div>
                         </div>
                         <div class="card-body" style="padding: 0;">
-                            <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 p-4" style="background: #f1f8ff; border-bottom: 1px solid #dfeafd;">
-                                <div class="d-flex flex-wrap align-items-center gap-2" style="flex: 1; min-width: 320px;">
-                                    <div class="search-box" style="max-width: 520px; width: 100%;">
-                                        <i class="fas fa-search"></i>
-                                        <input type="text" id="ipadStandbySearchInput" placeholder="Search by serial, aircraft, remarks or status..." />
+                            <div style="background: #fff8f0; padding: 24px 28px; border-bottom: 1px solid #ffe0c9;">
+                                <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                                    <div style="flex: 1; min-width: 280px; display: flex; gap: 12px; align-items: center;">
+                                        <div class="search-box" style="flex: 1; max-width: 480px;">
+                                            <i class="fas fa-search"></i>
+                                            <input type="text" id="ipadStandbySearchInput" placeholder="Search standby iPads..." style="font-size: 0.95rem;" />
+                                        </div>
+                                        <button class="btn" onclick="filterIPadStandbyDevices()" style="border-radius: 10px; padding: 10px 20px; font-weight: 700; font-size: 0.9rem; background: #ffa500; color: white; border: none; transition: all 0.2s;" onmouseover="this.style.background='#e67e00'" onmouseout="this.style.background='#ffa500'">
+                                            <i class="fas fa-search me-2"></i>Search
+                                        </button>
                                     </div>
-                                    <button class="btn btn-outline-primary" onclick="filterIPadStandbyDevices()" style="border-radius: 14px; padding: 12px 24px; font-weight: 700; min-width: 140px;">
-                                        <i class="fas fa-search me-2"></i>Search
-                                    </button>
+                                    <div class="d-flex flex-wrap gap-2" style="justify-content: flex-end;">
+                                        <button class="btn" id="syncIpadStandbyBtn" onclick="syncIPadStandbyTableOnly()" style="min-width: 140px; background: #ff9e1f; border: none; color: white; border-radius: 10px; font-weight: 700; transition: all 0.2s;" onmouseover="this.style.background='#e67e00'" onmouseout="this.style.background='#ff9e1f'">
+                                            <i class="fas fa-cloud-download-alt me-2"></i>Sync
+                                        </button>
+                                        <button class="btn" onclick="openAddIPadStandbyModal()" style="min-width: 140px; background: #ffa500; border: none; color: white; border-radius: 10px; font-weight: 700; transition: all 0.2s;" onmouseover="this.style.background='#e67e00'" onmouseout="this.style.background='#ffa500'">
+                                            <i class="fas fa-plus me-2"></i>Add Unit
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                             <div id="ipadStandbyTableContainer"></div>
                         </div>
                     </div>
 
-                    <div class="card mt-4" style="border-radius: 20px; border: none; box-shadow: 0 14px 28px rgba(0, 0, 0, 0.08); overflow: hidden;">
-                        <div class="card-header" style="background: linear-gradient(135deg, #455a64, #607d8b); border-radius: 20px 20px 0 0; padding: 20px 24px; border: none;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;">
-                                <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
-                                    <h5 class="mb-0" style="color: white; font-weight: 800; font-size: 1.2rem;"><i class="fas fa-clipboard-list me-2"></i>Entry Log</h5>
-                                    <span style="background: rgba(255,255,255,0.18); padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; color: white;"><i class="fas fa-sync me-1"></i>All entries</span>
+                    <!-- Entry Log Section -->
+                    <div class="card" style="border: none; border-radius: 18px; box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08); overflow: hidden;">
+                        <div style="background: linear-gradient(135deg, #455a64, #607d8b); padding: 28px 32px; border: none;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+                                <div>
+                                    <h5 style="color: white; font-weight: 800; font-size: 1.25rem; margin: 0; display: flex; align-items: center; gap: 12px;"><i class="fas fa-clipboard-list"></i>Entry Log</h5>
                                 </div>
-                                <button class="btn btn-light" id="syncEntryLogBtn" onclick="syncEntryLogTableOnly()" style="border-radius: 14px; font-weight: 700; color: #455a64;">
+                                <button class="btn btn-light" id="syncEntryLogBtn" onclick="syncEntryLogTableOnly()" style="border-radius: 10px; font-weight: 700; color: #455a64;">
                                     <i class="fas fa-sync me-2"></i>Sync
                                 </button>
                             </div>
                         </div>
                         <div class="card-body" style="padding: 0;">
-                            <div class="d-flex flex-wrap align-items-center gap-2 p-4" style="min-width: 220px; background: #fafafa; border-bottom: 1px solid #dfe1e5;">
-                                <div class="search-box" style="max-width: 420px; width: 100%;">
-                                    <i class="fas fa-search"></i>
-                                    <input type="text" id="entryLogSearchInput" placeholder="Search the entry log..." />
+                            <div style="background: #fafafa; padding: 24px 28px; border-bottom: 1px solid #dfe1e5;">
+                                <div class="d-flex flex-wrap gap-3 align-items-center">
+                                    <div class="search-box" style="flex: 1; max-width: 480px;">
+                                        <i class="fas fa-search"></i>
+                                        <input type="text" id="entryLogSearchInput" placeholder="Search log entries..." style="font-size: 0.95rem;" />
+                                    </div>
+                                    <button class="btn btn-outline-secondary" onclick="filterEntryLog()" style="border-radius: 10px; padding: 10px 20px; font-weight: 700; font-size: 0.9rem;">
+                                        <i class="fas fa-search me-2"></i>Search
+                                    </button>
                                 </div>
-                                <button class="btn btn-outline-light" onclick="filterEntryLog()" style="border-radius: 14px; padding: 12px 20px; font-weight: 700; min-width: 120px; color: white; border-color: rgba(255,255,255,0.5);">
-                                    <i class="fas fa-search me-2"></i>Search
-                                </button>
                             </div>
                             <div id="entryLogTableContainer"></div>
                         </div>
@@ -2838,32 +2858,17 @@
                                 </div>
                             </div>
 
-                            <!-- Flight Viewer Website Access -->
-                            <div style="background: linear-gradient(135deg, #e3f2fd 0%, #f3f4f6 100%); padding: 25px; border-radius: 16px; margin-bottom: 30px; border-left: 6px solid #2196F3; box-shadow: 0 4px 15px rgba(33, 150, 243, 0.1);">
-                                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                                    <div style="flex: 1; margin-right: 20px;">
-                                        <h6 style="font-weight: 800; color: #2196F3; margin-bottom: 15px; font-size: 1rem; text-transform: uppercase; letter-spacing: 0.5px;">
-                                            <i class="fas fa-globe me-2"></i>Flight Viewer Credentials
+                            <!-- LIDO Web Portal Access -->
+                            <div style="background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); padding: 25px; border-radius: 16px; margin-bottom: 30px; border-left: 6px solid #ff8c00; box-shadow: 0 4px 15px rgba(255, 140, 0, 0.15);">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <h6 style="font-weight: 800; color: #ff8c00; margin-bottom: 8px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.5px;">
+                                            <i class="fas fa-globe me-2"></i>LIDO Web Portal
                                         </h6>
-                                        <div style="background: white; padding: 15px; border-radius: 8px; font-size: 0.9rem; line-height: 1.8;">
-                                            <div style="margin-bottom: 15px;">
-                                                <strong style="color: #ff8c00; display: block; margin-bottom: 5px;">B737 Charts:</strong>
-                                                <div style="padding-left: 15px; color: #333;">
-                                                    <div><strong>User ID:</strong> FireflyWW</div>
-                                                    <div><strong>Password:</strong> am7Zwb</div>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <strong style="color: #ff8c00; display: block; margin-bottom: 5px;">ATR Charts:</strong>
-                                                <div style="padding-left: 15px; color: #333;">
-                                                    <div><strong>User ID:</strong> firefly</div>
-                                                    <div><strong>Password:</strong> ub5Mga</div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <p style="color: #666; margin: 0; font-size: 0.9rem;">Access flight charts and aircraft information</p>
                                     </div>
-                                    <a href="https://viewer.flightsupport.com/framesets/frameset_login.html" target="_blank" class="btn btn-primary" style="padding: 12px 24px; font-weight: 600; white-space: nowrap; height: fit-content;">
-                                        <i class="fas fa-external-link-alt me-2"></i>Flight Viewer Website
+                                    <a href="https://www.lidowebportal.com/WebPortal" target="_blank" class="btn" style="padding: 12px 24px; font-weight: 700; white-space: nowrap; height: fit-content; background: linear-gradient(135deg, #ff8c00, #ff6b35); border: none; color: white; border-radius: 10px; transition: all 0.2s;" onmouseover="this.style.background='linear-gradient(135deg, #e67e00, #e55a25)'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(255, 107, 53, 0.3)'" onmouseout="this.style.background='linear-gradient(135deg, #ff8c00, #ff6b35)'; this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                        <i class="fas fa-external-link-alt me-2"></i>Open Portal
                                     </a>
                                 </div>
                             </div>
@@ -3726,9 +3731,9 @@
             document.getElementById('paymentDashboardContent').style.display = 'none';
             document.getElementById('jsonConverterContent').style.display = 'none';
             
-            // Show back/refresh buttons on analysis pages
+            // Show only back button on analysis pages; no manual refresh
             document.getElementById('backToHomeBtn').style.display = 'inline-block';
-            document.getElementById('refreshDataBtn').style.display = 'inline-block';
+            document.getElementById('refreshDataBtn').style.display = 'none';
             
             // Update Page Title
             document.getElementById('pageTitle').textContent = 'Fuel Analysis';
@@ -3750,9 +3755,9 @@
             document.getElementById('paymentDashboardContent').style.display = 'none';
             document.getElementById('jsonConverterContent').style.display = 'none';
             
-            // Show back/refresh buttons on analysis pages
+            // Show only back button on analysis pages; no manual refresh
             document.getElementById('backToHomeBtn').style.display = 'inline-block';
-            document.getElementById('refreshDataBtn').style.display = 'inline-block';
+            document.getElementById('refreshDataBtn').style.display = 'none';
             
             // Update Page Title
             document.getElementById('pageTitle').textContent = 'Delay Code Analysis';

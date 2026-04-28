@@ -12,7 +12,7 @@ let fuelOverTimeChart, fuelByAircraftChart, fuelByRouteChart, fuelStatsChart;
 let autoRefreshInterval = null;
 let liveDataSubscriptions = [];
 const AUTO_REFRESH_INTERVAL = 10000; // 10 seconds
-let isLiveDataEnabled = true;
+let isLiveDataEnabled = false; // Disabled for admin-uploaded fuel/delay analysis data
 
 // Firebase helper functions
 async function getFlightData(key) {
@@ -262,17 +262,7 @@ $(document).ready(async function () {
     document.getElementById('monthlyTableContainer').style.display = 'flex';
     await loadFleetData(currentFleet, currentMonth, currentPeriod);
     
-    // Start live data auto-refresh
-    startAutoRefresh();
-    
-    // Handle page visibility - pause when not visible, resume when visible
-    document.addEventListener('visibilitychange', function() {
-        if (document.hidden) {
-            stopAutoRefresh();
-        } else {
-            startAutoRefresh();
-        }
-    });
+    // Live data auto-refresh is disabled for fuel/delay analysis pages.
     
     // Stop auto-refresh when page unloads
     window.addEventListener('beforeunload', function() {
