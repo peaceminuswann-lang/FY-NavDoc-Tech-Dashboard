@@ -1967,6 +1967,9 @@
                     <img src="firefly-logo.png" alt="Firefly Logo">
                 </div>
                 <div class="topbar-actions d-flex align-items-center gap-2 flex-wrap justify-content-end">
+                    <button class="btn topbar-btn btn-outline-secondary" id="syncStatusBtn" onclick="manualSyncNow()" title="Sync data with Supabase" style="min-width: 130px;">
+                        <i class="fas fa-cloud me-2"></i><span id="syncStatusText">Sync</span>
+                    </button>
                     <button class="btn topbar-btn btn-outline-secondary" id="refreshDataBtn" onclick="location.reload()" style="display: none; min-width: 130px;">
                         <i class="fas fa-sync-alt me-2"></i>Refresh Data
                     </button>
@@ -4692,61 +4695,176 @@
             '9MMLI', '9MMLH', '9MMLJ', '9MMLF', '9MMLG', 'MH NAVDOC'
         ];
 
-        function savePhoneDevicesToStorage() {
+        const SUPABASE_SYNC_TABLE = 'app_storage';
+        let syncStatus = 'idle'; // 'idle', 'syncing', 'success', 'error'
+
+        function updateSyncStatus(status, message = '') {
+            syncStatus = status;
+            const btn = document.getElementById('syncStatusBtn');
+            const text = document.getElementById('syncStatusText');
+            
+            if (!btn || !text) return;
+            
+            if (status === 'syncing') {
+                btn.className = 'btn topbar-btn btn-outline-warning';
+                text.textContent = 'Syncing...';
+            } else if (status === 'success') {
+                btn.className = 'btn topbar-btn btn-outline-success';
+                text.textContent = '✓ Synced';
+                setTimeout(() => {
+                    if (syncStatus === 'success') {
+                        btn.className = 'btn topbar-btn btn-outline-secondary';
+                        text.textContent = 'Sync';
+                    }
+                }, 3000);
+            } else if (status === 'error') {
+                btn.className = 'btn topbar-btn btn-outline-danger';
+                text.textContent = '✗ Sync Failed';
+                console.error('[SYNC] Error:', message);
+            } else {
+                btn.className = 'btn topbar-btn btn-outline-secondary';
+                text.textContent = 'Sync';
+            }
+        }
+
+        async function manualSyncNow() {
+            if (syncStatus === 'syncing') return;
+            
+            updateSyncStatus('syncing');
+            console.log('[SYNC] Manual sync triggered');
+            
+            try {
+                const results = [];
+                results.push(await saveDataToSupabase('phoneDevices', phoneDevices));
+                results.push(await saveDataToSupabase('ipadDevices', iPadDevices));
+                results.push(await saveDataToSupabase('ipadStandbyDevices', iPadStandbyDevices));
+                results.push(await saveDataToSupabase('entryLog', entryLog));
+                results.push(await saveDataToSupabase('crewList', crewList));
+                results.push(await saveDataToSupabase('paymentDashboardData', { paymentData, nextPaymentId }));
+                
+                const allSuccess = results.every(r => r === true);
+                if (allSuccess) {
+                    updateSyncStatus('success');
+                    console.log('[SYNC] All data synced successfully');
+                } else {
+                    updateSyncStatus('error', 'Some items failed to sync');
+                }
+            } catch (error) {
+                updateSyncStatus('error', error.message);
+            }
+        }
+
+        async function saveDataToSupabase(key, value) {
+            if (!window.supabase || !window.supabase.from) {
+                console.warn(`[SYNC] Supabase not available for ${key}`);
+                return false;
+            }
+            try {
+                console.log(`[SYNC] Saving to Supabase: ${key}`, value);
+                const { error } = await window.supabase
+                    .from(SUPABASE_SYNC_TABLE)
+                    .upsert({ key, value }, { onConflict: 'key' });
+
+                if (error) {
+                    console.error(`[SYNC] Supabase sync failed for ${key}:`, error);
+                    return false;
+                }
+
+                console.log(`[SYNC] Successfully saved ${key} to Supabase`);
+                return true;
+            } catch (e) {
+                console.error(`[SYNC] Supabase sync error for ${key}:`, e);
+                return false;
+            }
+        }
+
+        async function getDataFromSupabase(key) {
+            if (!window.supabase || !window.supabase.from) {
+                console.warn(`[SYNC] Supabase not available for ${key}`);
+                return null;
+            }
+            try {
+                console.log(`[SYNC] Loading from Supabase: ${key}`);
+                const { data, error } = await window.supabase
+                    .from(SUPABASE_SYNC_TABLE)
+                    .select('value')
+                    .eq('key', key)
+                    .single();
+
+                if (error) {
+                    console.warn(`[SYNC] Supabase load failed for ${key}:`, error.message);
+                    return null;
+                }
+
+                if (data) {
+                    console.log(`[SYNC] Successfully loaded ${key} from Supabase:`, data.value);
+                    return data.value;
+                }
+
+                console.log(`[SYNC] No data found for ${key}`);
+                return null;
+            } catch (e) {
+                console.error(`[SYNC] Supabase load error for ${key}:`, e);
+                return null;
+            }
+        }
+
+        async function getSyncedData(key) {
+            const remote = await getDataFromSupabase(key);
+            if (remote !== null && typeof remote !== 'undefined') {
+                return remote;
+            }
+
+            const savedText = localStorage.getItem(key);
+            if (!savedText) {
+                return null;
+            }
+
+            try {
+                return JSON.parse(savedText);
+            } catch (error) {
+                console.warn(`Failed to parse localStorage value for ${key}:`, error);
+                return null;
+            }
+        }
+
+        async function savePhoneDevicesToStorage() {
             localStorage.setItem('phoneDevices', JSON.stringify(phoneDevices));
+            await saveDataToSupabase('phoneDevices', phoneDevices);
         }
 
-        function loadPhoneDevicesFromStorage() {
-            const savedDevices = localStorage.getItem('phoneDevices');
-            if (savedDevices) {
-                try {
-                    const parsedDevices = JSON.parse(savedDevices);
-                    if (Array.isArray(parsedDevices)) {
-                        const normalized = parsedDevices.map(device => ({
-                            ...device,
-                            uploadDate: device.uploadDate || device.collectionDate || ''
-                        }));
-                        phoneDevices.splice(0, phoneDevices.length, ...normalized);
-                    }
-                } catch (e) {
-                    console.warn('Failed to load phone devices from localStorage', e);
-                }
+        async function loadPhoneDevicesFromStorage() {
+            const savedDevices = await getSyncedData('phoneDevices');
+            if (savedDevices && Array.isArray(savedDevices)) {
+                const normalized = savedDevices.map(device => ({
+                    ...device,
+                    uploadDate: device.uploadDate || device.collectionDate || ''
+                }));
+                phoneDevices.splice(0, phoneDevices.length, ...normalized);
             }
         }
 
-        function saveIPadStandbyDevicesToStorage() {
+        async function saveIPadStandbyDevicesToStorage() {
             localStorage.setItem('ipadStandbyDevices', JSON.stringify(iPadStandbyDevices));
+            await saveDataToSupabase('ipadStandbyDevices', iPadStandbyDevices);
         }
 
-        function loadIPadStandbyDevicesFromStorage() {
-            const savedDevices = localStorage.getItem('ipadStandbyDevices');
-            if (savedDevices) {
-                try {
-                    const parsedDevices = JSON.parse(savedDevices);
-                    if (Array.isArray(parsedDevices)) {
-                        iPadStandbyDevices.splice(0, iPadStandbyDevices.length, ...parsedDevices);
-                    }
-                } catch (e) {
-                    console.warn('Failed to load iPad standby devices from localStorage', e);
-                }
+        async function loadIPadStandbyDevicesFromStorage() {
+            const savedDevices = await getSyncedData('ipadStandbyDevices');
+            if (savedDevices && Array.isArray(savedDevices)) {
+                iPadStandbyDevices.splice(0, iPadStandbyDevices.length, ...savedDevices);
             }
         }
 
-        function saveEntryLogToStorage() {
+        async function saveEntryLogToStorage() {
             localStorage.setItem('entryLog', JSON.stringify(entryLog));
+            await saveDataToSupabase('entryLog', entryLog);
         }
 
-        function loadEntryLogFromStorage() {
-            const savedLog = localStorage.getItem('entryLog');
-            if (savedLog) {
-                try {
-                    const parsedLog = JSON.parse(savedLog);
-                    if (Array.isArray(parsedLog)) {
-                        entryLog.splice(0, entryLog.length, ...parsedLog);
-                    }
-                } catch (e) {
-                    console.warn('Failed to load entry log from localStorage', e);
-                }
+        async function loadEntryLogFromStorage() {
+            const savedLog = await getSyncedData('entryLog');
+            if (savedLog && Array.isArray(savedLog)) {
+                entryLog.splice(0, entryLog.length, ...savedLog);
             }
         }
 
@@ -4889,66 +5007,61 @@
             });
         }
 
-        function saveCrewListToStorage() {
+        async function saveCrewListToStorage() {
             localStorage.setItem('crewList', JSON.stringify(crewList));
+            await saveDataToSupabase('crewList', crewList);
         }
 
-        function loadCrewListFromStorage() {
-            const savedList = localStorage.getItem('crewList');
-            if (savedList) {
-                try {
-                    const parsedList = JSON.parse(savedList);
-                    if (Array.isArray(parsedList)) {
-                        crewList.splice(0, crewList.length, ...parsedList);
-                    }
-                } catch (e) {
-                    console.warn('Failed to load crew list from localStorage', e);
-                }
+        async function loadCrewListFromStorage() {
+            const savedList = await getSyncedData('crewList');
+            if (savedList && Array.isArray(savedList)) {
+                crewList.splice(0, crewList.length, ...savedList);
             }
         }
 
-        function saveIPadDevicesToStorage() {
+        async function saveIPadDevicesToStorage() {
             localStorage.setItem('ipadDevices', JSON.stringify(iPadDevices));
+            await saveDataToSupabase('ipadDevices', iPadDevices);
         }
 
-        function loadIPadDevicesFromStorage() {
-            const savedDevices = localStorage.getItem('ipadDevices');
-            if (savedDevices) {
-                try {
-                    const parsedDevices = JSON.parse(savedDevices);
-                    if (Array.isArray(parsedDevices)) {
-                        iPadDevices.splice(0, iPadDevices.length, ...parsedDevices);
-                    }
-                } catch (e) {
-                    console.warn('Failed to load iPad devices from localStorage', e);
-                }
+        async function loadIPadDevicesFromStorage() {
+            const savedDevices = await getSyncedData('ipadDevices');
+            if (savedDevices && Array.isArray(savedDevices)) {
+                iPadDevices.splice(0, iPadDevices.length, ...savedDevices);
             }
         }
 
-        function savePaymentDataToStorage() {
+        async function savePaymentDataToStorage() {
             localStorage.setItem('paymentDashboardData', JSON.stringify(paymentData));
             localStorage.setItem('paymentDashboardNextId', String(nextPaymentId));
+            await saveDataToSupabase('paymentDashboardData', { paymentData, nextPaymentId });
         }
 
-        function loadPaymentDataFromStorage() {
-            const savedData = localStorage.getItem('paymentDashboardData');
-            if (savedData) {
-                try {
-                    const parsedData = JSON.parse(savedData);
-                    if (Array.isArray(parsedData)) {
-                        paymentData = parsedData;
-                    }
-                } catch (e) {
-                    console.warn('Failed to load payment data from localStorage', e);
-                }
-            }
-
-            const savedNextId = parseInt(localStorage.getItem('paymentDashboardNextId'), 10);
-            if (!Number.isNaN(savedNextId)) {
-                nextPaymentId = savedNextId;
+        async function loadPaymentDataFromStorage() {
+            const savedData = await getSyncedData('paymentDashboardData');
+            if (savedData && Array.isArray(savedData.paymentData)) {
+                paymentData = savedData.paymentData;
+                nextPaymentId = Number(savedData.nextPaymentId) || nextPaymentId;
             } else {
-                const maxId = paymentData.reduce((max, payment) => Math.max(max, payment.id || 0), 0);
-                nextPaymentId = maxId + 1;
+                const savedLocalData = localStorage.getItem('paymentDashboardData');
+                if (savedLocalData) {
+                    try {
+                        const parsedData = JSON.parse(savedLocalData);
+                        if (Array.isArray(parsedData)) {
+                            paymentData = parsedData;
+                        }
+                    } catch (e) {
+                        console.warn('Failed to load payment data from localStorage', e);
+                    }
+                }
+
+                const savedNextId = parseInt(localStorage.getItem('paymentDashboardNextId'), 10);
+                if (!Number.isNaN(savedNextId)) {
+                    nextPaymentId = savedNextId;
+                } else {
+                    const maxId = paymentData.reduce((max, payment) => Math.max(max, payment.id || 0), 0);
+                    nextPaymentId = maxId + 1;
+                }
             }
         }
 
@@ -4997,15 +5110,23 @@
         }
 
         // Initialize crew list on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            loadCrewListFromStorage();
-            loadIPadDevicesFromStorage();
-            loadPhoneDevicesFromStorage();
-            loadIPadStandbyDevicesFromStorage();
-            loadEntryLogFromStorage();
-            loadPaymentDataFromStorage();
+        document.addEventListener('DOMContentLoaded', async function() {
+            updateSyncStatus('idle');
+            await loadCrewListFromStorage();
+            await loadIPadDevicesFromStorage();
+            await loadPhoneDevicesFromStorage();
+            await loadIPadStandbyDevicesFromStorage();
+            await loadEntryLogFromStorage();
+            await loadPaymentDataFromStorage();
             populateCrewList();
             renderEntryLogTable();
+
+            // Auto-sync every 15 seconds
+            setInterval(() => {
+                if (syncStatus !== 'syncing') {
+                    manualSyncNow();
+                }
+            }, 15000);
 
             const addAvailability = document.getElementById('ipadAvailability');
             if (addAvailability) {
@@ -7547,7 +7668,7 @@
             }, 3000);
         }
 
-        function saveChartRevision() {
+        async function saveChartRevision() {
             try {
                 const revisionDate = document.getElementById('revisionDate').value;
                 
@@ -7588,8 +7709,9 @@
                     }
                 });
                 
-                // Save to localStorage
+                // Save to localStorage and Supabase
                 localStorage.setItem('chartRevisionData', JSON.stringify(chartData));
+                await saveDataToSupabase('chartRevisionData', chartData);
                 console.log('Chart data saved:', chartData);
                 
                 showNotification('<i class="fas fa-check-circle me-2"></i>Chart revision data saved successfully!', 'success');
@@ -7600,11 +7722,11 @@
         }
 
         // Load chart data from localStorage when page loads
-        function loadChartRevisionData() {
+        async function loadChartRevisionData() {
             try {
-                const savedData = localStorage.getItem('chartRevisionData');
+                const savedData = await getSyncedData('chartRevisionData') || localStorage.getItem('chartRevisionData');
                 if (savedData) {
-                    const data = JSON.parse(savedData);
+                    const data = typeof savedData === 'string' ? JSON.parse(savedData) : savedData;
                     console.log('Chart data loaded:', data);
                     
                     // Restore revision date
@@ -7672,11 +7794,11 @@
             }
         }
         
-        function loadChartDashboardData() {
+        async function loadChartDashboardData() {
             try {
-                const savedData = localStorage.getItem('chartRevisionData');
+                const savedData = await getSyncedData('chartRevisionData') || localStorage.getItem('chartRevisionData');
                 if (savedData) {
-                    const data = JSON.parse(savedData);
+                    const data = typeof savedData === 'string' ? JSON.parse(savedData) : savedData;
                     
                     // Display revision date
                     const revisionDateDisplay = document.getElementById('chartRevisionDateDisplay');
@@ -7925,7 +8047,7 @@
             }
         }
         
-        function saveChartRevisionInline() {
+        async function saveChartRevisionInline() {
             try {
                 const revisionDate = document.getElementById('chartRevisionDateEdit').value;
                 
@@ -7969,8 +8091,9 @@
                     }
                 });
                 
-                // Save to localStorage
+                // Save to localStorage and Supabase
                 localStorage.setItem('chartRevisionData', JSON.stringify(chartData));
+                await saveDataToSupabase('chartRevisionData', chartData);
                 console.log('Chart data saved:', chartData);
                 
                 showNotification('<i class="fas fa-check-circle me-2"></i>Chart revision data saved successfully!', 'success');
@@ -8224,10 +8347,10 @@
         
         // Initialize when page loads
         document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(() => {
-                loadChartRevisionData();
+            setTimeout(async () => {
+                await loadChartRevisionData();
                 initAutoSave();
-                loadChartDashboardData();
+                await loadChartDashboardData();
                 console.log('Chart revision module initialized');
             }, 500);
         });
