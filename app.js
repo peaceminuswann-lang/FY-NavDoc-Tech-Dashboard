@@ -8,6 +8,12 @@ let currentYearlyYear = '2026';
 let table;
 let fuelOverTimeChart, fuelByAircraftChart, fuelByRouteChart, fuelStatsChart;
 
+// Live data auto-refresh configuration
+let autoRefreshInterval = null;
+let liveDataSubscriptions = [];
+const AUTO_REFRESH_INTERVAL = 10000; // 10 seconds
+let isLiveDataEnabled = true;
+
 // Firebase helper functions
 async function getFlightData(key) {
     try {
@@ -149,6 +155,104 @@ function normalizeRow(row) {
     return normalized;
 }
 
+// Live Data Auto-Refresh Functions
+function showSyncIndicator() {
+    let indicator = document.getElementById('liveDataIndicator');
+    if (!indicator) {
+        indicator = document.createElement('div');
+        indicator.id = 'liveDataIndicator';
+        indicator.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #00d4ff, #0099ff);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.4);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        `;
+        document.body.appendChild(indicator);
+    }
+    indicator.innerHTML = '<span style="display: inline-block; width: 8px; height: 8px; background: white; border-radius: 50%; animation: pulse 1.5s infinite;"></span> Live Data Syncing...';
+    if (!document.getElementById('pulseAnimation')) {
+        const style = document.createElement('style');
+        style.id = 'pulseAnimation';
+        style.textContent = '@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }';
+        document.head.appendChild(style);
+    }
+}
+
+function hideSyncIndicator() {
+    const indicator = document.getElementById('liveDataIndicator');
+    if (indicator) {
+        indicator.style.display = 'none';
+    }
+}
+
+function updateSyncIndicator(isActive) {
+    const indicator = document.getElementById('liveDataIndicator');
+    if (indicator) {
+        if (isActive) {
+            indicator.style.display = 'flex';
+            indicator.innerHTML = '<span style="display: inline-block; width: 8px; height: 8px; background: white; border-radius: 50%; animation: pulse 1.5s infinite;"></span> Live Data Syncing...';
+        } else {
+            indicator.innerHTML = '<span style="display: inline-block; width: 8px; height: 8px; background: #4ade80; border-radius: 50%;"></span> Live Data Updated';
+        }
+    }
+}
+
+function startAutoRefresh() {
+    if (autoRefreshInterval) {
+        clearInterval(autoRefreshInterval);
+    }
+    
+    autoRefreshInterval = setInterval(async () => {
+        if (!isLiveDataEnabled) return;
+        
+        showSyncIndicator();
+        
+        try {
+            if (currentPeriod === 'monthly') {
+                await loadFleetData(currentFleet, currentMonth, currentPeriod, true);
+            } else if (currentPeriod === 'quarterly') {
+                await loadQuarterlyData(currentFleet, currentQuarter, currentQuarterlyYear, true);
+            } else if (currentPeriod === 'yearly') {
+                await loadYearlyData(currentFleet, currentYearlyYear, true);
+            }
+            updateSyncIndicator(false);
+            setTimeout(hideSyncIndicator, 2000);
+        } catch (error) {
+            console.error('Error during auto-refresh:', error);
+        }
+    }, AUTO_REFRESH_INTERVAL);
+}
+
+function stopAutoRefresh() {
+    if (autoRefreshInterval) {
+        clearInterval(autoRefreshInterval);
+        autoRefreshInterval = null;
+    }
+    hideSyncIndicator();
+}
+
+function toggleLiveData() {
+    isLiveDataEnabled = !isLiveDataEnabled;
+    if (isLiveDataEnabled) {
+        startAutoRefresh();
+        console.log('Live Data: ENABLED');
+    } else {
+        stopAutoRefresh();
+        console.log('Live Data: DISABLED');
+    }
+    return isLiveDataEnabled;
+}
+
 $(document).ready(async function () {
     await populateMonthSelector();
     await populateMonthlyYearSelector();
@@ -157,6 +261,23 @@ $(document).ready(async function () {
     // Show monthly table by default
     document.getElementById('monthlyTableContainer').style.display = 'flex';
     await loadFleetData(currentFleet, currentMonth, currentPeriod);
+    
+    // Start live data auto-refresh
+    startAutoRefresh();
+    
+    // Handle page visibility - pause when not visible, resume when visible
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            stopAutoRefresh();
+        } else {
+            startAutoRefresh();
+        }
+    });
+    
+    // Stop auto-refresh when page unloads
+    window.addEventListener('beforeunload', function() {
+        stopAutoRefresh();
+    });
 });
 
 function renderSummaryData(data) {
@@ -368,7 +489,7 @@ function setPeriod(period) {
     }
 }
 
-async function loadFleetData(fleet, month, period) {
+async function loadFleetData(fleet, month, period, isAutoRefresh = false) {
     const fleetKeys = getFleetKeys(fleet);
     let allData = [];
     for (const f of fleetKeys) {
@@ -378,7 +499,19 @@ async function loadFleetData(fleet, month, period) {
     }
 
     const normalizedData = allData.map(normalizeRow);
-    initTable(normalizedData);
+    
+    // Only reinitialize table if not auto-refresh to avoid disruption
+    if (!isAutoRefresh) {
+        initTable(normalizedData);
+    } else {
+        // For auto-refresh, just update the table data smoothly
+        if (table) {
+            table.clear();
+            table.rows.add(normalizedData);
+            table.draw(false);
+        }
+    }
+    
     createCharts(normalizedData);
     updateTitle(fleet, month, period);
     renderSummaryData(normalizedData, document.getElementById('periodTitle').textContent);
@@ -386,7 +519,7 @@ async function loadFleetData(fleet, month, period) {
     await renderMonthlyFuelSavings(fleet, year);
 }
 
-async function loadQuarterlyData(fleet, quarter, year) {
+async function loadQuarterlyData(fleet, quarter, year, isAutoRefresh = false) {
     const quarterMonths = {
         'Q1': ['01', '02', '03'],
         'Q2': ['04', '05', '06'],
@@ -404,14 +537,26 @@ async function loadQuarterlyData(fleet, quarter, year) {
         }
     }
     const normalizedData = allData.map(normalizeRow);
-    initTable(normalizedData);
+    
+    // Only reinitialize table if not auto-refresh to avoid disruption
+    if (!isAutoRefresh) {
+        initTable(normalizedData);
+    } else {
+        // For auto-refresh, just update the table data smoothly
+        if (table) {
+            table.clear();
+            table.rows.add(normalizedData);
+            table.draw(false);
+        }
+    }
+    
     createCharts(normalizedData);
     updateTitle(fleet, quarter + '_' + year, 'quarterly');
     renderSummaryData(normalizedData, document.getElementById('periodTitle').textContent);
     await renderQuarterlyFuelSavings(fleet, year);
 }
 
-async function loadYearlyData(fleet, year) {
+async function loadYearlyData(fleet, year, isAutoRefresh = false) {
     const fleetKeys = getFleetKeys(fleet);
     let allData = [];
     for (let month = 1; month <= 12; month++) {
@@ -423,7 +568,19 @@ async function loadYearlyData(fleet, year) {
         }
     }
     const normalizedData = allData.map(normalizeRow);
-    initTable(normalizedData);
+    
+    // Only reinitialize table if not auto-refresh to avoid disruption
+    if (!isAutoRefresh) {
+        initTable(normalizedData);
+    } else {
+        // For auto-refresh, just update the table data smoothly
+        if (table) {
+            table.clear();
+            table.rows.add(normalizedData);
+            table.draw(false);
+        }
+    }
+    
     createCharts(normalizedData);
     updateTitle(fleet, year, 'yearly');
     renderSummaryData(normalizedData, document.getElementById('periodTitle').textContent);

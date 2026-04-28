@@ -2506,6 +2506,9 @@
                                     </button>
                                 </div>
                                 <div class="d-flex flex-wrap align-items-center gap-2 justify-content-end" style="min-width: 320px;">
+                                    <button class="btn btn-info" id="syncIpadBtn" onclick="syncIPadDeviceData()" style="min-width: 150px; color: white;">
+                                        <i class="fas fa-sync me-2"></i>Sync
+                                    </button>
                                     <button class="btn btn-success" id="downloadIpadTemplateBtn" onclick="downloadIPadTemplate()" style="display: none; min-width: 150px; background: linear-gradient(135deg, #2ca02c, #4caf50); border: none; color: white;">
                                         <i class="fas fa-download me-2"></i>Download Template
                                     </button>
@@ -2639,6 +2642,9 @@
                                     </button>
                                 </div>
                                 <div class="d-flex flex-wrap align-items-center gap-2 justify-content-end" style="min-width: 320px;">
+                                    <button class="btn btn-info" id="syncPhoneBtn" onclick="syncPhoneDeviceData()" style="min-width: 140px; color: white;">
+                                        <i class="fas fa-sync me-2"></i>Sync
+                                    </button>
                                     <button class="btn btn-primary" id="addNewPhoneBtn" onclick="openAddPhoneModal()" style="min-width: 140px; background: linear-gradient(135deg, #0288d1, #03a9f4); border: none; color: white;">
                                         <i class="fas fa-plus-circle me-2"></i>Add New Phone
                                     </button>
@@ -2718,9 +2724,14 @@
                                     <label style="font-weight: 600; display: block; margin-bottom: 8px; font-size: 0.9rem; color: #666; text-transform: uppercase; letter-spacing: 0.5px;"><i class="fas fa-calendar me-2" style="color: #ff8c00;"></i>Revision Date</label>
                                     <span id="chartRevisionDateDisplay" style="font-size: 1.4rem; font-weight: 800; color: #ff8c00;">Loading...</span>
                                 </div>
-                                <button class="btn btn-warning" id="chartEditModeBtn" onclick="switchChartMode('edit')" style="width: 150px; padding: 12px 20px; font-weight: 600; border-radius: 10px; box-shadow: 0 4px 12px rgba(255, 140, 0, 0.3); transition: all 0.3s ease;">
-                                    <i class="fas fa-edit me-2"></i>Update
-                                </button>
+                                <div style="display: flex; gap: 10px;">
+                                    <button class="btn btn-info" id="chartSyncBtn" onclick="syncChartRevisionData()" style="padding: 12px 20px; font-weight: 600; border-radius: 10px; box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3); transition: all 0.3s ease; color: white;">
+                                        <i class="fas fa-sync me-2"></i>Sync
+                                    </button>
+                                    <button class="btn btn-warning" id="chartEditModeBtn" onclick="switchChartMode('edit')" style="padding: 12px 20px; font-weight: 600; border-radius: 10px; box-shadow: 0 4px 12px rgba(255, 140, 0, 0.3); transition: all 0.3s ease;">
+                                        <i class="fas fa-edit me-2"></i>Update
+                                    </button>
+                                </div>
                             </div>
 
                             <!-- ATR72 View Section -->
@@ -2925,6 +2936,9 @@
 
                 <div id="paymentDashboardContent" style="display: none;">
                     <div class="d-flex justify-content-end align-items-center mb-4 gap-2">
+                        <button class="btn btn-info" onclick="syncPaymentData()" style="font-weight: 600; border-radius: 8px; color: white;">
+                            <i class="fas fa-sync me-2"></i>Sync
+                        </button>
                         <button class="btn btn-outline-secondary" id="paymentAddReminderBtn" onclick="openAddReminderModal()" style="display: none; font-weight: 600; border-radius: 8px;">
                             <i class="fas fa-calendar-plus me-2"></i>Add Payment Reminder
                         </button>
@@ -3538,6 +3552,9 @@
                 if (el) el.style.display = 'none';
             });
             hideIpadTopbarButtons();
+            
+            // Stop device auto-refresh when navigating away
+            stopDeviceAutoRefresh();
         }
 
         function hideIpadTopbarButtons() {
@@ -4623,8 +4640,8 @@
             document.getElementById('chartViewModeContent').style.display = 'block';
             document.getElementById('chartEditModeContent').style.display = 'none';
             
-            // Load chart data
-            loadChartDashboardData();
+            // Manual sync only - user must click Sync button to load data
+            showNotification('<i class="fas fa-info-circle me-2"></i>Click <strong>Sync</strong> to load latest chart data', 'info');
             
             // Update Page Title
             document.getElementById('pageTitle').textContent = 'Chart Revision';
@@ -4653,8 +4670,11 @@
             document.getElementById('pageSubtitle').textContent = 'Track and manage payment schedules and expenses';
             document.getElementById('pageSubtitle').style.display = 'block';
             
-            // Initialize payment dashboard
+            // Initialize payment dashboard (local data only)
             initializePaymentDashboard();
+            
+            // Manual sync only
+            showNotification('<i class="fas fa-info-circle me-2"></i>Click <strong>Sync</strong> to load latest payment data', 'info');
         }
 
         const iPadDevices = [
@@ -4829,6 +4849,8 @@
         }
 
         async function savePhoneDevicesToStorage() {
+            // Pause auto-refresh to prevent overwriting with old data
+            pauseAutoRefreshAfterSave(20000);
             localStorage.setItem('phoneDevices', JSON.stringify(phoneDevices));
             await saveDataToSupabase('phoneDevices', phoneDevices);
         }
@@ -4845,6 +4867,8 @@
         }
 
         async function saveIPadStandbyDevicesToStorage() {
+            // Pause auto-refresh to prevent overwriting with old data
+            pauseAutoRefreshAfterSave(20000);
             localStorage.setItem('ipadStandbyDevices', JSON.stringify(iPadStandbyDevices));
             await saveDataToSupabase('ipadStandbyDevices', iPadStandbyDevices);
         }
@@ -5020,6 +5044,8 @@
         }
 
         async function saveIPadDevicesToStorage() {
+            // Pause auto-refresh to prevent overwriting with old data
+            pauseAutoRefreshAfterSave(20000);
             localStorage.setItem('ipadDevices', JSON.stringify(iPadDevices));
             await saveDataToSupabase('ipadDevices', iPadDevices);
         }
@@ -5107,6 +5133,62 @@
 
             // Show success message
             showToast('New user added successfully!', 'success');
+        }
+
+        // Device Management Auto-Refresh Configuration
+        let deviceAutoRefreshInterval = null;
+        let currentDeviceView = null; // Track which device view is active: 'ipad' or 'phone'
+        const DEVICE_AUTO_REFRESH_INTERVAL = 8000; // 8 seconds for device data
+        let autoRefreshPausedUntil = 0; // Timestamp when auto-refresh can resume
+
+        function pauseAutoRefreshAfterSave(duration = 20000) {
+            // Pause auto-refresh for the specified duration (default 20 seconds)
+            autoRefreshPausedUntil = Date.now() + duration;
+            console.log('Auto-refresh paused for', (duration / 1000), 'seconds');
+        }
+
+        function isAutoRefreshPaused() {
+            return Date.now() < autoRefreshPausedUntil;
+        }
+
+        function startDeviceAutoRefresh(viewType) {
+            if (deviceAutoRefreshInterval) {
+                clearInterval(deviceAutoRefreshInterval);
+            }
+
+            currentDeviceView = viewType;
+            
+            deviceAutoRefreshInterval = setInterval(async () => {
+                // Skip auto-refresh if it's paused (e.g., after a save)
+                if (isAutoRefreshPaused()) {
+                    return;
+                }
+
+                try {
+                    if (viewType === 'ipad') {
+                        await loadIPadDevicesFromStorage();
+                        renderIPadDeviceTable();
+                        updateIPadTracker();
+                    } else if (viewType === 'phone') {
+                        await loadPhoneDevicesFromStorage();
+                        await loadIPadStandbyDevicesFromStorage();
+                        renderPhoneDeviceTable();
+                        updatePhoneTracker();
+                        renderIPadStandbyTable();
+                        updateIPadStandbyTracker();
+                    }
+                } catch (error) {
+                    console.error('Error during device auto-refresh:', error);
+                }
+            }, DEVICE_AUTO_REFRESH_INTERVAL);
+        }
+
+        function stopDeviceAutoRefresh() {
+            if (deviceAutoRefreshInterval) {
+                clearInterval(deviceAutoRefreshInterval);
+                deviceAutoRefreshInterval = null;
+                currentDeviceView = null;
+            }
         }
 
         // Initialize crew list on page load
@@ -6143,6 +6225,10 @@
             document.getElementById('pageSubtitle').style.display = 'block';
             renderIPadDeviceTable();
             updateIPadTracker();
+            
+            // Manual sync only - stop auto-refresh
+            stopDeviceAutoRefresh();
+            showNotification('<i class="fas fa-info-circle me-2"></i>Click <strong>Sync</strong> to load latest iPad data', 'info');
         }
 
         function showPhoneManagement() {
@@ -6160,6 +6246,10 @@
             renderIPadStandbyTable();
             updateIPadStandbyTracker();
             renderEntryLogTable();
+            
+            // Manual sync only - stop auto-refresh
+            stopDeviceAutoRefresh();
+            showNotification('<i class="fas fa-info-circle me-2"></i>Click <strong>Sync</strong> to load latest phone and iPad standby data', 'info');
         }
 
         // Payment Dashboard Variables
@@ -6183,7 +6273,8 @@
         let nextPaymentId = 5;
 
         function initializePaymentDashboard() {
-            loadPaymentData();
+            // Do not auto-load from Supabase - manual sync only
+            // Initialize UI only
             loadCurrencyRates();
             updatePaymentSummary();
             initializePaymentCalendar();
@@ -7776,15 +7867,8 @@
         
         // Auto-save whenever table data changes
         function initAutoSave() {
-            document.addEventListener('change', function(e) {
-                if (e.target.closest('#atr72-table-body') || e.target.closest('#b737-table-body')) {
-                    // Save after a short delay to avoid excessive saves
-                    clearTimeout(window.autoSaveTimeout);
-                    window.autoSaveTimeout = setTimeout(() => {
-                        saveChartRevision();
-                    }, 500);
-                }
-            });
+            // Auto-save disabled - manual save only
+            // User must click Save button to save changes
         }
         
         // Chart Revision Inline Functions
@@ -8091,15 +8175,26 @@
                     }
                 });
                 
-                // Save to localStorage and Supabase
+                // Save to localStorage and Supabase (NO auto-refresh, manual sync only)
                 localStorage.setItem('chartRevisionData', JSON.stringify(chartData));
                 await saveDataToSupabase('chartRevisionData', chartData);
-                console.log('Chart data saved:', chartData);
+                console.log('Chart data saved to Supabase:', chartData);
                 
-                showNotification('<i class="fas fa-check-circle me-2"></i>Chart revision data saved successfully!', 'success');
+                showNotification('<i class="fas fa-check-circle me-2"></i>Chart revision data saved successfully!<br><small>Click "Sync" in view mode to load latest data from all devices</small>', 'success');
             } catch (error) {
                 console.error('Error saving chart data:', error);
                 showNotification('<i class="fas fa-exclamation-circle me-2"></i>Error saving data: ' + error.message, 'danger');
+            }
+        }
+        
+        async function syncChartRevisionData() {
+            try {
+                showNotification('<i class="fas fa-sync me-2" style="animation: spin 2s linear infinite;"></i>Syncing latest data from Supabase...', 'info');
+                await loadChartDashboardData();
+                showNotification('<i class="fas fa-check-circle me-2"></i>Chart data synced successfully!', 'success');
+            } catch (error) {
+                console.error('Error syncing chart data:', error);
+                showNotification('<i class="fas fa-exclamation-circle me-2"></i>Error syncing data: ' + error.message, 'danger');
             }
         }
         
@@ -8345,13 +8440,57 @@
             }
         }
         
+        // Manual Sync Functions for Payment, iPad, and Phone
+        async function syncPaymentData() {
+            try {
+                showNotification('<i class="fas fa-sync me-2" style="animation: spin 2s linear infinite;"></i>Syncing latest payment data from Supabase...', 'info');
+                await loadPaymentDataFromStorage();
+                loadPaymentData();
+                updatePaymentSummary();
+                showNotification('<i class="fas fa-check-circle me-2"></i>Payment data synced successfully!', 'success');
+            } catch (error) {
+                console.error('Error syncing payment data:', error);
+                showNotification('<i class="fas fa-exclamation-circle me-2"></i>Error syncing data: ' + error.message, 'danger');
+            }
+        }
+        
+        async function syncIPadDeviceData() {
+            try {
+                showNotification('<i class="fas fa-sync me-2" style="animation: spin 2s linear infinite;"></i>Syncing latest iPad data from Supabase...', 'info');
+                await loadIPadDevicesFromStorage();
+                renderIPadDeviceTable();
+                updateIPadTracker();
+                showNotification('<i class="fas fa-check-circle me-2"></i>iPad device data synced successfully!', 'success');
+            } catch (error) {
+                console.error('Error syncing iPad device data:', error);
+                showNotification('<i class="fas fa-exclamation-circle me-2"></i>Error syncing data: ' + error.message, 'danger');
+            }
+        }
+        
+        async function syncPhoneDeviceData() {
+            try {
+                showNotification('<i class="fas fa-sync me-2" style="animation: spin 2s linear infinite;"></i>Syncing latest phone and iPad standby data from Supabase...', 'info');
+                await loadPhoneDevicesFromStorage();
+                await loadIPadStandbyDevicesFromStorage();
+                renderPhoneDeviceTable();
+                updatePhoneTracker();
+                renderIPadStandbyTable();
+                updateIPadStandbyTracker();
+                showNotification('<i class="fas fa-check-circle me-2"></i>Phone device data synced successfully!', 'success');
+            } catch (error) {
+                console.error('Error syncing phone device data:', error);
+                showNotification('<i class="fas fa-exclamation-circle me-2"></i>Error syncing data: ' + error.message, 'danger');
+            }
+        }
+        
         // Initialize when page loads
         document.addEventListener('DOMContentLoaded', function() {
             setTimeout(async () => {
                 await loadChartRevisionData();
                 initAutoSave();
-                await loadChartDashboardData();
-                console.log('Chart revision module initialized');
+                // Do not auto-load chart data on page load
+                // User must click Sync button to load data
+                console.log('Chart revision module initialized - manual sync only');
             }, 500);
         });
     </script>
