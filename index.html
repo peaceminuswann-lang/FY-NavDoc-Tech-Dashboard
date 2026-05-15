@@ -1946,6 +1946,7 @@
                 <div class="sidebar-section">Dashboard</div>
                 <a href="javascript:void(0);" id="nav-myapps" class="sidebar-item active" onclick="showLauncher()">My Apps</a>
                 <a href="javascript:void(0);" id="nav-fuel" class="sidebar-item" onclick="showFuelAnalysis()">Fuel Analysis</a>
+                <a href="javascript:void(0);" id="nav-flightdata" class="sidebar-item" onclick="showFlightData()">Flight Data</a>
                 <a href="javascript:void(0);" id="nav-delay" class="sidebar-item" onclick="showDelayCodeAnalysis()">Delay Code Analysis</a>
                 <a href="javascript:void(0);" id="nav-chartrevision" class="sidebar-item" onclick="showChartRevision()">Chart Revision</a>
                 <a href="javascript:void(0);" id="nav-payment" class="sidebar-item" onclick="showPaymentDashboard()">Payment Dashboard</a>
@@ -2011,6 +2012,20 @@
                                         </div>
                                     </div>
                                     <p class="app-card-text">Open the fuel analysis dashboard built for operations and technical review.</p>
+                                </a>
+                            </div>
+                            <div class="col-md-6 col-xl-3">
+                                <a href="javascript:void(0);" onclick="showFlightData()" class="app-card card text-decoration-none text-dark p-4 h-100">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="app-card-icon bg-primary text-white rounded-circle me-3">
+                                            <i class="fas fa-chart-line"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="app-card-title mb-1">Flight Data</h5>
+                                            <small class="text-muted">Live Power BI Flight Utilization</small>
+                                        </div>
+                                    </div>
+                                    <p class="app-card-text">Open the live flight utilization report to view up-to-date scheduling and utilization metrics.</p>
                                 </a>
                             </div>
                             <div class="col-md-6 col-xl-3">
@@ -2431,6 +2446,89 @@
                     </div>
                 </div>
 
+                <div id="flightDataContent" style="display: none; padding: 24px;">
+                    <!-- Hero Header Section -->
+                    <div style="background: linear-gradient(135deg, #ff8c00 0%, #ff6b35 50%, #ffb74d 100%); border-radius: 25px; padding: 60px 50px; color: white; box-shadow: 0 20px 60px rgba(255, 140, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2); margin-bottom: 45px; position: relative; overflow: hidden;">
+                        <div style="position: absolute; top: -50%; right: -20%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%); pointer-events: none;"></div>
+                        <div style="position: relative; z-index: 1;">
+                            <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
+                                <div style="background: rgba(255, 255, 255, 0.25); width: 80px; height: 80px; border-radius: 20px; display: flex; align-items: center; justify-content: center; color: white; font-size: 2.5rem; backdrop-filter: blur(15px); border: 2px solid rgba(255, 255, 255, 0.3);">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div>
+                                    <h1 style="font-size: 2.8rem; font-weight: 900; margin: 0; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.15); letter-spacing: -0.5px;">Flight Data</h1>
+                                    <p style="font-size: 1.1rem; margin: 8px 0 0 0; font-weight: 500; opacity: 0.95;">Live Power BI Flight Utilization Report</p>
+                                </div>
+                            </div>
+                            <p style="font-size: 1rem; margin: 20px 0 0 0; opacity: 0.9; line-height: 1.6; max-width: 700px;">
+                                <i class="fas fa-sync-alt me-2" style="opacity: 0.85;"></i>Auto-updating from the Power BI service • Real-time flight scheduling and utilization metrics
+                            </p>
+                            <div style="display: flex; gap: 15px; margin-top: 30px; flex-wrap: wrap;">
+                                <div style="background: rgba(255, 255, 255, 0.18); backdrop-filter: blur(15px); border-radius: 16px; padding: 18px 28px; border: 1.5px solid rgba(255, 255, 255, 0.35); display: flex; align-items: center; gap: 12px;">
+                                    <i class="fas fa-circle-notch" style="font-size: 1.2rem; opacity: 0.9;"></i>
+                                    <span style="font-size: 0.95rem; font-weight: 700;">Live Data Feed</span>
+                                </div>
+                                <div style="background: rgba(255, 255, 255, 0.18); backdrop-filter: blur(15px); border-radius: 16px; padding: 18px 28px; border: 1.5px solid rgba(255, 255, 255, 0.35); display: flex; align-items: center; gap: 12px;">
+                                    <i class="fas fa-globe" style="font-size: 1.2rem; opacity: 0.9;"></i>
+                                    <span style="font-size: 0.95rem; font-weight: 700;">Interactive Dashboard</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Back to Home Button -->
+                    <div style="display: flex; justify-content: flex-end; margin-bottom: 30px;">
+                        <button class="btn btn-outline-secondary" onclick="showLauncher()" style="border-radius: 12px; padding: 12px 24px; font-weight: 700; transition: all 0.3s ease;" onmouseover="this.style.background='rgba(0,0,0,0.05)'" onmouseout="this.style.background='transparent'">
+                            <i class="fas fa-arrow-left me-2"></i>Back to Home
+                        </button>
+                    </div>
+
+                    <!-- Report Container -->
+                    <div class="card" style="border-radius: 22px; overflow: hidden; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12); border: 2px solid #ffe9d6; position: relative;">
+                        <div style="background: linear-gradient(135deg, #ff8c00 0%, #ffb74d 100%); padding: 20px 28px; display: flex; justify-content: space-between; align-items: center;">
+                            <div style="display: flex; align-items: center; gap: 12px; color: white;">
+                                <i class="fas fa-chart-area" style="font-size: 1.3rem;"></i>
+                                <span style="font-weight: 700; font-size: 1.05rem;">Flight Utilization Report</span>
+                            </div>
+                            <a href="https://app.powerbi.com/groups/me/reports/0603bbc0-9165-479d-8d67-5b7d68d78a9b/ReportSection6abed22a6c6068c335f8?ctid=8fc3a567-1ee8-4994-809c-49f50cdb6d48&experience=power-bi&clientSideAuth=0" target="_blank" rel="noopener" class="btn btn-light btn-sm" style="border-radius: 10px; font-weight: 700; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 16px rgba(0, 0, 0, 0.15)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                <i class="fas fa-external-link-alt me-2"></i>Open Full Report
+                            </a>
+                        </div>
+                        <div class="card-body p-0" style="min-height: 800px; background: #fafbfc;">
+                            <iframe id="flightDataIframe" src="https://app.powerbi.com/reportEmbed?reportId=0603bbc0-9165-479d-8d67-5b7d68d78a9b&groupId=8fc3a567-1ee8-4994-809c-49f50cdb6d48&ctid=8fc3a567-1ee8-4994-809c-49f50cdb6d48&autoAuth=true" frameborder="0" allowfullscreen="true" style="width: 100%; height: 100%; min-height: 800px; border: none;"></iframe>
+                        </div>
+                    </div>
+
+                    <!-- Info Section -->
+                    <div style="margin-top: 30px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div style="background: linear-gradient(135deg, #fff9e6 0%, #ffffff 100%); border-radius: 16px; padding: 24px; border-left: 5px solid #ff8c00; box-shadow: 0 4px 15px rgba(255, 140, 0, 0.08);">
+                            <div style="display: flex; align-items: flex-start; gap: 12px;">
+                                <i class="fas fa-info-circle" style="color: #ff8c00; font-size: 1.3rem; margin-top: 2px; flex-shrink: 0;"></i>
+                                <div>
+                                    <h6 style="margin: 0 0 8px 0; color: #ff8c00; font-weight: 800; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.5px;">About This Report</h6>
+                                    <p style="margin: 0; color: #666; font-size: 0.9rem; line-height: 1.6;">View real-time flight scheduling, utilization metrics, and operational performance across your fleet.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="background: linear-gradient(135deg, #f0f7ff 0%, #ffffff 100%); border-radius: 16px; padding: 24px; border-left: 5px solid #2196F3; box-shadow: 0 4px 15px rgba(33, 150, 243, 0.08);">
+                            <div style="display: flex; align-items: flex-start; gap: 12px;">
+                                <i class="fas fa-sync-alt" style="color: #2196F3; font-size: 1.3rem; margin-top: 2px; flex-shrink: 0; animation: spin 3s linear infinite;"></i>
+                                <div>
+                                    <h6 style="margin: 0 0 8px 0; color: #2196F3; font-weight: 800; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.5px;">Live Data</h6>
+                                    <p style="margin: 0; color: #666; font-size: 0.9rem; line-height: 1.6;">Data is automatically updated from Power BI. If the report does not load, verify your Power BI permissions.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <style>
+                        @keyframes spin {
+                            from { transform: rotate(0deg); }
+                            to { transform: rotate(360deg); }
+                        }
+                    </style>
+                </div>
+
                 <div id="deviceIpadContent" style="display: none; padding: 24px;">
                     <!-- Header Section -->
                     <div style="background: linear-gradient(135deg, #ff8c00 0%, #ff6b35 100%); border-radius: 20px; padding: 40px; margin-bottom: 32px; box-shadow: 0 10px 40px rgba(255, 140, 0, 0.2);">
@@ -2703,6 +2801,42 @@
                                 </div>
                             </div>
                             <div id="ipadStandbyTableContainer"></div>
+                        </div>
+                    </div>
+
+                    <!-- Accessories Section -->
+                    <div class="card" style="border: none; border-radius: 18px; box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08); overflow: hidden; margin-bottom: 28px;">
+                        <div style="background: linear-gradient(135deg, #ff9e1f, #ff8c00); padding: 28px 32px; border: none;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+                                <div>
+                                    <h5 style="color: white; font-weight: 800; font-size: 1.25rem; margin: 0; display: flex; align-items: center; gap: 12px;"><i class="fas fa-headphones"></i>Accessories</h5>
+                                </div>
+                                <span style="background: rgba(255,255,255,0.25); padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; color: white; backdrop-filter: blur(10px);"><i class="fas fa-list me-2"></i><span id="accessoriesCountBadge">0</span> Items</span>
+                            </div>
+                        </div>
+                        <div class="card-body" style="padding: 0;">
+                            <div style="background: #fff8f0; padding: 24px 28px; border-bottom: 1px solid #ffe0c9;">
+                                <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                                    <div style="flex: 1; min-width: 280px; display: flex; gap: 12px; align-items: center;">
+                                        <div class="search-box" style="flex: 1; max-width: 480px;">
+                                            <i class="fas fa-search"></i>
+                                            <input type="text" id="accessoriesSearchInput" placeholder="Search accessories..." style="font-size: 0.95rem;" />
+                                        </div>
+                                        <button class="btn" onclick="filterAccessories()" style="border-radius: 10px; padding: 10px 20px; font-weight: 700; font-size: 0.9rem; background: #ff9e1f; color: white; border: none; transition: all 0.2s;" onmouseover="this.style.background='#e67e00'" onmouseout="this.style.background='#ff9e1f'">
+                                            <i class="fas fa-search me-2"></i>Search
+                                        </button>
+                                    </div>
+                                    <div class="d-flex flex-wrap gap-2" style="justify-content: flex-end;">
+                                        <button class="btn" id="syncAccessoriesBtn" onclick="syncAccessoriesTableOnly()" style="min-width: 140px; background: #ff9e1f; border: none; color: white; border-radius: 10px; font-weight: 700; transition: all 0.2s;" onmouseover="this.style.background='#e67e00'" onmouseout="this.style.background='#ff9e1f'">
+                                            <i class="fas fa-cloud-download-alt me-2"></i>Sync
+                                        </button>
+                                        <button class="btn" onclick="openAddAccessoryModal()" style="min-width: 140px; background: #ff9e1f; border: none; color: white; border-radius: 10px; font-weight: 700; transition: all 0.2s;" onmouseover="this.style.background='#e67e00'" onmouseout="this.style.background='#ff9e1f'">
+                                            <i class="fas fa-plus me-2"></i>Add Accessory
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="accessoriesTableContainer"></div>
                         </div>
                     </div>
 
@@ -3557,6 +3691,7 @@
             const sections = [
                 'launcherSection',
                 'analysisContent',
+                'flightDataContent',
                 'delayCodeContent',
                 'databaseContent',
                 'chartRevisionContent',
@@ -3730,6 +3865,7 @@
             document.getElementById('chartRevisionContent').style.display = 'none';
             document.getElementById('paymentDashboardContent').style.display = 'none';
             document.getElementById('jsonConverterContent').style.display = 'none';
+            document.getElementById('flightDataContent').style.display = 'none';
             
             // Show only back button on analysis pages; no manual refresh
             document.getElementById('backToHomeBtn').style.display = 'inline-block';
@@ -3741,6 +3877,27 @@
             document.getElementById('pageSubtitle').style.display = 'block';
             
             document.getElementById('fuelAnalysis').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function showFlightData() {
+            clearActiveNav();
+            hideAllSections();
+            document.getElementById('nav-flightdata').classList.add('active');
+            document.getElementById('launcherSection').style.display = 'none';
+            document.getElementById('analysisContent').style.display = 'none';
+            document.getElementById('delayCodeContent').style.display = 'none';
+            document.getElementById('databaseContent').style.display = 'none';
+            document.getElementById('chartRevisionContent').style.display = 'none';
+            document.getElementById('paymentDashboardContent').style.display = 'none';
+            document.getElementById('jsonConverterContent').style.display = 'none';
+            document.getElementById('flightDataContent').style.display = 'block';
+            
+            document.getElementById('backToHomeBtn').style.display = 'inline-block';
+            document.getElementById('refreshDataBtn').style.display = 'none';
+            
+            document.getElementById('pageTitle').textContent = 'Flight Data';
+            document.getElementById('pageSubtitle').textContent = 'Live Power BI Flight Utilization report';
+            document.getElementById('pageSubtitle').style.display = 'block';
         }
 
         function showDelayCodeAnalysis() {
@@ -4726,6 +4883,12 @@
         ];
 
         const iPadStandbyDevices = [];
+        const accessories = [
+            { id: 'ACC-001', name: 'Charger Cable', type: 'USB-C Cable', quantity: 15, status: 'Available', remarks: 'USB-C charging cable for iPad', dateAdded: '2026-04-25' },
+            { id: 'ACC-002', name: 'Adapter', type: 'Power Adapter', quantity: 8, status: 'Available', remarks: 'Standard power adapter', dateAdded: '2026-04-25' },
+            { id: 'ACC-003', name: 'Screen Protector', type: 'Accessory', quantity: 20, status: 'Available', remarks: 'Tempered glass protector', dateAdded: '2026-04-24' },
+            { id: 'ACC-004', name: 'Case', type: 'Protective Case', quantity: 5, status: 'In Use', remarks: 'Protective iPad case', dateAdded: '2026-04-23' }
+        ];
         const entryLog = [];
 
         const aircraftList = [
@@ -4776,6 +4939,7 @@
                 results.push(await saveDataToSupabase('phoneDevices', phoneDevices));
                 results.push(await saveDataToSupabase('ipadDevices', iPadDevices));
                 results.push(await saveDataToSupabase('ipadStandbyDevices', iPadStandbyDevices));
+                results.push(await saveDataToSupabase('accessories', accessories));
                 results.push(await saveDataToSupabase('entryLog', entryLog));
                 results.push(await saveDataToSupabase('crewList', crewList));
                 results.push(await saveDataToSupabase('paymentDashboardData', { paymentData, nextPaymentId }));
@@ -4895,6 +5059,18 @@
             const savedDevices = await getSyncedData('ipadStandbyDevices');
             if (savedDevices && Array.isArray(savedDevices)) {
                 iPadStandbyDevices.splice(0, iPadStandbyDevices.length, ...savedDevices);
+            }
+        }
+
+        async function saveAccessoriesToStorage() {
+            localStorage.setItem('accessories', JSON.stringify(accessories));
+            await saveDataToSupabase('accessories', accessories);
+        }
+
+        async function loadAccessoriesFromStorage() {
+            const savedAccessories = await getSyncedData('accessories');
+            if (savedAccessories && Array.isArray(savedAccessories)) {
+                accessories.splice(0, accessories.length, ...savedAccessories);
             }
         }
 
@@ -5888,6 +6064,98 @@
             if (countBadge) countBadge.textContent = total;
         }
 
+        function renderAccessoriesTable(searchQuery = '') {
+            const container = document.getElementById('accessoriesTableContainer');
+            if (!container) return;
+
+            const filterText = searchQuery.trim().toLowerCase();
+            const filteredAccessories = filterText
+                ? accessories.filter(item => {
+                    return [
+                        item.id,
+                        item.name,
+                        item.type,
+                        item.status,
+                        item.remarks
+                    ].some(value => value && value.toLowerCase().includes(filterText));
+                })
+                : accessories;
+
+            const createRow = (item, index) => {
+                const statusColor = item.status === 'Available' ? '#4CAF50' : 
+                                   item.status === 'In Use' ? '#ff9800' : 
+                                   item.status === 'Maintenance' ? '#2196F3' : '#9e9e9e';
+                const statusIcon = item.status === 'Available' ? 'check-circle' : 
+                                  item.status === 'In Use' ? 'hourglass-half' : 
+                                  item.status === 'Maintenance' ? 'wrench' : 'times-circle';
+
+                return `
+                    <tr style="transition: all 0.2s ease;">
+                        <td style="padding: 16px 20px; font-weight: 700; color: #666; text-align: center;">${index + 1}</td>
+                        <td style="padding: 16px 20px; font-weight: 600; color: #333;">
+                            <div style="font-weight: 800; color: #ff8c00; margin-bottom: 4px;">${item.name}</div>
+                            <small style="color: #999; font-weight: 500;">Type: ${item.type}</small>
+                        </td>
+                        <td style="padding: 16px 20px;">
+                            <span class="badge" style="background: linear-gradient(135deg, ${statusColor}, ${statusColor}aa); color: white; padding: 8px 14px; border-radius: 20px; font-weight: 700; font-size: 0.85rem; display: inline-block;">
+                                <i class="fas fa-${statusIcon} me-1"></i>${item.status}
+                            </span>
+                        </td>
+                        <td style="padding: 16px 20px; font-weight: 700; text-align: center; color: #ff8c00; font-size: 1.1rem;">${item.quantity}</td>
+                        <td style="padding: 16px 20px; font-weight: 600; color: ${item.remarks ? '#333' : '#999'};">${item.remarks ? item.remarks : '<em style="color: #bbb;">None</em>'}</td>
+                        <td style="padding: 16px 20px; font-weight: 600; color: ${item.dateAdded ? '#333' : '#999'};">${item.dateAdded || '<em style="color: #bbb;">None</em>'}</td>
+                        <td style="padding: 16px 20px; text-align: center;">
+                            <button class="btn btn-sm me-1" onclick="editAccessory(${index})" style="background: #2196F3; color: white; border: none; border-radius: 8px; padding: 8px 12px; font-weight: 600; transition: all 0.2s ease; cursor: pointer;" onmouseover="this.style.background='#1976D2'; this.style.transform='scale(1.1)'" onmouseout="this.style.background='#2196F3'; this.style.transform='scale(1)'" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm" onclick="deleteAccessory(${index})" style="background: #f44336; color: white; border: none; border-radius: 8px; padding: 8px 12px; font-weight: 600; transition: all 0.2s ease; cursor: pointer;" onmouseover="this.style.background='#d32f2f'; this.style.transform='scale(1.1)'" onmouseout="this.style.background='#f44336'; this.style.transform='scale(1)'" title="Delete">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            };
+
+            const headerColumns = ['#', 'Accessory Name', 'Status', 'Quantity', 'Remarks', 'Date Added', 'Actions'];
+            const headerHtml = headerColumns.map(col => `
+                    <th style="padding: 16px 20px; font-weight: 800; color: white; text-transform: uppercase; letter-spacing: 0.5px; font-size: 0.85rem; border-bottom: 2px solid #ff6b35;">${col}</th>
+                `).join('');
+            const rowsHtml = filteredAccessories.length > 0
+                ? filteredAccessories.map((item, index) => createRow(item, index)).join('')
+                : `<tr><td colspan="${headerColumns.length}" style="padding: 24px 20px; color: #777; text-align: center; font-style: italic;">No accessories found.</td></tr>`;
+
+            container.innerHTML = `
+                <div style="overflow: hidden; margin: 0 20px 20px; border-radius: 12px;">
+                    <div class="table-responsive" style="border-radius: 12px;">
+                        <table class="table table-hover mb-0" style="border-collapse: collapse;">
+                            <thead style="background: linear-gradient(135deg, #ff8c00, #ff6b35);">${headerHtml}</thead>
+                            <tbody style="background: white;">${rowsHtml}</tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+
+            const rows = container.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                row.addEventListener('mouseenter', function() { this.style.background = 'rgba(255, 140, 0, 0.08)'; });
+                row.addEventListener('mouseleave', function() { this.style.background = 'transparent'; });
+            });
+
+            updateAccessoriesTracker();
+        }
+
+        function filterAccessories() {
+            const searchInput = document.getElementById('accessoriesSearchInput');
+            if (!searchInput) return;
+            renderAccessoriesTable(searchInput.value);
+        }
+
+        function updateAccessoriesTracker() {
+            const total = accessories.length;
+            const countBadge = document.getElementById('accessoriesCountBadge');
+            if (countBadge) countBadge.textContent = total;
+        }
+
         function filterEntryLog() {
             const searchInput = document.getElementById('entryLogSearchInput');
             if (!searchInput) return;
@@ -6227,6 +6495,94 @@
             }
         }
 
+        function openAddAccessoryModal() {
+            const form = document.getElementById('addAccessoryForm');
+            if (form) form.reset();
+            const modal = new bootstrap.Modal(document.getElementById('addAccessoryModal'));
+            modal.show();
+        }
+
+        function saveNewAccessory() {
+            const name = document.getElementById('accessoryName').value.trim();
+            const type = document.getElementById('accessoryType').value.trim();
+            const quantity = parseInt(document.getElementById('accessoryQuantity').value) || 0;
+            const status = document.getElementById('accessoryStatus').value;
+            const remarks = document.getElementById('accessoryRemarks').value.trim();
+
+            if (!name || !type || quantity <= 0) {
+                alert('Please fill in all required fields!');
+                return;
+            }
+
+            const id = 'ACC-' + String(accessories.length + 1).padStart(3, '0');
+            accessories.push({
+                id,
+                name,
+                type,
+                quantity,
+                status,
+                remarks,
+                dateAdded: new Date().toISOString().split('T')[0]
+            });
+
+            saveAccessoriesToStorage();
+            bootstrap.Modal.getInstance(document.getElementById('addAccessoryModal')).hide();
+            renderAccessoriesTable();
+            showToast('Accessory added successfully!', 'success');
+        }
+
+        function editAccessory(index) {
+            const item = accessories[index];
+            if (!item) return;
+
+            document.getElementById('editAccessoryIndex').value = index;
+            document.getElementById('editAccessoryName').value = item.name;
+            document.getElementById('editAccessoryType').value = item.type;
+            document.getElementById('editAccessoryQuantity').value = item.quantity;
+            document.getElementById('editAccessoryStatus').value = item.status;
+            document.getElementById('editAccessoryRemarks').value = item.remarks || '';
+
+            const modal = new bootstrap.Modal(document.getElementById('editAccessoryModal'));
+            modal.show();
+        }
+
+        function updateAccessory() {
+            const index = parseInt(document.getElementById('editAccessoryIndex').value, 10);
+            const name = document.getElementById('editAccessoryName').value.trim();
+            const type = document.getElementById('editAccessoryType').value.trim();
+            const quantity = parseInt(document.getElementById('editAccessoryQuantity').value) || 0;
+            const status = document.getElementById('editAccessoryStatus').value;
+            const remarks = document.getElementById('editAccessoryRemarks').value.trim();
+
+            if (!name || !type || quantity <= 0) {
+                alert('Please fill in all required fields!');
+                return;
+            }
+
+            accessories[index] = {
+                ...accessories[index],
+                name,
+                type,
+                quantity,
+                status,
+                remarks
+            };
+
+            saveAccessoriesToStorage();
+            bootstrap.Modal.getInstance(document.getElementById('editAccessoryModal')).hide();
+            renderAccessoriesTable();
+            showToast('Accessory updated successfully!', 'success');
+        }
+
+        function deleteAccessory(index) {
+            if (confirm('Are you sure you want to delete this accessory? This action cannot be undone.')) {
+                const removed = accessories.splice(index, 1)[0];
+                saveAccessoriesToStorage();
+                renderAccessoriesTable();
+                showToast('Accessory deleted successfully!', 'success');
+            }
+        }
+
         function showDeviceIPad() {
             clearActiveNav();
             hideAllSections();
@@ -6263,6 +6619,7 @@
             updatePhoneTracker();
             renderIPadStandbyTable();
             updateIPadStandbyTracker();
+            renderAccessoriesTable();
             renderEntryLogTable();
             
             // Manual sync only - stop auto-refresh
@@ -8528,6 +8885,18 @@
             }
         }
         
+        async function syncAccessoriesTableOnly() {
+            try {
+                showNotification('<i class="fas fa-sync me-2" style="animation: spin 2s linear infinite;"></i>Syncing Accessories table...', 'info');
+                await loadAccessoriesFromStorage();
+                renderAccessoriesTable();
+                showNotification('<i class="fas fa-check-circle me-2"></i>Accessories table synced successfully!', 'success');
+            } catch (error) {
+                console.error('Error syncing Accessories table:', error);
+                showNotification('<i class="fas fa-exclamation-circle me-2"></i>Error syncing data: ' + error.message, 'danger');
+            }
+        }
+        
         async function syncEntryLogTableOnly() {
             try {
                 showNotification('<i class="fas fa-sync me-2" style="animation: spin 2s linear infinite;"></i>Syncing Entry Log table...', 'info');
@@ -8891,6 +9260,105 @@
                 <div class="modal-footer" style="background-color: #f8f9fa; border-top: 1px solid #dee2e6; border-radius: 0 0 20px 20px; padding: 20px 28px;">
                     <button type="button" class="btn btn-lg btn-secondary" data-bs-dismiss="modal" style="border-radius: 12px; padding: 12px 24px; font-weight: 600; font-size: 1rem;"><i class="fas fa-times me-2"></i>Cancel</button>
                     <button type="button" class="btn btn-lg btn-primary" onclick="updateIPadStandby()" style="border-radius: 12px; padding: 12px 28px; font-weight: 700; font-size: 1rem; color: white;"><i class="fas fa-save me-2"></i>Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Accessory Modal -->
+    <div class="modal fade" id="addAccessoryModal" tabindex="-1" aria-labelledby="addAccessoryModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="border-radius: 20px; border: none; box-shadow: 0 15px 50px rgba(255, 140, 0, 0.25);">
+                <div class="modal-header" style="background: linear-gradient(135deg, #ff8c00 0%, #ffb74d 100%); color: white; border-radius: 20px 20px 0 0; border: none; padding: 24px 28px;">
+                    <h5 class="modal-title" id="addAccessoryModalLabel" style="font-weight: 800; font-size: 1.3rem;"><i class="fas fa-headphones me-2"></i>Add New Accessory</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="padding: 30px;">
+                    <form id="addAccessoryForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Accessory Name <span style="color: red;">*</span></label>
+                                <input type="text" class="form-control" id="accessoryName" placeholder="e.g., Charger Cable" required style="border-radius: 12px; border: 2px solid #fff3e0; padding: 14px 16px; font-size: 1rem;">
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Type <span style="color: red;">*</span></label>
+                                <input type="text" class="form-control" id="accessoryType" placeholder="e.g., Cable" required style="border-radius: 12px; border: 2px solid #fff3e0; padding: 14px 16px; font-size: 1rem;">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Quantity <span style="color: red;">*</span></label>
+                                <input type="number" class="form-control" id="accessoryQuantity" placeholder="e.g., 10" min="1" required style="border-radius: 12px; border: 2px solid #fff3e0; padding: 14px 16px; font-size: 1rem;">
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Status <span style="color: red;">*</span></label>
+                                <select class="form-select" id="accessoryStatus" required style="border-radius: 12px; border: 2px solid #fff3e0; padding: 14px 16px; font-size: 1rem;">
+                                    <option value="Available">Available</option>
+                                    <option value="In Use">In Use</option>
+                                    <option value="Maintenance">Maintenance</option>
+                                    <option value="Retired">Retired</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Remarks</label>
+                            <textarea class="form-control" id="accessoryRemarks" rows="3" placeholder="Optional remarks..." style="border-radius: 12px; border: 2px solid #fff3e0; padding: 14px 16px; font-size: 1rem;"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer" style="background-color: #f8f9fa; border-top: 1px solid #dee2e6; border-radius: 0 0 20px 20px; padding: 20px 28px;">
+                    <button type="button" class="btn btn-lg btn-secondary" data-bs-dismiss="modal" style="border-radius: 12px; padding: 12px 24px; font-weight: 600; font-size: 1rem;"><i class="fas fa-times me-2"></i>Cancel</button>
+                    <button type="button" class="btn btn-lg" onclick="saveNewAccessory()" style="border-radius: 12px; padding: 12px 28px; font-weight: 700; font-size: 1rem; color: white; background: linear-gradient(135deg, #ff8c00, #ffb74d); border: none;"><i class="fas fa-plus-circle me-2"></i>Add Accessory</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Accessory Modal -->
+    <div class="modal fade" id="editAccessoryModal" tabindex="-1" aria-labelledby="editAccessoryModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="border-radius: 20px; border: none; box-shadow: 0 15px 50px rgba(255, 140, 0, 0.25);">
+                <div class="modal-header" style="background: linear-gradient(135deg, #ff8c00 0%, #ffb74d 100%); color: white; border-radius: 20px 20px 0 0; border: none; padding: 24px 28px;">
+                    <h5 class="modal-title" id="editAccessoryModalLabel" style="font-weight: 800; font-size: 1.3rem;"><i class="fas fa-edit me-2"></i>Edit Accessory</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="padding: 30px;">
+                    <form id="editAccessoryForm">
+                        <input type="hidden" id="editAccessoryIndex">
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Accessory Name <span style="color: red;">*</span></label>
+                                <input type="text" class="form-control" id="editAccessoryName" placeholder="e.g., Charger Cable" required style="border-radius: 12px; border: 2px solid #fff3e0; padding: 14px 16px; font-size: 1rem;">
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Type <span style="color: red;">*</span></label>
+                                <input type="text" class="form-control" id="editAccessoryType" placeholder="e.g., Cable" required style="border-radius: 12px; border: 2px solid #fff3e0; padding: 14px 16px; font-size: 1rem;">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Quantity <span style="color: red;">*</span></label>
+                                <input type="number" class="form-control" id="editAccessoryQuantity" placeholder="e.g., 10" min="1" required style="border-radius: 12px; border: 2px solid #fff3e0; padding: 14px 16px; font-size: 1rem;">
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Status <span style="color: red;">*</span></label>
+                                <select class="form-select" id="editAccessoryStatus" required style="border-radius: 12px; border: 2px solid #fff3e0; padding: 14px 16px; font-size: 1rem;">
+                                    <option value="Available">Available</option>
+                                    <option value="In Use">In Use</option>
+                                    <option value="Maintenance">Maintenance</option>
+                                    <option value="Retired">Retired</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold" style="color: #333; font-size: 0.95rem;">Remarks</label>
+                            <textarea class="form-control" id="editAccessoryRemarks" rows="3" placeholder="Optional remarks..." style="border-radius: 12px; border: 2px solid #fff3e0; padding: 14px 16px; font-size: 1rem;"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer" style="background-color: #f8f9fa; border-top: 1px solid #dee2e6; border-radius: 0 0 20px 20px; padding: 20px 28px;">
+                    <button type="button" class="btn btn-lg btn-secondary" data-bs-dismiss="modal" style="border-radius: 12px; padding: 12px 24px; font-weight: 600; font-size: 1rem;"><i class="fas fa-times me-2"></i>Cancel</button>
+                    <button type="button" class="btn btn-lg" onclick="updateAccessory()" style="border-radius: 12px; padding: 12px 28px; font-weight: 700; font-size: 1rem; color: white; background: linear-gradient(135deg, #ff8c00, #ffb74d); border: none;"><i class="fas fa-save me-2"></i>Save Changes</button>
                 </div>
             </div>
         </div>
