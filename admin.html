@@ -627,6 +627,11 @@
         // Supabase functions
         async function setFlightData(key, data) {
             try {
+                if (!window.supabase || !window.supabase.from) {
+                    console.warn('[ADMIN-SYNC] Supabase unavailable; leaving upload in local state');
+                    return true;
+                }
+
                 const { error } = await window.supabase
                     .from('flight_data')
                     .upsert([{ id: key, data: data }]);
@@ -643,6 +648,10 @@
 
         async function getAvailableMonths() {
             try {
+                if (!window.supabase || !window.supabase.from) {
+                    return [];
+                }
+
                 const { data, error } = await window.supabase
                     .from('available_months')
                     .select('months')
@@ -660,6 +669,11 @@
 
         async function setAvailableMonths(months) {
             try {
+                if (!window.supabase || !window.supabase.from) {
+                    console.warn('[ADMIN-SYNC] Supabase unavailable; leaving available months in local state');
+                    return true;
+                }
+
                 const { error } = await window.supabase
                     .from('available_months')
                     .upsert([{ id: 'availableMonths', months: months }]);
