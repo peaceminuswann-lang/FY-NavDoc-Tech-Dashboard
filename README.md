@@ -67,23 +67,35 @@ service cloud.firestore {
 - Username: FYFOTD
 - Password: firefly@123
 
-## Navigation Database Ship-out Email Reminders
+## Gmail Email Reminders
 
-You can use a separate Gmail account as the **sender** without Outlook or Power Automate. The reminder runs using a free Google Apps Script time trigger, so your PC does not need to stay on. Google applies daily sending and execution quotas to free accounts; these are more than enough for a few database reminders, but Google can change quotas. See [Apps Script quotas](https://developers.google.com/apps-script/guides/services/quotas) and [time-driven triggers](https://developers.google.com/apps-script/guides/triggers/installable).
+Navigation database and payment reminders are configured separately below, but use the same free Gmail and Google Apps Script project. The script runs on a daily time trigger, so your PC does not need to stay on. Google applies daily sending and execution quotas to free accounts; see [Apps Script quotas](https://developers.google.com/apps-script/guides/services/quotas) and [time-driven triggers](https://developers.google.com/apps-script/guides/triggers/installable).
 
-The dashboard calculates ship-out as 8 days before cycle effective date. The script sends one email to the configured recipient 3 days before ship-out (11 days before effective date), for ATR and B737. It reads the latest saved cycle data from Supabase and handles the 28-day cycle rollover.
+### Shared setup
 
-1. Sign in to [script.google.com](https://script.google.com/) using the Gmail account you want the email to come **from**, then create a new project.
-2. Replace the default code with the contents of [](./database-shipout-remind`database-shipout-reminder.gs`er.gs).
-3. In `REMINDER_CONFIG`, set:
-   - `recipient` to the shared email address that should receive the reminders.
-   - `supabasePublishableKey` to the Supabase publishable key configured near the top of `index.html`. Use only the publishable/anon key; never use a service-role key.
+1. Sign in to [script.google.com](https://script.google.com/) using the Gmail account you want the email to come **from**, then create a project.
+2. Replace the default code with the contents of [database-shipout-reminder.gs](./database-shipout-reminder.gs).
+3. In `REMINDER_CONFIG`, set `recipient` to the shared email address that should receive reminders and `supabasePublishableKey` to the publishable/anon key configured near the top of `index.html`. Never use a service-role key.
 4. In **Project Settings**, set the time zone to `Asia/Kuala_Lumpur`.
-5. Select `testShipOutReminderEmail` in the function menu and click **Run**. Approve Google's authorization prompts and confirm the test arrives.
-6. Select `setupDailyShipOutReminderTrigger` and click **Run** once. The script creates a daily trigger for around 9 AM Malaysia time. Google may run it at a slightly varied time within that hour. You can verify it under **Triggers**.
-7. In the Supabase project, confirm the `app_storage` table permits read access to the publishable/anon role. The script reports an error rather than silently skipping if Supabase is unavailable or the row cannot be read.
+5. In the Supabase project, confirm the `app_storage` table permits read access to the publishable/anon role.
 
-No paid service is required for this setup. The script sends through Gmail's free Apps Script allowance (currently up to 100 email recipients per day for consumer accounts); it does not require Gmail SMTP passwords or app passwords. The sender must keep the Gmail account active and the installed trigger enabled. When cycle details are changed and saved on the Database Admin page, the next run uses those updated settings.
+### Navigation database ship-out reminders
+
+The dashboard calculates ship-out as 8 days before the cycle effective date. The script emails the configured recipient 3 days before ship-out (11 days before the effective date) for ATR and B737. It reads the latest saved cycle data from Supabase and handles the 28-day cycle rollover.
+
+To test this reminder, select `testShipOutReminderEmail` in the Apps Script function menu, click **Run**, approve Google's authorization prompt, and confirm the test email arrives.
+
+### Payment due reminders
+
+Add a payment term of 15, 30, 60, or 90 days. The Payment Dashboard calculates the expected payment date by adding the selected term to the payment's created date. The script sends a consolidated email 3 days before the due date for payments due that day. It reads the latest `paymentDashboardData` saved in Supabase.
+
+To test this reminder, select `testPaymentDueReminderEmail` in the Apps Script function menu, click **Run**, approve Google's authorization prompt if prompted, and confirm the test email arrives.
+
+### Enable the daily reminder schedule
+
+After testing the reminders you want, select `setupDailyShipOutReminderTrigger` and click **Run** once. The script creates one daily trigger that checks both navigation ship-out and payment due reminders at around 9 AM Malaysia time. Google may run it at a slightly varied time within that hour. Verify it under **Triggers**. If you already created the database-only trigger, running setup again replaces it with the combined reminder trigger.
+
+No paid service is required. The script sends through Gmail's free Apps Script allowance; it does not require Gmail SMTP passwords or app passwords. The sender must keep the Gmail account active and the installed trigger enabled. The calendar marks payment due dates in red, the exact reminder date (3 days before) in yellow, and created dates in soft orange, with labels and payment names shown on each date.
 
 ## Mobile Compatibility
 

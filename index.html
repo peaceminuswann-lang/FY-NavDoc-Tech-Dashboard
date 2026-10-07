@@ -42,6 +42,11 @@
         // Make client available globally
         window.supabase = supabaseClient;
     </script>
+    <script>
+        if (localStorage.getItem('dashboardTheme') === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+        }
+    </script>
 
     <style>
         body {
@@ -2446,8 +2451,8 @@
 
         /* Footer Styles */
         .dashboard-footer {
-            margin-top: 24px;
-            padding: 20px 16px;
+            margin-top: 8px;
+            padding: 10px 16px;
             text-align: center;
             border-top: 1px solid #e9ecf1;
             color: #7f8fa8;
@@ -2756,6 +2761,671 @@
                 padding: 22px 8px 14px;
             }
         }
+
+        :root {
+            --dashboard-accent: #e8790b;
+            --dashboard-accent-dark: #a94d00;
+            --dashboard-accent-soft: #fff3e5;
+            --dashboard-text: #253445;
+            --dashboard-muted: #718096;
+            --dashboard-border: #e5eaf0;
+            --dashboard-surface: #ffffff;
+        }
+
+        body {
+            background: #f4f6f8;
+            color: var(--dashboard-text);
+            font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .dashboard-shell {
+            background: #f4f6f8;
+        }
+
+        .sidebar {
+            background: #fff;
+            border-right-color: var(--dashboard-border);
+            box-shadow: 4px 0 18px rgba(34, 49, 63, 0.04);
+        }
+
+        .sidebar-brand {
+            margin-bottom: 18px;
+            padding-bottom: 18px;
+        }
+
+        .sidebar-item,
+        .sidebar-subitem,
+        .sidebar-admin-link {
+            transition: color 0.16s ease, background-color 0.16s ease;
+        }
+
+        .sidebar-item.active {
+            background: var(--dashboard-accent-soft);
+            color: var(--dashboard-accent-dark);
+        }
+
+        .dashboard-main {
+            padding: 24px clamp(20px, 3vw, 44px);
+            background: #f4f6f8;
+        }
+
+        .dashboard-main::before {
+            display: none;
+        }
+
+        .dashboard-topbar {
+            min-height: 68px;
+            margin-bottom: 20px;
+            padding: 10px 14px;
+            border: 1px solid var(--dashboard-border);
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.94);
+            box-shadow: 0 3px 12px rgba(34, 49, 63, 0.035);
+        }
+
+        .topbar-logo img {
+            width: 108px;
+            max-height: 44px;
+        }
+
+        .topbar-btn {
+            border: 1px solid #f4d8bd;
+            border-radius: 10px;
+            box-shadow: none;
+            color: var(--dashboard-text);
+            font-size: 0.9rem;
+            padding: 9px 14px;
+        }
+
+        .topbar-btn:hover {
+            border-color: var(--dashboard-accent);
+            background: var(--dashboard-accent-soft);
+            color: var(--dashboard-accent-dark);
+            box-shadow: none;
+        }
+
+        .page-title-container {
+            margin: 4px 0 24px !important;
+        }
+
+        .dashboard-hero h1 {
+            color: var(--dashboard-text);
+            background: none;
+            -webkit-text-fill-color: currentColor;
+            font-size: clamp(1.65rem, 2.8vw, 2.25rem);
+            font-weight: 750;
+            letter-spacing: -0.035em;
+            line-height: 1.2;
+            text-shadow: none;
+        }
+
+        .dashboard-hero p,
+        .launcher-subtitle {
+            color: var(--dashboard-muted);
+            font-size: 0.98rem;
+            font-weight: 450;
+        }
+
+        .launcher-subtitle {
+            margin-bottom: 30px;
+        }
+
+        .my-apps-section h2 {
+            color: var(--dashboard-text);
+            background: none;
+            -webkit-text-fill-color: currentColor;
+            font-size: 1.35rem;
+            font-weight: 750;
+            letter-spacing: -0.02em;
+            margin-bottom: 18px !important;
+            padding-bottom: 10px;
+        }
+
+        .my-apps-section h2::after {
+            width: 38px;
+            height: 3px;
+            background: var(--dashboard-accent);
+        }
+
+        .dashboard-main .card,
+        .chart-box,
+        .metric-card,
+        .app-card {
+            border: 1px solid var(--dashboard-border) !important;
+            border-radius: 14px !important;
+            background-color: var(--dashboard-surface);
+            box-shadow: 0 4px 14px rgba(34, 49, 63, 0.045);
+            transition: border-color 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .dashboard-main .card:hover,
+        .chart-box:hover,
+        .metric-card:hover,
+        .app-card:hover {
+            border-color: #f0c69e !important;
+            box-shadow: 0 8px 22px rgba(34, 49, 63, 0.085);
+            transform: none;
+        }
+
+        .dashboard-main .card-header {
+            border-radius: 13px 13px 0 0 !important;
+            font-size: 0.98rem;
+            font-weight: 700;
+            letter-spacing: 0;
+            padding: 14px 18px !important;
+        }
+
+        .app-card {
+            min-height: 190px;
+            padding: 22px !important;
+        }
+
+        #launcherSection .app-card {
+            --launcher-accent: var(--dashboard-accent);
+            --launcher-tint: #fff8f0;
+            background: #fff !important;
+        }
+
+        #launcherSection .app-card-icon {
+            background: var(--launcher-tint) !important;
+            color: var(--launcher-accent) !important;
+            box-shadow: none;
+        }
+
+        #launcherSection .app-card-icon i {
+            color: var(--launcher-accent) !important;
+        }
+
+        .app-card-icon {
+            width: 46px;
+            height: 46px;
+            flex: 0 0 46px;
+            border-radius: 13px;
+            background: var(--launcher-tint, var(--dashboard-accent-soft)) !important;
+            color: var(--launcher-accent, var(--dashboard-accent-dark)) !important;
+            box-shadow: none;
+            font-size: 1.1rem;
+        }
+
+        .app-card:hover .app-card-icon {
+            transform: none;
+        }
+
+        .app-card-title {
+            background: none;
+            -webkit-text-fill-color: currentColor;
+            color: var(--dashboard-text);
+            font-size: 1.02rem;
+            font-weight: 750;
+        }
+
+        .app-card-text {
+            color: #657487;
+            font-size: 0.9rem;
+            line-height: 1.55;
+        }
+
+        .app-card small,
+        .app-card small.text-muted {
+            color: var(--dashboard-muted) !important;
+            font-size: 0.8rem;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .section-title,
+        .chart-title {
+            color: var(--dashboard-text);
+            background: none;
+            -webkit-text-fill-color: currentColor;
+            font-size: 1.12rem;
+            font-weight: 750;
+            letter-spacing: -0.01em;
+        }
+
+        .section-title {
+            border-bottom: 2px solid #f0c69e;
+            padding-bottom: 9px;
+        }
+
+        .table-responsive {
+            border: 1px solid var(--dashboard-border);
+            border-radius: 11px;
+            box-shadow: none;
+        }
+
+        .table {
+            --bs-table-striped-bg: #f7f9fb;
+            --bs-table-hover-bg: #fff7ef;
+            color: var(--dashboard-text);
+            margin-bottom: 0;
+        }
+
+        .table th,
+        .table td {
+            border-color: #edf0f3;
+            padding: 11px 12px;
+            font-size: 0.86rem;
+            vertical-align: middle;
+        }
+
+        .table th,
+        .table thead th,
+        .table-responsive table thead th,
+        .dataTables_wrapper .dataTables_scrollHeadInner table thead th {
+            color: #48586a !important;
+            background-color: #f5f7f9 !important;
+            font-size: 0.75rem;
+            font-weight: 750;
+            letter-spacing: 0.035em;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: #fff7ef;
+        }
+
+        .dashboard-main .btn {
+            border-radius: 9px;
+            font-weight: 650;
+            transition: background-color 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+        }
+
+        .dashboard-main .btn-primary,
+        .dashboard-main .btn-warning {
+            border-color: var(--dashboard-accent);
+            background: var(--dashboard-accent);
+            color: #fff;
+        }
+
+        .dashboard-main .btn-primary:hover,
+        .dashboard-main .btn-warning:hover {
+            border-color: #c96106;
+            background: #c96106;
+            color: #fff;
+        }
+
+        .dashboard-main .form-control,
+        .dashboard-main .form-select {
+            min-height: 42px;
+            border: 1px solid #dce3e9 !important;
+            border-radius: 9px !important;
+            color: var(--dashboard-text);
+            box-shadow: none;
+        }
+
+        .dashboard-main .form-control:focus,
+        .dashboard-main .form-select:focus {
+            border-color: #e8a568 !important;
+            box-shadow: 0 0 0 3px rgba(232, 121, 11, 0.12);
+        }
+
+        .dashboard-footer {
+            border-top-color: var(--dashboard-border);
+            background: transparent;
+            color: #8290a0;
+            font-size: 0.82rem;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-main {
+                padding: 16px;
+            }
+
+            .dashboard-topbar {
+                min-height: 60px;
+                margin-bottom: 16px;
+                padding: 8px 10px;
+                border-radius: 12px;
+            }
+
+            .topbar-logo {
+                display: none;
+            }
+
+            .topbar-actions {
+                justify-content: flex-end;
+            }
+
+            .page-title-container {
+                margin-bottom: 18px !important;
+            }
+
+            .dashboard-main .card-body,
+            .chart-box {
+                padding: 16px;
+            }
+
+            .app-card {
+                min-height: 0;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        .sidebar-theme-control {
+            display: flex;
+            gap: 4px;
+            margin: 0 0 8px;
+            padding: 4px;
+            border: 1px solid #e8edf1;
+            border-radius: 11px;
+            background: #f5f7f9;
+        }
+
+        .sidebar-theme-button {
+            display: inline-flex;
+            min-width: 0;
+            flex: 1;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            padding: 8px 6px;
+            border: 0;
+            border-radius: 8px;
+            background: transparent;
+            color: #647482;
+            font-size: 0.78rem;
+            font-weight: 650;
+            white-space: nowrap;
+            transition: color 0.16s ease, background-color 0.16s ease, box-shadow 0.16s ease;
+        }
+
+        .sidebar-theme-button[aria-pressed="true"] {
+            background: #fff;
+            color: var(--dashboard-accent-dark);
+            box-shadow: 0 1px 4px rgba(34, 49, 63, 0.12);
+        }
+
+        .sidebar-theme-button:focus-visible {
+            outline: 2px solid var(--dashboard-accent);
+            outline-offset: 2px;
+        }
+
+        .sidebar.collapsed .sidebar-theme-control {
+            flex-direction: column;
+            align-items: center;
+            border: 0;
+            background: transparent;
+            padding: 0;
+        }
+
+        .sidebar.collapsed .sidebar-theme-button {
+            width: 38px;
+            height: 36px;
+            flex: 0 0 36px;
+            padding: 0;
+        }
+
+        .sidebar.collapsed .sidebar-theme-label {
+            display: none;
+        }
+
+        :root[data-theme="dark"] {
+            color-scheme: dark;
+            --dashboard-text: #e6edf3;
+            --dashboard-muted: #9aaabd;
+            --dashboard-border: #354252;
+            --dashboard-surface: #202b38;
+            --dashboard-accent-soft: #3a2b1e;
+            --dashboard-accent-dark: #ffb265;
+        }
+
+        :root[data-theme="dark"] body,
+        :root[data-theme="dark"] .dashboard-shell,
+        :root[data-theme="dark"] .dashboard-main {
+            background: #151d27 !important;
+            color: var(--dashboard-text);
+        }
+
+        :root[data-theme="dark"] .sidebar {
+            background: #1c2632;
+            border-right-color: #354252;
+            box-shadow: 4px 0 18px rgba(0, 0, 0, 0.18);
+        }
+
+        :root[data-theme="dark"] .sidebar-title,
+        :root[data-theme="dark"] .sidebar-item,
+        :root[data-theme="dark"] .sidebar-subitem,
+        :root[data-theme="dark"] .sidebar-admin-link,
+        :root[data-theme="dark"] .sidebar-group-toggle {
+            color: #c3cfda;
+        }
+
+        :root[data-theme="dark"] .sidebar-subtitle,
+        :root[data-theme="dark"] .sidebar-section {
+            color: #8798aa;
+        }
+
+        :root[data-theme="dark"] .sidebar-brand,
+        :root[data-theme="dark"] .sidebar-footer {
+            border-color: #354252;
+        }
+
+        :root[data-theme="dark"] .sidebar-item:hover,
+        :root[data-theme="dark"] .sidebar-item.active,
+        :root[data-theme="dark"] .sidebar-subitem:hover,
+        :root[data-theme="dark"] .sidebar-subitem.active,
+        :root[data-theme="dark"] .sidebar-admin-link:hover,
+        :root[data-theme="dark"] .sidebar-group-toggle:hover {
+            background: #3a2b1e;
+            color: #ffc17e;
+        }
+
+        :root[data-theme="dark"] .sidebar-item-icon,
+        :root[data-theme="dark"] .sidebar-admin-icon {
+            background: #3a2b1e;
+            color: #ffb265;
+        }
+
+        :root[data-theme="dark"] .sidebar-theme-control {
+            border-color: #354252;
+            background: #151d27;
+        }
+
+        :root[data-theme="dark"] .sidebar-theme-button {
+            color: #aab8c6;
+        }
+
+        :root[data-theme="dark"] .sidebar-theme-button[aria-pressed="true"] {
+            background: #3a2b1e;
+            color: #ffc17e;
+            box-shadow: none;
+        }
+
+        :root[data-theme="dark"] .dashboard-topbar {
+            border-color: var(--dashboard-border);
+            background: #202b38;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.16);
+        }
+
+        :root[data-theme="dark"] .topbar-btn {
+            border-color: #4b5968;
+            background: #263342;
+            color: #e6edf3;
+        }
+
+        :root[data-theme="dark"] .topbar-btn:hover {
+            border-color: #c8762a;
+            background: #3a2b1e;
+            color: #ffc17e;
+        }
+
+        :root[data-theme="dark"] .dashboard-hero h1,
+        :root[data-theme="dark"] .my-apps-section h2,
+        :root[data-theme="dark"] #launcherSection .my-apps-section h2,
+        :root[data-theme="dark"] .section-title,
+        :root[data-theme="dark"] .chart-title {
+            color: #edf2f7;
+            -webkit-text-fill-color: currentColor;
+            background: none;
+        }
+
+        :root[data-theme="dark"] .dashboard-hero p,
+        :root[data-theme="dark"] .launcher-subtitle,
+        :root[data-theme="dark"] .app-card-text {
+            color: #aab8c6;
+        }
+
+        :root[data-theme="dark"] .dashboard-main .card,
+        :root[data-theme="dark"] .chart-box,
+        :root[data-theme="dark"] .metric-card,
+        :root[data-theme="dark"] .app-card,
+        :root[data-theme="dark"] #launcherSection .app-card {
+            border-color: var(--dashboard-border) !important;
+            background: var(--dashboard-surface) !important;
+            color: var(--dashboard-text) !important;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+        }
+
+        :root[data-theme="dark"] .dashboard-main .card:hover,
+        :root[data-theme="dark"] .chart-box:hover,
+        :root[data-theme="dark"] .metric-card:hover,
+        :root[data-theme="dark"] .app-card:hover {
+            border-color: #8b5a31 !important;
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.24);
+        }
+
+        :root[data-theme="dark"] .app-card-title,
+        :root[data-theme="dark"] #launcherSection .app-card-title {
+            color: #edf2f7 !important;
+            -webkit-text-fill-color: currentColor;
+        }
+
+        :root[data-theme="dark"] .app-card small,
+        :root[data-theme="dark"] .app-card small.text-muted {
+            color: #9aaabd !important;
+        }
+
+        :root[data-theme="dark"] .dashboard-main .card-body,
+        :root[data-theme="dark"] .dashboard-main .card-body[style*="background"],
+        :root[data-theme="dark"] .dashboard-main [id="monthlySummarySection"],
+        :root[data-theme="dark"] #fileInfoSection {
+            background: #202b38 !important;
+            color: var(--dashboard-text) !important;
+        }
+
+        :root[data-theme="dark"] .dashboard-main .card-body :is(h1, h2, h3, h4, h5, h6, p, label, small),
+        :root[data-theme="dark"] .dashboard-main .text-dark,
+        :root[data-theme="dark"] #fileInfoSection :is(h1, h2, h3, h4, h5, h6, p, label, small) {
+            color: var(--dashboard-text) !important;
+        }
+
+        :root[data-theme="dark"] .dashboard-main .card-header {
+            color: #fff;
+        }
+
+        :root[data-theme="dark"] .table-responsive {
+            border-color: var(--dashboard-border);
+            background: var(--dashboard-surface);
+        }
+
+        :root[data-theme="dark"] .table {
+            --bs-table-color: #dce5ed;
+            --bs-table-bg: #202b38;
+            --bs-table-striped-color: #dce5ed;
+            --bs-table-striped-bg: #263342;
+            --bs-table-hover-color: #f3f6f9;
+            --bs-table-hover-bg: #303b48;
+            --bs-table-border-color: #354252;
+            color: var(--bs-table-color);
+        }
+
+        :root[data-theme="dark"] .table th,
+        :root[data-theme="dark"] .table thead th,
+        :root[data-theme="dark"] .table-responsive table thead th,
+        :root[data-theme="dark"] .dataTables_wrapper .dataTables_scrollHeadInner table thead th {
+            border-color: #354252;
+            background: #2a3746 !important;
+            color: #e5edf4 !important;
+        }
+
+        :root[data-theme="dark"] .table td {
+            border-color: #354252;
+            color: #dce5ed;
+        }
+
+        :root[data-theme="dark"] .table-hover tbody tr:hover {
+            background: #303b48;
+        }
+
+        :root[data-theme="dark"] #paymentCalendar [role="button"][style*="background: white"] {
+            border-color: #4b5968 !important;
+            background: #263342 !important;
+            color: #e6edf3 !important;
+        }
+
+        :root[data-theme="dark"] .dashboard-main .form-control,
+        :root[data-theme="dark"] .dashboard-main .form-select,
+        :root[data-theme="dark"] .modal .form-control,
+        :root[data-theme="dark"] .modal .form-select {
+            border-color: #4b5968 !important;
+            background-color: #1a2430 !important;
+            color: #e6edf3 !important;
+        }
+
+        :root[data-theme="dark"] .dashboard-main .form-control::placeholder,
+        :root[data-theme="dark"] .modal .form-control::placeholder {
+            color: #8798aa;
+        }
+
+        :root[data-theme="dark"] .dashboard-main .form-control:focus,
+        :root[data-theme="dark"] .dashboard-main .form-select:focus,
+        :root[data-theme="dark"] .modal .form-control:focus,
+        :root[data-theme="dark"] .modal .form-select:focus {
+            border-color: #d18b4e !important;
+            box-shadow: 0 0 0 3px rgba(232, 121, 11, 0.18);
+        }
+
+        :root[data-theme="dark"] .form-select option {
+            background: #1a2430;
+            color: #e6edf3;
+        }
+
+        :root[data-theme="dark"] .modal-content {
+            border-color: #465362 !important;
+            background: #202b38 !important;
+            color: var(--dashboard-text);
+        }
+
+        :root[data-theme="dark"] .modal-body,
+        :root[data-theme="dark"] .modal-footer {
+            background: #202b38 !important;
+            color: var(--dashboard-text);
+        }
+
+        :root[data-theme="dark"] .modal-body :is(label, p, small, .text-muted),
+        :root[data-theme="dark"] .modal .btn-close {
+            color: #e6edf3 !important;
+        }
+
+        :root[data-theme="dark"] .dashboard-footer {
+            border-top-color: var(--dashboard-border);
+            color: #9aaabd;
+        }
+
+        :root[data-theme="dark"] .dashboard-footer .footer-text-bold {
+            color: #c3cfda;
+        }
+
+        :root[data-theme="dark"] .alert-light,
+        :root[data-theme="dark"] .bg-light,
+        :root[data-theme="dark"] .bg-white {
+            border-color: var(--dashboard-border) !important;
+            background-color: #263342 !important;
+            color: #dce5ed !important;
+        }
     </style>
 </head>
 
@@ -2808,6 +3478,14 @@
                 <a href="javascript:void(0);" id="nav-jsonconverter" class="sidebar-item" onclick="showJSONConverter()"><span class="sidebar-item-icon"><i class="fas fa-code"></i></span><span class="sidebar-label">JSON Converter</span></a>
             </nav>
             <div class="sidebar-footer">
+                <div class="sidebar-theme-control" role="group" aria-label="Color theme">
+                    <button type="button" class="sidebar-theme-button" id="lightModeButton" aria-pressed="true" onclick="setDashboardTheme('light')">
+                        <i class="fas fa-sun" aria-hidden="true"></i><span class="sidebar-theme-label">Light</span>
+                    </button>
+                    <button type="button" class="sidebar-theme-button" id="darkModeButton" aria-pressed="false" onclick="setDashboardTheme('dark')">
+                        <i class="fas fa-moon" aria-hidden="true"></i><span class="sidebar-theme-label">Dark</span>
+                    </button>
+                </div>
                 <a class="sidebar-admin-link" href="login.html"><span class="sidebar-admin-icon"><i class="fas fa-user-shield"></i></span><span class="sidebar-label">Admin Login</span></a>
             </div>
         </aside>
@@ -3988,7 +4666,7 @@
                     </div>
 
                     <div class="row mb-4">
-                        <div class="col-md-8">
+                        <div class="col-12">
                             <div class="card" style="border-radius: 16px; border: 2px solid #ffe9d6; box-shadow: 0 4px 12px rgba(255, 140, 0, 0.1);">
                                 <div class="card-header" style="background: linear-gradient(135deg, #ff8c00 0%, #ffb74d 100%); border-radius: 14px 14px 0 0;">
                                     <h5 class="mb-0">Payment Calendar</h5>
@@ -4004,10 +4682,16 @@
                                         </button>
                                     </div>
                                     <div id="paymentCalendar" style="border: 2px solid #ffe9d6; border-radius: 10px; padding: 20px; background: #fafafa;"></div>
+                                    <div class="d-flex flex-wrap gap-3 mt-3" aria-label="Payment calendar legend">
+                                        <span class="d-inline-flex align-items-center gap-2"><span style="width: 12px; height: 12px; border-radius: 3px; background: #dc3545;"></span><small>Payment due</small></span>
+                                        <span class="d-inline-flex align-items-center gap-2"><span style="width: 12px; height: 12px; border-radius: 3px; background: #ffc107;"></span><small>Reminder (3 days before)</small></span>
+                                        <span class="d-inline-flex align-items-center gap-2"><span style="width: 12px; height: 12px; border-radius: 3px; background: #ffddb0;"></span><small>Created date</small></span>
+                                    </div>
+                                    <small class="text-muted d-block mt-2">Payment reminders are emailed 3 days before the due date using the Gmail Apps Script setup in README.md.</small>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-12">
                             <div class="card" style="border-radius: 16px; border: 2px solid #ffe9d6; box-shadow: 0 4px 12px rgba(255, 140, 0, 0.1);">
                                 <div class="card-header" style="background: linear-gradient(135deg, #ff8c00 0%, #ffb74d 100%); border-radius: 14px 14px 0 0;">
                                     <h5 class="mb-0">Summary</h5>
@@ -4105,14 +4789,16 @@
                             <table class="table table-striped table-hover" id="paymentTable" style="margin-bottom: 0;">
                                 <thead style="background: #f5f5f5;">
                                     <tr>
-                                        <th style="width: 5%;">No</th>
-                                        <th style="width: 16%;">Payment Name</th>
-                                        <th style="width: 16%;">Vendor Name</th>
-                                        <th style="width: 17%;">Category</th>
-                                        <th style="width: 13%;">Created Date</th>
-                                        <th style="width: 9%;">Currency</th>
-                                        <th style="width: 10%; text-align: right;">Amount</th>
-                                        <th style="width: 10%; text-align: right;">In RM</th>
+                                        <th style="width: 4%;">No</th>
+                                        <th style="width: 13%;">Payment Name</th>
+                                        <th style="width: 13%;">Vendor Name</th>
+                                        <th style="width: 14%;">Category</th>
+                                        <th style="width: 9%;">Created Date</th>
+                                        <th style="width: 9%;">Due Date</th>
+                                        <th style="width: 11%;">Payment Done Date</th>
+                                        <th style="width: 7%;">Currency</th>
+                                        <th style="width: 8%; text-align: right;">Amount</th>
+                                        <th style="width: 8%; text-align: right;">In RM</th>
                                         <th id="paymentActionHeader" style="width: 4%; text-align: center; display: none;">Action</th>
                                     </tr>
                                 </thead>
@@ -4136,13 +4822,15 @@
                                         <th style="width: 3%;">No</th>
                                         <th style="width: 12%;">Payment Name</th>
                                         <th style="width: 12%;">Vendor Name</th>
-                                        <th style="width: 15%;">Category</th>
-                                        <th style="width: 10%;">Created Date</th>
-                                        <th style="width: 10%;">Payment Date</th>
-                                        <th style="width: 8%;">Currency</th>
-                                        <th style="width: 10%; text-align: right;">Amount</th>
-                                        <th style="width: 12%;">PO Number</th>
-                                        <th style="width: 12%;">Invoice Number</th>
+                                        <th style="width: 14%;">Category</th>
+                                        <th style="width: 8%;">Created Date</th>
+                                        <th style="width: 7%;">Payment Term</th>
+                                        <th style="width: 8%;">Due Date</th>
+                                        <th style="width: 9%;">Payment Done Date</th>
+                                        <th style="width: 7%;">Currency</th>
+                                        <th style="width: 8%; text-align: right;">Amount</th>
+                                        <th style="width: 7%;">PO Number</th>
+                                        <th style="width: 8%;">Invoice Number</th>
                                     </tr>
                                 </thead>
                                 <tbody id="paymentReminderListBody">
@@ -4534,7 +5222,6 @@
                 </thead>
             </table>
         </div>
-    </div>
     </div>
 
         <!-- Dashboard Footer -->
@@ -6995,6 +7682,10 @@
 
         // Initialize crew list on page load
         document.addEventListener('DOMContentLoaded', async function() {
+            setDashboardTheme(document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light');
+            if (window.matchMedia('(max-width: 576px)').matches) {
+                document.querySelector('.sidebar').classList.add('collapsed');
+            }
             updateSyncStatus('idle');
             await Promise.all([
                 loadCrewListFromStorage(),
@@ -8317,6 +9008,8 @@
                     <td>${payment.vendor}</td>
                     <td>${payment.category}</td>
                     <td>${payment.createdDate || payment.date}</td>
+                    <td>${payment.date || 'N/A'}</td>
+                    <td>${payment.paymentDoneDate || 'N/A'}</td>
                     <td>${payment.currency}</td>
                     <td style="text-align: right; font-weight: 600;">${payment.amount.toFixed(2)}</td>
                     <td style="text-align: right; font-weight: 600;">RM${amountInRM.toFixed(2)}</td>
@@ -8344,7 +9037,9 @@
                     <td>${payment.vendor}</td>
                     <td>${payment.category}</td>
                     <td>${payment.createdDate || 'N/A'}</td>
+                    <td>${payment.paymentTerm ? `${payment.paymentTerm} Days` : 'N/A'}</td>
                     <td>${payment.date}</td>
+                    <td>${payment.paymentDoneDate || 'N/A'}</td>
                     <td>${payment.currency}</td>
                     <td style="text-align: right;">${payment.amount.toFixed(2)}</td>
                     <td>${payment.poNumber || 'N/A'}</td>
@@ -8563,9 +9258,8 @@
             // Update month/year display
             document.getElementById('calendarMonthYear').textContent = currentCalendarDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
             
-            // Generate simple calendar view
             let html = `<div style="text-align: center;">
-                <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; margin-bottom: 15px;">
+                <div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; margin-bottom: 15px;">
                     <div style="font-weight: 700; color: #666; padding: 8px;">Sun</div>
                     <div style="font-weight: 700; color: #666; padding: 8px;">Mon</div>
                     <div style="font-weight: 700; color: #666; padding: 8px;">Tue</div>
@@ -8574,41 +9268,114 @@
                     <div style="font-weight: 700; color: #666; padding: 8px;">Fri</div>
                     <div style="font-weight: 700; color: #666; padding: 8px;">Sat</div>
                 </div>
-                <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px;">`;
+                <div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px;">`;
             
             const firstDay = new Date(year, month, 1);
             const lastDay = new Date(year, month + 1, 0);
             const daysInMonth = lastDay.getDate();
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const paymentsByDueDate = new Map();
+            const paymentsByReminderDate = new Map();
+            const paymentsByCreatedDate = new Map();
+
+            paymentData.forEach(payment => {
+                const dueDate = parsePaymentCalendarDate(payment.date);
+                const createdDate = parsePaymentCalendarDate(payment.createdDate);
+                if (dueDate) {
+                    const key = paymentCalendarDateKey(dueDate);
+                    if (!paymentsByDueDate.has(key)) paymentsByDueDate.set(key, []);
+                    paymentsByDueDate.get(key).push(payment);
+                    const reminderDate = new Date(dueDate.getTime());
+                    reminderDate.setDate(reminderDate.getDate() - 3);
+                    const reminderKey = paymentCalendarDateKey(reminderDate);
+                    if (!paymentsByReminderDate.has(reminderKey)) paymentsByReminderDate.set(reminderKey, []);
+                    paymentsByReminderDate.get(reminderKey).push(payment);
+                }
+                if (createdDate) {
+                    const key = paymentCalendarDateKey(createdDate);
+                    if (!paymentsByCreatedDate.has(key)) paymentsByCreatedDate.set(key, []);
+                    paymentsByCreatedDate.get(key).push(payment);
+                }
+            });
             
-            // Add empty cells for days before month starts
             for (let i = 0; i < firstDay.getDay(); i++) {
-                html += '<div style="padding: 8px; color: #ccc;"></div>';
+                html += '<div aria-hidden="true"></div>';
             }
             
-            // Add day cells
-            const today = new Date();
             for (let day = 1; day <= daysInMonth; day++) {
                 const cellDate = new Date(year, month, day);
-                const dateStr = cellDate.toLocaleDateString('en-GB').replace(/\//g, '-');
-                const dateStrFormat = `${day.toString().padStart(2, '0')}-${(month + 1).toString().padStart(2, '0')}-${year}`;
-                
-                const hasPayment = paymentData.some(p => {
-                    const paymentDate = new Date(p.date);
-                    return paymentDate.getDate() === day && paymentDate.getMonth() === month && paymentDate.getFullYear() === year;
-                });
-                
-                const isToday = day === today.getDate() && month === today.getMonth() && year === today.getFullYear();
-                const isSelected = selectedCalendarDate && day === selectedCalendarDate.getDate() && month === selectedCalendarDate.getMonth() && year === selectedCalendarDate.getFullYear();
-                
-                const bgColor = isToday ? '#ff8c00' : isSelected ? '#ffb74d' : hasPayment ? '#ffe9d6' : 'white';
-                const textColor = isToday ? 'white' : 'black';
-                const borderColor = hasPayment || isSelected ? '#ff8c00' : '#ddd';
-                
-                html += `<div onclick="selectCalendarDate(new Date(${year}, ${month}, ${day})); openAddReminderModal();" style="padding: 12px 8px; border-radius: 8px; font-weight: 600; cursor: pointer; background: ${bgColor}; color: ${textColor}; border: 2px solid ${borderColor}; transition: all 0.2s; text-align: center;" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 4px 8px rgba(255, 140, 0, 0.2)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none';">${day}</div>`;
+                cellDate.setHours(0, 0, 0, 0);
+                const dateKey = paymentCalendarDateKey(cellDate);
+                const duePayments = paymentsByDueDate.get(dateKey) || [];
+                const reminderPayments = paymentsByReminderDate.get(dateKey) || [];
+                const createdPayments = paymentsByCreatedDate.get(dateKey) || [];
+                const isDueDate = duePayments.length > 0;
+                const isDueSoon = reminderPayments.length > 0;
+                const isToday = cellDate.getTime() === today.getTime();
+                const isSelected = selectedCalendarDate &&
+                    cellDate.getFullYear() === selectedCalendarDate.getFullYear() &&
+                    cellDate.getMonth() === selectedCalendarDate.getMonth() &&
+                    cellDate.getDate() === selectedCalendarDate.getDate();
+                const backgroundColor = isDueDate ? '#f8d7da' : isDueSoon ? '#fff3cd' : createdPayments.length ? '#fff1df' : 'white';
+                const borderColor = isDueDate ? '#dc3545' : isDueSoon ? '#ffc107' : createdPayments.length ? '#ffddb0' : '#ddd';
+                const itemsMarkup = [
+                    ...duePayments.map(payment => `<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; border-radius: 4px; padding: 2px 4px; margin-top: 3px; background: #dc3545; color: white; font-size: 10px; line-height: 1.3;" title="PAYMENT DUE: ${escapePaymentCalendarText(payment.paymentName || payment.vendor)}">DUE: ${escapePaymentCalendarText(payment.paymentName || payment.vendor)}</div>`),
+                    ...reminderPayments.map(payment => `<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; border-radius: 4px; padding: 2px 4px; margin-top: 3px; background: #ffc107; color: #493900; font-size: 10px; line-height: 1.3;" title="PAYMENT DUE IN 3 DAYS: ${escapePaymentCalendarText(payment.paymentName || payment.vendor)}">IN 3 DAYS: ${escapePaymentCalendarText(payment.paymentName || payment.vendor)}</div>`),
+                    ...createdPayments.map(payment => `<div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; border-radius: 4px; padding: 2px 4px; margin-top: 3px; background: #ffddb0; color: #663c00; font-size: 10px; line-height: 1.3;" title="CREATED: ${escapePaymentCalendarText(payment.paymentName || payment.vendor)}">NEW: ${escapePaymentCalendarText(payment.paymentName || payment.vendor)}</div>`)
+                ].join('');
+                const accessibleLabel = `${day}${isToday ? ', today' : ''}${duePayments.length ? `, ${duePayments.length} payment${duePayments.length === 1 ? '' : 's'} due` : ''}${isDueSoon ? `, ${reminderPayments.length} payment reminder${reminderPayments.length === 1 ? '' : 's'} due in 3 days` : ''}${createdPayments.length ? `, ${createdPayments.length} payment${createdPayments.length === 1 ? '' : 's'} created` : ''}`;
+
+                html += `<div role="button" tabindex="0" aria-label="${accessibleLabel}" onclick="selectCalendarDate(new Date(${year}, ${month}, ${day})); openAddReminderModal();" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectCalendarDate(new Date(${year}, ${month}, ${day}));openAddReminderModal();}" style="box-sizing: border-box; min-width: 0; min-height: 100px; padding: 8px 5px; border-radius: 8px; font-weight: 600; cursor: pointer; background: ${backgroundColor}; color: #212529; border: ${isSelected || isToday ? '2px solid #ff8c00' : `2px solid ${borderColor}`}; transition: all 0.2s; text-align: center;">${day}${itemsMarkup}</div>`;
             }
             
             html += '</div></div>';
             calendarDiv.innerHTML = html;
+        }
+
+        function parsePaymentCalendarDate(value) {
+            if (typeof value !== 'string') return null;
+            const trimmed = value.trim();
+            const isoMatch = trimmed.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+            const displayMatch = trimmed.match(/^(\d{1,2})-([A-Za-z]{3})-(\d{4})$/);
+            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            let year;
+            let month;
+            let day;
+
+            if (isoMatch) {
+                year = Number(isoMatch[1]);
+                month = Number(isoMatch[2]) - 1;
+                day = Number(isoMatch[3]);
+            } else if (displayMatch) {
+                day = Number(displayMatch[1]);
+                month = monthNames.findIndex(name => name.toLowerCase() === displayMatch[2].toLowerCase());
+                year = Number(displayMatch[3]);
+            } else {
+                return null;
+            }
+
+            const date = new Date(year, month, day);
+            if (date.getFullYear() !== year || date.getMonth() !== month || date.getDate() !== day) return null;
+            date.setHours(0, 0, 0, 0);
+            return date;
+        }
+
+        function paymentCalendarDateKey(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        function escapePaymentCalendarText(value) {
+            return String(value || '').replace(/[&<>"']/g, character => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            })[character]);
         }
 
         function previousMonth() {
@@ -8706,6 +9473,7 @@
                 document.getElementById('reminderPONumber').value = payment.poNumber || '';
                 document.getElementById('reminderInvoiceNumber').value = payment.invoiceNumber || '';
                 document.getElementById('reminderCategory').value = payment.category;
+                document.getElementById('reminderPaymentDoneDate').value = paymentDateToInputValue(payment.paymentDoneDate);
                 document.getElementById('paymentReminderModalLabel').innerHTML = '<i class="fas fa-edit me-2"></i>Edit Payment Reminder';
                 document.getElementById('paymentReminderSubmitBtn').innerHTML = '<i class="fas fa-save me-1"></i>Save';
                 
@@ -8724,6 +9492,17 @@
                     document.getElementById('reminderCreatedDate').value = createdDateForInput;
                 } else {
                     document.getElementById('reminderCreatedDate').value = '';
+                }
+
+                const paymentTermInput = document.getElementById('reminderPaymentTerm');
+                const existingTerm = Number(payment.paymentTerm);
+                const inferredTerm = existingTerm || inferPaymentTerm(
+                    document.getElementById('reminderCreatedDate').value,
+                    dateForInput
+                );
+                paymentTermInput.value = [15, 30, 60, 90].includes(inferredTerm) ? String(inferredTerm) : '';
+                if (paymentTermInput.value) {
+                    updateExpectedPaymentDate();
                 }
                 
                 // Store the ID being edited
@@ -8778,9 +9557,56 @@
             const todayDay = String(today.getDate()).padStart(2, '0');
             const todayStr = `${todayYear}-${todayMonth}-${todayDay}`;
             document.getElementById('reminderCreatedDate').value = todayStr;
+            updateExpectedPaymentDate();
             
             const modal = new bootstrap.Modal(document.getElementById('paymentReminderModal'));
             modal.show();
+        }
+
+        function inferPaymentTerm(createdDate, paymentDate) {
+            const createdMatch = (createdDate || '').match(/^(\d{4})-(\d{2})-(\d{2})$/);
+            const paymentMatch = (paymentDate || '').match(/^(\d{4})-(\d{2})-(\d{2})$/);
+            if (!createdMatch || !paymentMatch) return 0;
+
+            const createdUtc = Date.UTC(Number(createdMatch[1]), Number(createdMatch[2]) - 1, Number(createdMatch[3]));
+            const paymentUtc = Date.UTC(Number(paymentMatch[1]), Number(paymentMatch[2]) - 1, Number(paymentMatch[3]));
+            const difference = Math.round((paymentUtc - createdUtc) / 86400000);
+            return [15, 30, 60, 90].includes(difference) ? difference : 0;
+        }
+
+        function paymentDateToInputValue(value) {
+            const match = (value || '').match(/^(\d{1,2})-([A-Za-z]{3})-(\d{4})$/);
+            if (!match) return '';
+            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            const month = monthNames.findIndex(name => name.toLowerCase() === match[2].toLowerCase()) + 1;
+            return month
+                ? `${match[3]}-${String(month).padStart(2, '0')}-${String(Number(match[1])).padStart(2, '0')}`
+                : '';
+        }
+
+        function formatPaymentDateForStorage(value) {
+            if (!value) return '';
+            const [year, month, day] = value.split('-');
+            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            return `${day}-${monthNames[Number(month) - 1]}-${year}`;
+        }
+
+        function updateExpectedPaymentDate() {
+            const createdDate = document.getElementById('reminderCreatedDate').value;
+            const paymentTerm = Number(document.getElementById('reminderPaymentTerm').value);
+            const createdMatch = createdDate.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+            const expectedDateInput = document.getElementById('reminderDate');
+            if (!createdMatch || ![15, 30, 60, 90].includes(paymentTerm)) {
+                expectedDateInput.value = '';
+                return;
+            }
+
+            const expectedDate = new Date(Date.UTC(
+                Number(createdMatch[1]),
+                Number(createdMatch[2]) - 1,
+                Number(createdMatch[3]) + paymentTerm
+            ));
+            expectedDateInput.value = expectedDate.toISOString().slice(0, 10);
         }
 
         async function savePaymentReminder() {
@@ -8791,23 +9617,22 @@
             const poNumber = document.getElementById('reminderPONumber').value.trim();
             const invoiceNumber = document.getElementById('reminderInvoiceNumber').value.trim();
             const category = document.getElementById('reminderCategory').value;
+            const paymentTerm = Number(document.getElementById('reminderPaymentTerm').value);
             const dateStr = document.getElementById('reminderDate').value;
             const createdDateStr = document.getElementById('reminderCreatedDate').value;
+            const paymentDoneDate = formatPaymentDateForStorage(document.getElementById('reminderPaymentDoneDate').value);
             
             // Validation
-            if (!paymentName || !vendorName || !amount || !currency || !category || !dateStr || !createdDateStr) {
+            if (!paymentName || !vendorName || !amount || !currency || !category || ![15, 30, 60, 90].includes(paymentTerm) || !dateStr || !createdDateStr) {
                 alert('Please fill in all required fields');
                 return;
             }
             
             // Format date to match existing format (DD-MMM-YYYY)
-            const [year, month, day] = dateStr.split('-');
-            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-            const formattedDate = `${day}-${monthNames[parseInt(month) - 1]}-${year}`;
+            const formattedDate = formatPaymentDateForStorage(dateStr);
             
             // Format created date
-            const [createdYear, createdMonth, createdDay] = createdDateStr.split('-');
-            const formattedCreatedDate = `${createdDay}-${monthNames[parseInt(createdMonth) - 1]}-${createdYear}`;
+            const formattedCreatedDate = formatPaymentDateForStorage(createdDateStr);
             
             // Check if editing existing payment
             if (window.editingPaymentId !== undefined) {
@@ -8821,6 +9646,8 @@
                         category: category,
                         date: formattedDate,
                         createdDate: formattedCreatedDate,
+                        paymentDoneDate: paymentDoneDate,
+                        paymentTerm: paymentTerm,
                         currency: currency,
                         amount: amount,
                         poNumber: poNumber || 'N/A',
@@ -8837,6 +9664,8 @@
                     category: category,
                     date: formattedDate,
                     createdDate: formattedCreatedDate,
+                    paymentDoneDate: paymentDoneDate,
+                    paymentTerm: paymentTerm,
                     currency: currency,
                     amount: amount,
                     poNumber: poNumber || 'N/A',
@@ -9742,6 +10571,17 @@
         function toggleSidebar() {
             const sidebar = document.querySelector('.sidebar');
             sidebar.classList.toggle('collapsed');
+        }
+
+        function setDashboardTheme(theme) {
+            if (theme !== 'light' && theme !== 'dark') {
+                throw new Error(`Unsupported dashboard theme: ${theme}`);
+            }
+
+            document.documentElement.dataset.theme = theme;
+            localStorage.setItem('dashboardTheme', theme);
+            document.getElementById('lightModeButton').setAttribute('aria-pressed', String(theme === 'light'));
+            document.getElementById('darkModeButton').setAttribute('aria-pressed', String(theme === 'dark'));
         }
 
         // Chart Revision Functions
@@ -10857,12 +11697,26 @@
                             </select>
                         </div>
                         <div class="mb-4">
-                            <label class="form-label fw-bold" style="color: #333;">Expected Date to Payment <span style="color: red;">*</span></label>
-                            <input type="date" class="form-control" id="reminderDate" required style="border-radius: 8px; border: 2px solid #ffe9d6; padding: 10px 14px;">
+                            <label class="form-label fw-bold" style="color: #333;">Payment Term <span style="color: red;">*</span></label>
+                            <select class="form-select" id="reminderPaymentTerm" required onchange="updateExpectedPaymentDate()" style="border-radius: 8px; border: 2px solid #ffe9d6; padding: 10px 14px;">
+                                <option value="">-- Select Payment Term --</option>
+                                <option value="15">15 Days</option>
+                                <option value="30">30 Days</option>
+                                <option value="60">60 Days</option>
+                                <option value="90">90 Days</option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold" style="color: #333;">Due Date <span style="color: red;">*</span></label>
+                            <input type="date" class="form-control" id="reminderDate" required readonly style="border-radius: 8px; border: 2px solid #ffe9d6; padding: 10px 14px; background-color: #f8f9fa;">
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold" style="color: #333;">Payment Done Date</label>
+                            <input type="date" class="form-control" id="reminderPaymentDoneDate" style="border-radius: 8px; border: 2px solid #ffe9d6; padding: 10px 14px;">
                         </div>
                         <div class="mb-4">
                             <label class="form-label fw-bold" style="color: #333;">Created Date <span style="color: red;">*</span></label>
-                            <input type="date" class="form-control" id="reminderCreatedDate" required style="border-radius: 8px; border: 2px solid #ffe9d6; padding: 10px 14px;">
+                            <input type="date" class="form-control" id="reminderCreatedDate" required onchange="updateExpectedPaymentDate()" style="border-radius: 8px; border: 2px solid #ffe9d6; padding: 10px 14px;">
                         </div>
                     </form>
                 </div>
