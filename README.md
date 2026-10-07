@@ -67,25 +67,23 @@ service cloud.firestore {
 - Username: FYFOTD
 - Password: firefly@123
 
-## Outlook Auto Reminder Setup
+## Navigation Database Ship-out Email Reminders
 
-1. Open the Payment Dashboard in `index.html`.
-2. Add or update payment reminders and include a valid `Reminder Email`.
-3. Click the `Export Reminders JSON` button in the summary panel.
-4. Save the downloaded file as `payment-reminders.json` in this project folder.
-5. Run the setup script once from PowerShell:
+You can use a separate Gmail account as the **sender** without Outlook or Power Automate. The reminder runs using a free Google Apps Script time trigger, so your PC does not need to stay on. Google applies daily sending and execution quotas to free accounts; these are more than enough for a few database reminders, but Google can change quotas. See [Apps Script quotas](https://developers.google.com/apps-script/guides/services/quotas) and [time-driven triggers](https://developers.google.com/apps-script/guides/triggers/installable).
 
-```powershell
-.\setup-outlook-reminder-task.ps1
-```
+The dashboard calculates ship-out as 8 days before cycle effective date. The script sends one email to the configured recipient 3 days before ship-out (11 days before effective date), for ATR and B737. It reads the latest saved cycle data from Supabase and handles the 28-day cycle rollover.
 
-This registers a Windows scheduled task that runs `send-outlook-reminders.ps1` daily at 9:00 AM under your Windows user account.
+1. Sign in to [script.google.com](https://script.google.com/) using the Gmail account you want the email to come **from**, then create a new project.
+2. Replace the default code with the contents of [](./database-shipout-remind`database-shipout-reminder.gs`er.gs).
+3. In `REMINDER_CONFIG`, set:
+   - `recipient` to the shared email address that should receive the reminders.
+   - `supabasePublishableKey` to the Supabase publishable key configured near the top of `index.html`. Use only the publishable/anon key; never use a service-role key.
+4. In **Project Settings**, set the time zone to `Asia/Kuala_Lumpur`.
+5. Select `testShipOutReminderEmail` in the function menu and click **Run**. Approve Google's authorization prompts and confirm the test arrives.
+6. Select `setupDailyShipOutReminderTrigger` and click **Run** once. The script creates a daily trigger for around 9 AM Malaysia time. Google may run it at a slightly varied time within that hour. You can verify it under **Triggers**.
+7. In the Supabase project, confirm the `app_storage` table permits read access to the publishable/anon role. The script reports an error rather than silently skipping if Supabase is unavailable or the row cannot be read.
 
-6. After setup, you no longer need to run the script manually. Just add reminders in the dashboard and keep `payment-reminders.json` updated.
-
-> Note: Because Outlook runs under your user profile, you should be logged in when the task runs.
-
-> Note: You must still export or update `payment-reminders.json` from the dashboard when you add or edit reminders.
+No paid service is required for this setup. The script sends through Gmail's free Apps Script allowance (currently up to 100 email recipients per day for consumer accounts); it does not require Gmail SMTP passwords or app passwords. The sender must keep the Gmail account active and the installed trigger enabled. When cycle details are changed and saved on the Database Admin page, the next run uses those updated settings.
 
 ## Mobile Compatibility
 

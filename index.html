@@ -208,6 +208,7 @@
 
         .dashboard-main {
             flex: 1;
+            min-width: 0;
             padding: 20px 40px;
             background: linear-gradient(135deg, rgba(245, 247, 250, 0.5) 0%, rgba(233, 236, 241, 0.3) 100%);
             position: relative;
@@ -526,6 +527,158 @@
             font-size: 0.95rem;
         }
 
+        #launcherSection .my-apps-section {
+            margin-bottom: 2.5rem !important;
+        }
+
+        #launcherSection .my-apps-section h2 {
+            margin-bottom: 1rem !important;
+            padding-bottom: 10px;
+            color: #20324f;
+            font-size: clamp(1.45rem, 2.2vw, 1.9rem);
+            letter-spacing: -0.025em;
+        }
+
+        #launcherSection .my-apps-section h2::after {
+            width: 48px;
+            height: 4px;
+        }
+
+        #launcherSection .launcher-primary-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+            margin: 0;
+        }
+
+        #launcherSection .launcher-primary-grid > [class*="col-"] {
+            width: auto;
+            max-width: none;
+            padding: 0;
+            animation: none;
+        }
+
+        #launcherSection .app-card {
+            --launcher-accent: #ff8c00;
+            --launcher-tint: #fff5e8;
+            min-height: 190px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            padding: 1.35rem !important;
+            border: 1px solid #e5eaf0;
+            border-radius: 16px;
+            background: linear-gradient(145deg, #fff 0%, var(--launcher-tint) 180%);
+            box-shadow: 0 5px 18px rgba(28, 45, 74, 0.06);
+            color: #20324f !important;
+            text-decoration: none;
+        }
+
+        #launcherSection .app-card::before {
+            height: 4px;
+            background: linear-gradient(90deg, var(--launcher-accent), color-mix(in srgb, var(--launcher-accent), white 45%));
+            opacity: 1;
+        }
+
+        #launcherSection .app-card:hover,
+        #launcherSection .app-card:focus-visible {
+            transform: translateY(-4px);
+            border-color: color-mix(in srgb, var(--launcher-accent), white 55%);
+            box-shadow: 0 14px 28px rgba(28, 45, 74, 0.12);
+        }
+
+        #launcherSection .app-card:focus-visible {
+            outline: 3px solid color-mix(in srgb, var(--launcher-accent), transparent 55%);
+            outline-offset: 3px;
+        }
+
+        #launcherSection .app-card .d-flex {
+            gap: 0.85rem;
+            margin-bottom: 0.8rem;
+        }
+
+        #launcherSection .app-card-icon {
+            width: 48px;
+            height: 48px;
+            flex: 0 0 48px;
+            border-radius: 14px !important;
+            background: linear-gradient(145deg, var(--launcher-accent), color-mix(in srgb, var(--launcher-accent), white 18%)) !important;
+            box-shadow: 0 6px 13px color-mix(in srgb, var(--launcher-accent), transparent 78%);
+            font-size: 1.15rem;
+        }
+
+        #launcherSection .app-card:hover .app-card-icon {
+            transform: translateY(-2px);
+        }
+
+        #launcherSection .app-card-title {
+            margin-bottom: 3px !important;
+            color: #20324f;
+            font-size: 1.05rem;
+            font-weight: 750;
+            background: none;
+            -webkit-text-fill-color: currentColor;
+        }
+
+        #launcherSection .app-card small {
+            display: block;
+            color: #69788d !important;
+            font-size: 0.78rem;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        #launcherSection .app-card-text {
+            flex: 1;
+            margin: 0;
+            color: #536176;
+            font-size: 0.88rem;
+            line-height: 1.5;
+        }
+
+        #launcherSection .app-card-text::after {
+            content: 'Open module  →';
+            display: block;
+            margin-top: 0.75rem;
+            color: var(--launcher-accent);
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        #launcherSection .launcher-card-fuel { --launcher-accent: #e69a00; --launcher-tint: #fff7e5; }
+        #launcherSection .launcher-card-flight { --launcher-accent: #2878e5; --launcher-tint: #edf5ff; }
+        #launcherSection .launcher-card-delay { --launcher-accent: #8b5bd6; --launcher-tint: #f5efff; }
+        #launcherSection .launcher-card-chart { --launcher-accent: #24966b; --launcher-tint: #ecf8f1; }
+        #launcherSection .launcher-card-database { --launcher-accent: #168b91; --launcher-tint: #eaf8f7; }
+        #launcherSection .launcher-card-ipad { --launcher-accent: #307fe2; --launcher-tint: #eef5ff; }
+        #launcherSection .launcher-card-standby { --launcher-accent: #d17a31; --launcher-tint: #fff4e9; }
+        #launcherSection .launcher-card-payment { --launcher-accent: #dc5261; --launcher-tint: #fff0f1; }
+        #launcherSection .launcher-card-json { --launcher-accent: #168b91; --launcher-tint: #eaf8f7; }
+
+        @media (min-width: 768px) {
+            #launcherSection .launcher-primary-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+        }
+
+        @media (min-width: 1400px) {
+            #launcherSection .launcher-primary-grid {
+                grid-template-columns: repeat(5, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 575.98px) {
+            #launcherSection .launcher-primary-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            #launcherSection .app-card {
+                min-height: 0;
+                padding: 1.1rem !important;
+            }
+        }
+
         /* Chart Revision Styles */
         #chartRevisionContent .table tbody tr {
             transition: background-color 0.2s ease;
@@ -568,6 +721,384 @@
         #chartRevisionContent select.form-select:focus {
             border-color: #ff8c00;
             box-shadow: 0 0 0 0.2rem rgba(255, 140, 0, 0.25);
+        }
+
+        .navigation-cycle-layout {
+            display: grid;
+            grid-template-columns: minmax(280px, 0.9fr) minmax(320px, 1.1fr);
+            gap: 24px;
+        }
+
+        #databaseViewModeContent {
+            --database-ink: #20324f;
+            --database-muted: #64748b;
+        }
+
+        #databaseViewModeContent .nav-database-card {
+            overflow: hidden;
+            border: 1px solid #dce6ed !important;
+            border-top: 4px solid var(--card-accent) !important;
+            border-radius: 16px !important;
+            background: linear-gradient(145deg, #ffffff 0%, #f7fbfc 100%);
+            box-shadow: 0 8px 24px rgba(23, 50, 77, 0.08) !important;
+        }
+
+        #databaseViewModeContent .nav-database-card-atr {
+            --card-accent: #11998e;
+            --cycle-accent: #11998e;
+            --cycle-accent-dark: #087f75;
+            --cycle-soft: #dff4ef;
+            --cycle-shadow: rgba(17, 153, 142, 0.16);
+        }
+
+        #databaseViewModeContent .nav-database-card-b737 {
+            --card-accent: #4f6bed;
+            --cycle-accent: #4f6bed;
+            --cycle-accent-dark: #374fc7;
+            --cycle-soft: #e8edff;
+            --cycle-shadow: rgba(79, 107, 237, 0.16);
+        }
+
+        #databaseViewModeContent .nav-database-card-terrain {
+            --card-accent: #ed8b23;
+            --cycle-accent: #e17827;
+            --cycle-accent-dark: #bd551b;
+            --cycle-shadow: rgba(225, 120, 39, 0.2);
+            border-color: #f1dfc8 !important;
+            background: linear-gradient(145deg, #fffefa 0%, #fff7eb 100%);
+        }
+
+        .database-page-actions {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .database-page-actions .btn {
+            border-radius: 9px;
+            font-weight: 600;
+        }
+
+        .database-page-actions .database-sync-button {
+            border-color: #1596b5;
+            background: #1596b5;
+            color: #fff;
+        }
+
+        .database-page-actions .database-sync-button:hover {
+            border-color: #117d98;
+            background: #117d98;
+            color: #fff;
+        }
+
+        .database-page-actions .database-admin-button {
+            border-color: #e98a2e;
+            background: #fff4e6;
+            color: #a65310;
+        }
+
+        .database-page-actions .database-admin-button:hover {
+            border-color: #e98a2e;
+            background: #e98a2e;
+            color: #fff;
+        }
+
+        .terrain-database-content {
+            display: grid;
+            grid-template-columns: minmax(240px, 1fr) minmax(250px, 0.9fr) auto;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .terrain-database-heading {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .terrain-database-icon {
+            display: grid;
+            width: 58px;
+            height: 58px;
+            flex: 0 0 58px;
+            place-items: center;
+            border-radius: 17px;
+            background: linear-gradient(145deg, #f6a43a, #df6b36);
+            box-shadow: 0 7px 16px rgba(223, 107, 54, 0.22);
+            color: #fff;
+            font-size: 1.35rem;
+        }
+
+        .terrain-database-heading h5 {
+            margin: 0 0 4px;
+            color: #4f3d2f !important;
+            font-size: 1.2rem;
+        }
+
+        .terrain-database-heading p {
+            margin: 0;
+            color: #927b66;
+        }
+
+        .terrain-cycle-tile {
+            padding: 14px 20px;
+            border: 1px solid #f3d9b4;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #fff9ef, #ffefd8);
+        }
+
+        .terrain-cycle-label {
+            display: block;
+            margin-bottom: 3px;
+            color: #99704b;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .terrain-cycle-value {
+            color: #a65310;
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .terrain-database-link-area {
+            text-align: right;
+        }
+
+        .terrain-database-link-area .btn {
+            white-space: nowrap;
+        }
+
+        @media (max-width: 767.98px) {
+            .database-page-actions {
+                justify-content: flex-end;
+            }
+
+            .terrain-database-content {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .terrain-database-link-area {
+                text-align: left;
+            }
+        }
+
+        #databaseViewModeContent .nav-database-card h5 {
+            color: var(--database-ink);
+            font-weight: 700;
+        }
+
+        #databaseViewModeContent .nav-database-card h5 i {
+            color: var(--card-accent) !important;
+        }
+
+        .navigation-cycle-panel {
+            --cycle-accent: #11998e;
+            --cycle-accent-dark: #087f75;
+            --cycle-soft: #dff4ef;
+            --cycle-shadow: rgba(17, 153, 142, 0.16);
+            min-width: 0;
+            min-height: 360px;
+            padding: 24px;
+            border: 1px solid #e1eaf0;
+            border-radius: 14px;
+            background: linear-gradient(160deg, #ffffff 0%, #f8fbfc 100%);
+            box-shadow: 0 4px 14px rgba(23, 50, 77, 0.06);
+        }
+
+        .navigation-cycle-layout-b737 .navigation-cycle-panel {
+            --cycle-accent: #4f6bed;
+            --cycle-accent-dark: #374fc7;
+            --cycle-soft: #e8edff;
+            --cycle-shadow: rgba(79, 107, 237, 0.16);
+        }
+
+        .navigation-cycle-ring {
+            width: min(100%, 320px);
+            aspect-ratio: 1;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 50%;
+            background: conic-gradient(var(--cycle-accent) var(--cycle-progress), #e3ebef var(--cycle-progress));
+            box-shadow: 0 8px 20px var(--cycle-shadow);
+        }
+
+        .navigation-cycle-ring-inner {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #ffffff, #f8fbfc);
+            text-align: center;
+        }
+
+        .navigation-cycle-ring-inner .cycle-heading {
+            margin-top: 3px;
+            color: #17324d;
+            font-size: 1.35rem;
+            font-weight: 800;
+            line-height: 1.1;
+        }
+
+        .navigation-cycle-dates {
+            color: #40566b;
+            font-size: 0.9rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .navigation-cycle-ring-inner > div:not(.cycle-heading):not(.navigation-cycle-dates) {
+            color: #64748b;
+        }
+
+        .navigation-cycle-ring-inner .nav-effective-countdown {
+            color: var(--cycle-accent-dark) !important;
+        }
+
+        .navigation-cycle-ring-inner > div {
+            line-height: 1.2;
+        }
+
+        .navigation-cycle-ring-inner .mt-3 {
+            margin-top: 0.45rem !important;
+        }
+
+        .navigation-cycle-ring-inner .mt-2 {
+            margin-top: 0.35rem !important;
+        }
+
+        .navigation-tailoring-title {
+            color: #17324d;
+            font-size: clamp(1.5rem, 3vw, 2.25rem);
+            font-weight: 800;
+            line-height: 1.05;
+        }
+
+        .navigation-tailoring-subtitle {
+            color: var(--cycle-accent-dark);
+            font-size: clamp(1.4rem, 3vw, 2rem);
+            font-weight: 800;
+            line-height: 1.1;
+        }
+
+        .navigation-countdown-bar {
+            display: flex;
+            min-height: 28px;
+            align-items: center;
+            justify-content: flex-end;
+            margin: 16px 0 10px;
+            padding: 2px 10px;
+            border-radius: 8px;
+            background: linear-gradient(to right, var(--cycle-accent) var(--cycle-progress), #e3ebef var(--cycle-progress));
+            color: white;
+            font-weight: 700;
+        }
+
+        .navigation-countdown-bar span {
+            text-shadow: 0 1px 2px rgba(23, 50, 77, 0.25);
+        }
+
+        .navigation-open-database {
+            border: 0;
+            border-radius: 9px;
+            background: var(--cycle-accent);
+            box-shadow: 0 3px 8px var(--cycle-shadow);
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .navigation-open-database:hover,
+        .navigation-open-database:focus {
+            background: var(--cycle-accent-dark);
+            color: #fff;
+        }
+
+        .navigation-resource-link {
+            border-color: var(--resource-border, #ccdde4);
+            border-radius: 9px;
+            background: var(--resource-bg, #fff);
+            color: var(--resource-ink, #24566a);
+            font-weight: 600;
+        }
+
+        .navigation-resource-link:hover,
+        .navigation-resource-link:focus {
+            border-color: var(--resource-border-hover, #087f8c);
+            background: var(--resource-bg-hover, #eaf5f6);
+            color: var(--resource-ink-hover, #075e68);
+        }
+
+        .navigation-resource-guideline {
+            --resource-border: #d6c7f0;
+            --resource-bg: #f8f4ff;
+            --resource-ink: #6542a6;
+            --resource-border-hover: #8060c4;
+            --resource-bg-hover: #eee7fb;
+            --resource-ink-hover: #50318f;
+        }
+
+        .navigation-resource-installer {
+            --resource-border: #c4e5c7;
+            --resource-bg: #f1fbf1;
+            --resource-ink: #327a3b;
+            --resource-border-hover: #56a362;
+            --resource-bg-hover: #e2f4e3;
+            --resource-ink-hover: #245e2c;
+        }
+
+        .navigation-resource-portal {
+            --resource-border: #c4dafa;
+            --resource-bg: #f1f7ff;
+            --resource-ink: #2863a5;
+            --resource-border-hover: #5992d1;
+            --resource-bg-hover: #e2efff;
+            --resource-ink-hover: #1e4e86;
+        }
+
+        .navigation-upcoming-table {
+            width: 100%;
+            margin-top: 10px;
+            border-collapse: collapse;
+        }
+
+        .navigation-upcoming-table td {
+            padding: 6px 2px;
+            color: #64748b;
+            white-space: nowrap;
+        }
+
+        .navigation-upcoming-table .deadline-date {
+            padding-left: 12px;
+            color: #40566b;
+        }
+
+        .navigation-upcoming-table .deadline-days {
+            padding-left: 14px;
+            color: #11998e;
+            font-weight: 800;
+            text-align: right;
+        }
+
+        @media (max-width: 767.98px) {
+            .navigation-cycle-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .navigation-cycle-panel {
+                min-height: 0;
+                padding: 18px;
+            }
+
+            .navigation-cycle-ring {
+                width: min(100%, 290px);
+            }
         }
 
         /* Delay Code Analysis Styles */
@@ -1915,8 +2446,8 @@
 
         /* Footer Styles */
         .dashboard-footer {
-            margin-top: 80px;
-            padding: 40px 20px;
+            margin-top: 24px;
+            padding: 20px 16px;
             text-align: center;
             border-top: 1px solid #e9ecf1;
             color: #7f8fa8;
@@ -1932,37 +2463,356 @@
             font-weight: 600;
             color: #666;
         }
+
+        .sidebar {
+            width: 272px;
+            min-width: 272px;
+            flex: 0 0 272px;
+            height: 100vh;
+            min-height: 100vh;
+            padding: 26px 16px 18px;
+            gap: 0;
+            background: #ffffff;
+            color: #334155;
+            border-right: 1px solid #e6edf2;
+            box-shadow: 8px 0 28px rgba(36, 57, 77, 0.05);
+            position: sticky;
+            top: 0;
+            align-self: flex-start;
+            overflow: hidden;
+        }
+
+        .sidebar.collapsed {
+            width: 76px;
+            min-width: 76px;
+            flex-basis: 76px;
+            padding: 26px 10px 18px;
+            overflow-x: hidden;
+        }
+
+        .sidebar-brand {
+            flex-direction: row;
+            align-items: center;
+            gap: 11px;
+            margin: 0 0 26px;
+            padding: 42px 6px 22px;
+            border-bottom: 1px solid #edf1f4;
+        }
+
+        .sidebar-brand-icon,
+        .sidebar-item-icon,
+        .sidebar-admin-icon {
+            display: inline-flex;
+            flex: 0 0 34px;
+            width: 34px;
+            height: 34px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 11px;
+            background: #fff1df;
+            color: #b95600;
+            font-size: 0.95rem;
+        }
+
+        .sidebar-brand-icon {
+            background: linear-gradient(145deg, #ff9e1f, #ff7a00);
+            color: #ffffff;
+            box-shadow: 0 5px 12px rgba(255, 140, 0, 0.22);
+        }
+
+        .sidebar-title {
+            color: #243746;
+            font-size: 0.98rem;
+            font-weight: 800;
+        }
+
+        .sidebar-subtitle {
+            color: #82909d;
+            font-size: 0.78rem;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+        }
+
+        .sidebar-section {
+            margin: 18px 10px 8px;
+            color: #91a0ac;
+            font-size: 0.68rem;
+            letter-spacing: 0.12em;
+        }
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-height: 42px;
+            margin: 2px 0;
+            padding: 7px 9px;
+            border-radius: 10px;
+            color: #566675;
+            font-size: 0.88rem;
+            font-weight: 600;
+        }
+
+        .sidebar-item::before {
+            display: none;
+        }
+
+        .sidebar-item:hover,
+        .sidebar-item.active {
+            background: #fff2e2;
+            color: #a94d00;
+            font-weight: 700;
+            transform: none;
+        }
+
+        .sidebar-item.active {
+            box-shadow: none;
+        }
+
+        .sidebar-item.active .sidebar-item-icon,
+        .sidebar-item:hover .sidebar-item-icon {
+            background: #ffe3c2;
+            color: #a94d00;
+        }
+
+        .sidebar-nav-group {
+            margin: 2px 0;
+        }
+
+        .sidebar-nav-heading {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .sidebar-nav-heading > .sidebar-item {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .sidebar-group-toggle {
+            display: inline-flex;
+            width: 34px;
+            height: 38px;
+            flex: 0 0 34px;
+            align-items: center;
+            justify-content: center;
+            border: 0;
+            border-radius: 9px;
+            background: transparent;
+            color: #71808d;
+            transition: background-color 0.15s ease, transform 0.15s ease;
+        }
+
+        .sidebar-group-toggle:hover {
+            background: #fff2e2;
+            color: #a94d00;
+        }
+
+        .sidebar-nav-group.is-collapsed .sidebar-group-toggle i {
+            transform: rotate(-90deg);
+        }
+
+        .sidebar-group-toggle i {
+            transition: transform 0.15s ease;
+        }
+
+        .sidebar-subnav {
+            position: relative;
+            display: grid;
+            gap: 3px;
+            margin: 2px 0 8px 25px;
+            padding: 3px 0 3px 13px;
+            border-left: 1px solid #d9e5e9;
+        }
+
+        .sidebar-subnav[hidden] {
+            display: none;
+        }
+
+        .sidebar-subitem {
+            display: block;
+            padding: 8px 10px;
+            border-radius: 8px;
+            color: #647482;
+            font-size: 0.82rem;
+            font-weight: 550;
+            text-decoration: none;
+            transition: color 0.15s ease, background-color 0.15s ease;
+        }
+
+        .sidebar-subitem:hover,
+        .sidebar-subitem.active {
+            background: #fff2e2;
+            color: #a94d00;
+        }
+
+        .sidebar-footer {
+            flex-shrink: 0;
+            margin: 14px 0 0;
+            padding-top: 14px;
+            border-top: 1px solid #edf1f4;
+        }
+
+        .sidebar-admin-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 9px;
+            border-radius: 10px;
+            color: #566675;
+            font-size: 0.88rem;
+            font-weight: 650;
+            text-decoration: none;
+        }
+
+        .sidebar-admin-link:hover {
+            background: #fff2e2;
+            color: #a94d00;
+        }
+
+        .sidebar-toggle {
+            position: absolute;
+            left: auto;
+            right: 14px;
+            top: 12px;
+            width: 34px;
+            height: 34px;
+            padding: 0;
+            border: 0;
+            border-radius: 10px;
+            background: #fff1df;
+            color: #b95600;
+            font-size: 0.9rem;
+        }
+
+        .sidebar-toggle:hover {
+            background: #ffe3c2;
+            border-color: transparent;
+            color: #a94d00;
+        }
+
+        .sidebar.collapsed .sidebar-brand {
+            justify-content: center;
+            align-self: stretch;
+            width: 100%;
+            margin-top: 42px;
+            padding: 4px 0 18px;
+        }
+
+        .sidebar.collapsed .sidebar-brand-icon {
+            margin-inline: auto;
+        }
+
+        .sidebar.collapsed .sidebar-toggle {
+            left: 50%;
+            right: auto;
+            transform: translateX(-50%);
+        }
+
+        .sidebar.collapsed .sidebar-title,
+        .sidebar.collapsed .sidebar-subtitle,
+        .sidebar.collapsed .sidebar-label,
+        .sidebar.collapsed .sidebar-section,
+        .sidebar.collapsed .sidebar-group-toggle,
+        .sidebar.collapsed .sidebar-subnav {
+            display: none;
+        }
+
+        .sidebar.collapsed .sidebar-brand > div {
+            display: none;
+        }
+
+        .sidebar.collapsed .sidebar-item,
+        .sidebar.collapsed .sidebar-admin-link {
+            justify-content: center;
+            padding: 7px 0;
+        }
+
+        .sidebar.collapsed .sidebar-nav-group {
+            margin: 2px 0;
+        }
+
+        .sidebar.collapsed .sidebar-footer {
+            margin-top: 14px;
+        }
+
+        @media (max-width: 576px) {
+            .sidebar {
+                width: 248px;
+                min-width: 248px;
+                flex-basis: 248px;
+                padding: 22px 13px 14px;
+            }
+
+            .sidebar.collapsed {
+                width: 68px;
+                min-width: 68px;
+                flex-basis: 68px;
+                padding: 22px 8px 14px;
+            }
+        }
     </style>
 </head>
 
 <body>
     <div class="dashboard-shell" id="dashboardShell">
         <aside class="sidebar">
+            <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Toggle sidebar">
+                <i class="fas fa-ellipsis-v"></i>
+            </button>
             <div class="sidebar-brand">
-                <div class="sidebar-title">FY Navdoc & Tech</div>
-                <div class="sidebar-subtitle">Dashboard</div>
+                <span class="sidebar-brand-icon"><i class="fas fa-plane"></i></span>
+                <div>
+                    <div class="sidebar-title">FY Navdoc & Tech</div>
+                    <div class="sidebar-subtitle">Dashboard</div>
+                </div>
             </div>
-            <div>
+            <nav class="sidebar-nav" aria-label="Main navigation">
                 <div class="sidebar-section">Dashboard</div>
-                <a href="javascript:void(0);" id="nav-myapps" class="sidebar-item active" onclick="showLauncher()">My Apps</a>
-                <a href="javascript:void(0);" id="nav-fuel" class="sidebar-item" onclick="showFuelAnalysis()">Fuel Analysis</a>
-                <a href="javascript:void(0);" id="nav-flightdata" class="sidebar-item" onclick="showFlightData()">Flight Data</a>
-                <a href="javascript:void(0);" id="nav-delay" class="sidebar-item" onclick="showDelayCodeAnalysis()">Delay Code Analysis</a>
-                <a href="javascript:void(0);" id="nav-chartrevision" class="sidebar-item" onclick="showChartRevision()">Chart Revision</a>
-                <a href="javascript:void(0);" id="nav-payment" class="sidebar-item" onclick="showPaymentDashboard()">Payment Dashboard</a>
-                <a href="javascript:void(0);" id="nav-database" class="sidebar-item" onclick="showDatabase()">Database</a>
+                <a href="javascript:void(0);" id="nav-myapps" class="sidebar-item active" onclick="showLauncher()"><span class="sidebar-item-icon"><i class="fas fa-house"></i></span><span class="sidebar-label">My Apps</span></a>
+                <div class="sidebar-nav-group" id="fuelNavGroup">
+                    <div class="sidebar-nav-heading">
+                        <a href="javascript:void(0);" id="nav-fuel" class="sidebar-item" onclick="showFuelAnalysis('b737')"><span class="sidebar-item-icon"><i class="fas fa-gas-pump"></i></span><span class="sidebar-label">Fuel Analysis</span></a>
+                        <button class="sidebar-group-toggle" type="button" aria-label="Toggle Fuel Analysis links" aria-expanded="true" aria-controls="fuelSubnav" onclick="toggleNavGroup('fuelNavGroup', 'fuelSubnav', this)"><i class="fas fa-chevron-down"></i></button>
+                    </div>
+                    <div class="sidebar-subnav" id="fuelSubnav">
+                        <a href="javascript:void(0);" id="nav-fuel-b737" class="sidebar-subitem" onclick="showFuelAnalysis('b737')">B737</a>
+                        <a href="javascript:void(0);" id="nav-fuel-atr" class="sidebar-subitem" onclick="showFuelAnalysis('atr')">ATR</a>
+                        <a href="javascript:void(0);" id="nav-fuel-both" class="sidebar-subitem" onclick="showFuelAnalysis('both')">Both</a>
+                    </div>
+                </div>
+                <a href="javascript:void(0);" id="nav-flightdata" class="sidebar-item" onclick="showFlightData()"><span class="sidebar-item-icon"><i class="fas fa-chart-line"></i></span><span class="sidebar-label">Flight Data</span></a>
+                <div class="sidebar-nav-group" id="delayNavGroup">
+                    <div class="sidebar-nav-heading">
+                        <a href="javascript:void(0);" id="nav-delay" class="sidebar-item" onclick="showDelayCodeAnalysis('b737')"><span class="sidebar-item-icon"><i class="fas fa-clock"></i></span><span class="sidebar-label">Delay Code Analysis</span></a>
+                        <button class="sidebar-group-toggle" type="button" aria-label="Toggle Delay Code Analysis links" aria-expanded="true" aria-controls="delaySubnav" onclick="toggleNavGroup('delayNavGroup', 'delaySubnav', this)"><i class="fas fa-chevron-down"></i></button>
+                    </div>
+                    <div class="sidebar-subnav" id="delaySubnav">
+                        <a href="javascript:void(0);" id="nav-delay-b737" class="sidebar-subitem" onclick="showDelayCodeAnalysis('b737')">B737</a>
+                        <a href="javascript:void(0);" id="nav-delay-atr" class="sidebar-subitem" onclick="showDelayCodeAnalysis('atr72')">ATR</a>
+                        <a href="javascript:void(0);" id="nav-delay-both" class="sidebar-subitem" onclick="showDelayCodeAnalysis('both')">Both</a>
+                    </div>
+                </div>
+                <a href="javascript:void(0);" id="nav-chartrevision" class="sidebar-item" onclick="showChartRevision()"><span class="sidebar-item-icon"><i class="far fa-map"></i></span><span class="sidebar-label">Chart Revision</span></a>
+                <a href="javascript:void(0);" id="nav-payment" class="sidebar-item" onclick="showPaymentDashboard()"><span class="sidebar-item-icon"><i class="fas fa-credit-card"></i></span><span class="sidebar-label">Payment Dashboard</span></a>
+                <a href="javascript:void(0);" id="nav-database" class="sidebar-item" onclick="showDatabase()"><span class="sidebar-item-icon"><i class="fas fa-database"></i></span><span class="sidebar-label">Database</span></a>
                 <div class="sidebar-section">Device Management</div>
-                <a href="javascript:void(0);" id="nav-ipad" class="sidebar-item" onclick="showDeviceIPad()">iPad</a>
-                <a href="javascript:void(0);" id="nav-phone" class="sidebar-item" onclick="showPhoneManagement()">Phongle Standby</a>
+                <a href="javascript:void(0);" id="nav-ipad" class="sidebar-item" onclick="showDeviceIPad()"><span class="sidebar-item-icon"><i class="fas fa-tablet-alt"></i></span><span class="sidebar-label">iPad</span></a>
+                <a href="javascript:void(0);" id="nav-phone" class="sidebar-item" onclick="showPhoneManagement()"><span class="sidebar-item-icon"><i class="fas fa-mobile-alt"></i></span><span class="sidebar-label">Phongle Standby</span></a>
                 <div class="sidebar-section">Tools</div>
-                <a href="javascript:void(0);" id="nav-jsonconverter" class="sidebar-item" onclick="showJSONConverter()">JSON Converter</a>
+                <a href="javascript:void(0);" id="nav-jsonconverter" class="sidebar-item" onclick="showJSONConverter()"><span class="sidebar-item-icon"><i class="fas fa-code"></i></span><span class="sidebar-label">JSON Converter</span></a>
+            </nav>
+            <div class="sidebar-footer">
+                <a class="sidebar-admin-link" href="login.html"><span class="sidebar-admin-icon"><i class="fas fa-user-shield"></i></span><span class="sidebar-label">Admin Login</span></a>
             </div>
         </aside>
 
         <main class="dashboard-main">
-            <button class="sidebar-toggle" onclick="toggleSidebar()">
-                <i class="fas fa-ellipsis-v"></i>
-            </button>
             <div class="dashboard-topbar">
                 <div class="topbar-logo">
                     <img src="firefly-logo.png" alt="Firefly Logo">
@@ -1976,9 +2826,6 @@
                     </button>
                     <button class="btn topbar-btn btn-outline-secondary" id="backToHomeBtn" onclick="showLauncher()" style="display: none; min-width: 130px;">
                         <i class="fas fa-arrow-left me-2"></i>Back to Home
-                    </button>
-                    <button class="btn topbar-btn btn-outline-secondary" onclick="window.location.href='login.html'">
-                        Admin Login
                     </button>
                 </div>
                 <input type="file" id="ipadImportFileInput" accept=".xlsx,.xls,.csv" style="display:none" onchange="handleIpadImportFile(event)" />
@@ -1999,9 +2846,9 @@
 
                     <div class="my-apps-section mb-5">
                         <h2 class="mb-4">My Apps</h2>
-                        <div class="row g-4">
+                        <div class="row g-4 launcher-primary-grid">
                             <div class="col-md-6 col-xl-3">
-                                <a href="javascript:void(0);" onclick="showFuelAnalysis()" class="app-card card text-decoration-none text-dark p-4 h-100">
+                                <a href="javascript:void(0);" onclick="showFuelAnalysis()" class="app-card launcher-card-fuel card text-decoration-none text-dark p-4 h-100">
                                     <div class="d-flex align-items-center mb-3">
                                         <div class="app-card-icon bg-warning text-white rounded-circle me-3">
                                             <i class="fas fa-gas-pump"></i>
@@ -2015,7 +2862,7 @@
                                 </a>
                             </div>
                             <div class="col-md-6 col-xl-3">
-                                <a href="javascript:void(0);" onclick="showFlightData()" class="app-card card text-decoration-none text-dark p-4 h-100">
+                                <a href="javascript:void(0);" onclick="showFlightData()" class="app-card launcher-card-flight card text-decoration-none text-dark p-4 h-100">
                                     <div class="d-flex align-items-center mb-3">
                                         <div class="app-card-icon bg-primary text-white rounded-circle me-3">
                                             <i class="fas fa-chart-line"></i>
@@ -2029,7 +2876,7 @@
                                 </a>
                             </div>
                             <div class="col-md-6 col-xl-3">
-                                <a href="javascript:void(0);" onclick="showDelayCodeAnalysis()" class="app-card card text-decoration-none text-dark p-4 h-100">
+                                <a href="javascript:void(0);" onclick="showDelayCodeAnalysis()" class="app-card launcher-card-delay card text-decoration-none text-dark p-4 h-100">
                                     <div class="d-flex align-items-center mb-3">
                                         <div class="app-card-icon bg-warning text-white rounded-circle me-3">
                                             <i class="fas fa-clock"></i>
@@ -2043,7 +2890,7 @@
                                 </a>
                             </div>
                             <div class="col-md-6 col-xl-3">
-                                <a href="javascript:void(0);" onclick="showChartRevision()" class="app-card card text-decoration-none text-dark p-4 h-100">
+                                <a href="javascript:void(0);" onclick="showChartRevision()" class="app-card launcher-card-chart card text-decoration-none text-dark p-4 h-100">
                                     <div class="d-flex align-items-center mb-3">
                                         <div class="app-card-icon bg-success text-white rounded-circle me-3">
                                             <i class="fas fa-chart-line"></i>
@@ -2057,14 +2904,14 @@
                                 </a>
                             </div>
                             <div class="col-md-6 col-xl-3">
-                                <a href="javascript:void(0);" onclick="showDatabase()" class="app-card card text-dark p-4 h-100">
+                                <a href="javascript:void(0);" onclick="showDatabase()" class="app-card launcher-card-database card text-dark p-4 h-100">
                                     <div class="d-flex align-items-center mb-3">
                                         <div class="app-card-icon bg-secondary text-white rounded-circle me-3">
                                             <i class="fas fa-database"></i>
                                         </div>
                                         <div>
                                             <h5 class="app-card-title mb-1">Database</h5>
-                                            <small class="text-muted">Layout coming soon</small>
+                                            <small class="text-muted">Manage aircraft navigation and terrain database details</small>
                                         </div>
                                     </div>
                                     <p class="app-card-text">Access the database interface for flight data and operational records.</p>
@@ -2077,7 +2924,7 @@
                         <h2 class="mb-4">Device Management</h2>
                         <div class="row g-4">
                             <div class="col-md-6 col-xl-3">
-                                <a href="javascript:void(0);" onclick="showDeviceIPad()" class="app-card card text-decoration-none text-dark p-4 h-100">
+                                <a href="javascript:void(0);" onclick="showDeviceIPad()" class="app-card launcher-card-ipad card text-decoration-none text-dark p-4 h-100">
                                     <div class="d-flex align-items-center mb-3">
                                         <div class="app-card-icon bg-primary text-white rounded-circle me-3">
                                             <i class="fas fa-tablet-alt"></i>
@@ -2091,7 +2938,7 @@
                                 </a>
                             </div>
                             <div class="col-md-6 col-xl-3">
-                                <a href="javascript:void(0);" onclick="showPhoneManagement()" class="app-card card text-decoration-none text-dark p-4 h-100">
+                                <a href="javascript:void(0);" onclick="showPhoneManagement()" class="app-card launcher-card-standby card text-decoration-none text-dark p-4 h-100">
                                     <div class="d-flex align-items-center mb-3">
                                         <div class="app-card-icon bg-secondary text-white rounded-circle me-3">
                                             <i class="fas fa-mobile-alt"></i>
@@ -2111,7 +2958,7 @@
                         <h2 class="mb-4">Payment & Finance</h2>
                         <div class="row g-4">
                             <div class="col-md-6 col-xl-3">
-                                <a href="javascript:void(0);" onclick="showPaymentDashboard()" class="app-card card text-decoration-none text-dark p-4 h-100">
+                                <a href="javascript:void(0);" onclick="showPaymentDashboard()" class="app-card launcher-card-payment card text-decoration-none text-dark p-4 h-100">
                                     <div class="d-flex align-items-center mb-3">
                                         <div class="app-card-icon bg-danger text-white rounded-circle me-3">
                                             <i class="fas fa-credit-card"></i>
@@ -2131,7 +2978,7 @@
                         <h2 class="mb-4">Tools</h2>
                         <div class="row g-4">
                             <div class="col-md-6 col-xl-3">
-                                <a href="javascript:void(0);" onclick="showJSONConverter()" class="app-card card text-decoration-none text-dark p-4 h-100">
+                                <a href="javascript:void(0);" onclick="showJSONConverter()" class="app-card launcher-card-json card text-decoration-none text-dark p-4 h-100">
                                     <div class="d-flex align-items-center mb-3">
                                         <div class="app-card-icon bg-info text-white rounded-circle me-3">
                                             <i class="fas fa-code"></i>
@@ -2170,17 +3017,9 @@
                         </li>
                     </ul>
 
-                    <!-- Fleet & Period Selectors -->
+                    <!-- Period Selectors -->
                     <div class="delay-controls mb-4">
                         <div class="d-flex justify-content-center gap-4 flex-wrap">
-                            <div>
-                                <label class="form-label me-2">Fleet:</label>
-                                <select class="form-select d-inline-block" id="delayFleetSelect" onchange="updateDelayAnalysis()">
-                                    <option value="b737">B737</option>
-                                    <option value="atr72">ATR72</option>
-                                    <option value="both">Both</option>
-                                </select>
-                            </div>
                             <div id="delayMonthSelector">
                                 <label class="form-label me-2">Month:</label>
                                 <select class="form-select d-inline-block" id="delayMonthSelect" onchange="updateDelayAnalysis()">
@@ -2436,13 +3275,119 @@
                 </div>
 
                 <div id="databaseContent" style="display: none;">
-                    <div class="d-flex justify-content-end align-items-center mb-4">
+                    <div class="d-flex justify-content-end align-items-center flex-wrap gap-2 mb-4">
+                        <div id="databasePageActions" class="database-page-actions">
+                            <button class="btn database-sync-button" onclick="syncDatabaseData()">
+                                <i class="fas fa-sync-alt me-2"></i>Sync
+                            </button>
+                            <button class="btn database-admin-button" onclick="promptAdminLogin('editDatabase')">
+                                <i class="fas fa-edit me-2"></i>Admin Login
+                            </button>
+                        </div>
                         <button class="btn btn-outline-secondary" onclick="showLauncher()">
                             <i class="fas fa-arrow-left me-2"></i>Back to Home
                         </button>
                     </div>
-                    <div class="alert alert-info">
-                        <strong>Database</strong> - Layout coming soon. This page will provide access to the database interface for flight data and operational records.
+                    <div style="max-width: 1400px; margin: 0 auto;">
+                        <div id="databaseViewModeContent">
+                            <div class="row g-4">
+                                <div class="col-12">
+                                    <div class="card h-100 nav-database-card nav-database-card-atr">
+                                        <div class="card-body p-4">
+                                            <h5 class="mb-3"><i class="fas fa-plane me-2"></i>ATR Navigation Database</h5>
+                                            <div id="databaseAtrNavDashboard"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="card h-100 nav-database-card nav-database-card-b737">
+                                        <div class="card-body p-4">
+                                            <h5 class="mb-3"><i class="fas fa-plane me-2"></i>B737 Navigation Database</h5>
+                                            <div id="databaseB737NavDashboard"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="card h-100 nav-database-card nav-database-card-terrain">
+                                        <div class="card-body p-4">
+                                            <div class="terrain-database-content">
+                                                <div class="terrain-database-heading">
+                                                    <div class="terrain-database-icon"><i class="fas fa-mountain"></i></div>
+                                                    <div>
+                                                        <h5>B737 Terrain Database</h5>
+                                                        <p>Terrain data cycle information</p>
+                                                    </div>
+                                                </div>
+                                                <div class="terrain-cycle-tile">
+                                                    <span class="terrain-cycle-label"><i class="fas fa-layer-group me-2"></i>Current Cycle</span>
+                                                    <strong class="terrain-cycle-value" id="databaseB737TerrainCycle">-</strong>
+                                                </div>
+                                                <div class="terrain-database-link-area">
+                                                    <a id="databaseB737TerrainLink" class="btn navigation-open-database" target="_blank" rel="noopener noreferrer" style="display: none;"><i class="fas fa-external-link-alt me-2"></i>Open Terrain Website</a>
+                                                    <span id="databaseB737TerrainNoLink" class="text-muted">Website link not configured</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="databaseEditModeContent" style="display: none;">
+                            <div class="card mb-4" style="border: none; border-top: 5px solid #ff8c00; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                                <div class="card-body p-4">
+                                    <h5 class="text-warning fw-bold mb-4">ATR Navigation Database</h5>
+                                    <div class="row g-3">
+                                        <div class="col-md-6"><label for="databaseAtrNavCycleInput" class="form-label">Reference Cycle</label><input id="databaseAtrNavCycleInput" class="form-control" placeholder="e.g. AIRAC 2610" required></div>
+                                        <div class="col-md-6"><label for="databaseAtrNavEffectiveDateInput" class="form-label">Reference Cycle Effective Date</label><input id="databaseAtrNavEffectiveDateInput" type="date" class="form-control" required></div>
+                                        <div class="col-12"><label for="databaseAtrNavUrlInput" class="form-label">Database URL</label><input id="databaseAtrNavUrlInput" type="url" class="form-control" placeholder="https://"></div>
+                                        <div class="col-12"><small class="text-muted">Cycles advance automatically every 28 days and roll over after cycle 13.</small></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card mb-4" style="border: none; border-top: 5px solid #ff8c00; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                                <div class="card-body p-4">
+                                    <h5 class="text-warning fw-bold mb-4">B737 Navigation Database</h5>
+                                    <div class="row g-3">
+                                        <div class="col-md-6"><label for="databaseB737NavCycleInput" class="form-label">Reference Cycle</label><input id="databaseB737NavCycleInput" class="form-control" placeholder="e.g. AIRAC 2610" required></div>
+                                        <div class="col-md-6"><label for="databaseB737NavEffectiveDateInput" class="form-label">Reference Cycle Effective Date</label><input id="databaseB737NavEffectiveDateInput" type="date" class="form-control" required></div>
+                                        <div class="col-12"><label for="databaseB737NavUrlInput" class="form-label">Database URL</label><input id="databaseB737NavUrlInput" type="url" class="form-control" placeholder="https://"></div>
+                                        <div class="col-12"><small class="text-muted">Cycles advance automatically every 28 days and roll over after cycle 13.</small></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card mb-4" style="border: none; border-top: 5px solid #00a6a6; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                                <div class="card-body p-4">
+                                    <h5 class="text-info fw-bold mb-4">Navigation Resources</h5>
+                                    <div class="row g-3">
+                                        <div class="col-md-4"><label for="databaseNavigationGuidelineUrlInput" class="form-label">Navigation Database Guideline URL</label><input id="databaseNavigationGuidelineUrlInput" type="url" class="form-control" placeholder="https://"></div>
+                                        <div class="col-md-4"><label for="databaseAtrNavigationInstallerUrlInput" class="form-label">ATR Installer URL</label><input id="databaseAtrNavigationInstallerUrlInput" type="url" class="form-control" placeholder="https://"></div>
+                                        <div class="col-md-4"><label for="databaseB737NavigationInstallerUrlInput" class="form-label">B737 Installer URL</label><input id="databaseB737NavigationInstallerUrlInput" type="url" class="form-control" placeholder="https://"></div>
+                                        <div class="col-md-4"><label for="databaseAtrNavigationPortalUrlInput" class="form-label">ATR Portal Website URL</label><input id="databaseAtrNavigationPortalUrlInput" type="url" class="form-control" placeholder="https://"></div>
+                                        <div class="col-12"><small class="text-muted">The Guideline is shared. Installer links are aircraft-specific, and the Portal Website is shown for ATR only.</small></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card mb-4" style="border: none; border-top: 5px solid #7952b3; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                                <div class="card-body p-4">
+                                    <h5 class="fw-bold mb-3" style="color: #6842a0;"><i class="fas fa-envelope me-2"></i>Ship-out Email Reminder</h5>
+                                    <p class="mb-0 text-muted">A free Google Apps Script can email one shared recipient once daily, 3 days before each ATR and B737 navigation database ship-out. Set up a Gmail sender account using the guide in README.md; the daily trigger must be enabled separately.</p>
+                                </div>
+                            </div>
+                            <div class="card mb-4" style="border: none; border-top: 5px solid #2196f3; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                                <div class="card-body p-4">
+                                    <h5 class="text-info fw-bold mb-4">B737 Terrain Database</h5>
+                                    <div class="row g-3">
+                                        <div class="col-md-6"><label for="databaseB737TerrainCycleInput" class="form-label">Cycle</label><input id="databaseB737TerrainCycleInput" class="form-control" placeholder="e.g. Terrain Cycle 2606"></div>
+                                        <div class="col-md-6"><label for="databaseB737TerrainUrlInput" class="form-label">Website URL</label><input id="databaseB737TerrainUrlInput" type="url" class="form-control" placeholder="https://"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-wrap gap-2 mb-4">
+                                <button class="btn btn-success btn-lg" onclick="saveDatabaseData()"><i class="fas fa-save me-2"></i>Save Changes</button>
+                                <button class="btn btn-secondary btn-lg" onclick="cancelDatabaseEdit()"><i class="fas fa-times me-2"></i>Cancel</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -2458,11 +3403,11 @@
                     </div>
                     <div class="card" style="border-radius: 18px; overflow: hidden; box-shadow: 0 16px 40px rgba(0,0,0,0.08);">
                         <div class="card-body p-0" style="min-height: 80vh;">
-                            <iframe id="flightDataIframe" src="https://app.powerbi.com/reportEmbed?reportId=0603bbc0-9165-479d-8d67-5b7d68d78a9b&groupId=8fc3a567-1ee8-4994-809c-49f50cdb6d48&ctid=8fc3a567-1ee8-4994-809c-49f50cdb6d48&autoAuth=true" frameborder="0" allowfullscreen="true" style="width: 100%; height: 100%; min-height: 800px;"></iframe>
+                            <iframe id="flightDataIframe" src="https://app.powerbi.com/reportEmbed?reportId=e635303d-a7a2-478a-b314-bbf600a64759&pageName=ReportSection6abed22a6c6068c335f8&ctid=8fc3a567-1ee8-4994-809c-49f50cdb6d48&autoAuth=true" frameborder="0" allowfullscreen="true" style="width: 100%; height: 100%; min-height: 800px;"></iframe>
                         </div>
                     </div>
                     <div class="alert alert-warning mt-3" role="alert">
-                        Power BI embeds may still be blocked by your report's sharing or tenant settings. If the report does not load here, <a href="https://app.powerbi.com/groups/me/reports/0603bbc0-9165-479d-8d67-5b7d68d78a9b/ReportSection6abed22a6c6068c335f8?ctid=8fc3a567-1ee8-4994-809c-49f50cdb6d48&experience=power-bi&clientSideAuth=0" target="_blank" rel="noopener">open it in Power BI</a>.
+                        Power BI embeds may still be blocked by your report's sharing or tenant settings. If the report does not load here, <a href="https://app.powerbi.com/groups/me/reports/e635303d-a7a2-478a-b314-bbf600a64759/ReportSection6abed22a6c6068c335f8?ctid=8fc3a567-1ee8-4994-809c-49f50cdb6d48&experience=power-bi" target="_blank" rel="noopener">open it in Power BI</a>.
                     </div>
                 </div>
 
@@ -2548,6 +3493,9 @@
                                     <div class="d-flex flex-wrap gap-2" style="justify-content: flex-end;">
                                         <button class="btn btn-info" id="syncIpadBtn" onclick="syncIPadDeviceData()" style="min-width: 140px; background: #2196F3; border: none; color: white; border-radius: 10px; font-weight: 700; transition: all 0.2s;" onmouseover="this.style.background='#1976D2'" onmouseout="this.style.background='#2196F3'">
                                             <i class="fas fa-cloud-download-alt me-2"></i>Sync
+                                        </button>
+                                        <button class="btn" id="exportIpadExcelBtn" onclick="exportIPadDevicesToExcel()" style="display: none; min-width: 160px; background: #217346; border: none; color: white; border-radius: 10px; font-weight: 700; transition: all 0.2s;" onmouseover="this.style.background='#185c37'" onmouseout="this.style.background='#217346'">
+                                            <i class="fas fa-file-excel me-2"></i>Export to Excel
                                         </button>
                                         <button class="btn" id="downloadIpadTemplateBtn" onclick="downloadIPadTemplate()" style="display: none; min-width: 140px; background: #4CAF50; border: none; color: white; border-radius: 10px; font-weight: 700; transition: all 0.2s;" onmouseover="this.style.background='#45a049'" onmouseout="this.style.background='#4CAF50'">
                                             <i class="fas fa-download me-2"></i>Template
@@ -3031,7 +3979,7 @@
                         <button class="btn btn-outline-secondary" id="paymentAddReminderBtn" onclick="openAddReminderModal()" style="display: none; font-weight: 600; border-radius: 8px;">
                             <i class="fas fa-calendar-plus me-2"></i>Add Payment Reminder
                         </button>
-                        <button class="btn btn-outline-secondary" id="paymentEditToggle" onclick="togglePaymentEditMode()" style="display: none;">
+                        <button class="btn btn-outline-secondary" id="paymentEditToggleTop" onclick="togglePaymentEditMode()" style="display: none;">
                             <i class="fas fa-edit me-2"></i>Edit Payment List
                         </button>
                         <button class="btn btn-outline-secondary" onclick="showLauncher()">
@@ -3147,6 +4095,9 @@
                                     <button class="btn btn-sm btn-light" onclick="openAddReminderModal()" id="addPaymentBtn" style="display: none; font-weight: 600; border-radius: 6px;">
                                         <i class="fas fa-plus me-1"></i>Add Payment
                                     </button>
+                                    <button class="btn btn-sm btn-success" onclick="savePaymentEdits()" id="savePaymentChangesBtn" style="display: none; font-weight: 600; border-radius: 6px;">
+                                        <i class="fas fa-save me-1"></i>Save Changes
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -3155,12 +4106,13 @@
                                 <thead style="background: #f5f5f5;">
                                     <tr>
                                         <th style="width: 5%;">No</th>
-                                        <th style="width: 20%;">Vendor Name</th>
-                                        <th style="width: 20%;">Category</th>
-                                        <th style="width: 15%;">Created Date</th>
-                                        <th style="width: 12%;">Currency</th>
-                                        <th style="width: 12%; text-align: right;">Amount</th>
-                                        <th style="width: 12%; text-align: right;">In RM</th>
+                                        <th style="width: 16%;">Payment Name</th>
+                                        <th style="width: 16%;">Vendor Name</th>
+                                        <th style="width: 17%;">Category</th>
+                                        <th style="width: 13%;">Created Date</th>
+                                        <th style="width: 9%;">Currency</th>
+                                        <th style="width: 10%; text-align: right;">Amount</th>
+                                        <th style="width: 10%; text-align: right;">In RM</th>
                                         <th id="paymentActionHeader" style="width: 4%; text-align: center; display: none;">Action</th>
                                     </tr>
                                 </thead>
@@ -3201,8 +4153,14 @@
 
                     <!-- Currency Rates Table -->
                     <div class="card" style="border-radius: 16px; border: 2px solid #ffe9d6; box-shadow: 0 4px 12px rgba(255, 140, 0, 0.1);">
-                        <div class="card-header" style="background: linear-gradient(135deg, #ff8c00 0%, #ffb74d 100%); border-radius: 14px 14px 0 0;">
-                            <h5 class="mb-0">Currency Exchange Rates to MYR</h5>
+                        <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2" style="background: linear-gradient(135deg, #ff8c00 0%, #ffb74d 100%); border-radius: 14px 14px 0 0;">
+                            <div>
+                                <h5 class="mb-0">Currency Exchange Rates to MYR</h5>
+                                <small id="currencyRatesStatus" aria-live="polite">Using fallback rates until refreshed</small>
+                            </div>
+                            <button type="button" class="btn btn-sm btn-light" onclick="refreshCurrencyRates()">
+                                <i class="fas fa-sync-alt me-1"></i>Refresh Rates
+                            </button>
                         </div>
                         <div class="card-body" style="padding: 20px; overflow-x: auto;">
                             <table class="table table-hover" id="currencyRatesTable" style="margin-bottom: 0;">
@@ -3211,7 +4169,7 @@
                                         <th style="width: 25%;">Currency Code</th>
                                         <th style="width: 25%;">Currency Name</th>
                                         <th style="width: 25%;">Rate to MYR</th>
-                                        <th style="width: 25%;">Last Updated</th>
+                                        <th style="width: 25%;">Rate Date</th>
                                     </tr>
                                 </thead>
                                 <tbody id="currencyRatesBody">
@@ -3325,14 +4283,6 @@
             <div class="tab-pane fade show active" id="monthly" role="tabpanel" aria-labelledby="monthly-tab">
                 <div class="d-flex justify-content-center mb-4 gap-3">
                     <div>
-                        <label class="form-label me-2">Fleet:</label>
-                        <select id="fleetSelector" class="form-select d-inline-block w-auto" onchange="switchFleet(this.value)">
-                            <option value="b737">B737</option>
-                            <option value="atr">ATR72</option>
-                            <option value="both">Both</option>
-                        </select>
-                    </div>
-                    <div>
                         <label class="form-label me-2">Month:</label>
                         <select id="monthSelector" class="form-select d-inline-block w-auto" onchange="switchMonth(this.value)">
                         </select>
@@ -3346,14 +4296,6 @@
             </div>
             <div class="tab-pane fade" id="quarterly" role="tabpanel" aria-labelledby="quarterly-tab">
                 <div class="d-flex justify-content-center mb-4 gap-3">
-                    <div>
-                        <label class="form-label me-2">Fleet:</label>
-                        <select id="quarterlyFleetSelector" class="form-select d-inline-block w-auto" onchange="switchFleet(this.value)">
-                            <option value="b737">B737</option>
-                            <option value="atr">ATR72</option>
-                            <option value="both">Both</option>
-                        </select>
-                    </div>
                     <div>
                         <label class="form-label me-2">Quarter:</label>
                         <select id="quarterSelector" class="form-select d-inline-block w-auto" onchange="switchQuarter(this.value)">
@@ -3372,14 +4314,6 @@
             </div>
             <div class="tab-pane fade" id="yearly" role="tabpanel" aria-labelledby="yearly-tab">
                 <div class="d-flex justify-content-center mb-4 gap-3">
-                    <div>
-                        <label class="form-label me-2">Fleet:</label>
-                        <select id="yearlyFleetSelector" class="form-select d-inline-block w-auto" onchange="switchFleet(this.value)">
-                            <option value="b737">B737</option>
-                            <option value="atr">ATR72</option>
-                            <option value="both">Both</option>
-                        </select>
-                    </div>
                     <div>
                         <label class="form-label me-2">Year:</label>
                         <select id="yearlyYearSelector" class="form-select d-inline-block w-auto" onchange="switchYearlyYear(this.value)">
@@ -3622,6 +4556,28 @@
             document.querySelectorAll('.sidebar-item.active').forEach(item => {
                 item.classList.remove('active');
             });
+            document.querySelectorAll('.sidebar-subitem.active').forEach(item => {
+                item.classList.remove('active');
+            });
+        }
+
+        function activateSidebarSubitem(itemId, groupId, subnavId) {
+            const subnav = document.getElementById(subnavId);
+            const group = document.getElementById(groupId);
+            const toggle = group.querySelector('.sidebar-group-toggle');
+            subnav.hidden = false;
+            group.classList.remove('is-collapsed');
+            toggle.setAttribute('aria-expanded', 'true');
+            document.getElementById(itemId).classList.add('active');
+        }
+
+        function toggleNavGroup(groupId, subnavId, button) {
+            const group = document.getElementById(groupId);
+            const subnav = document.getElementById(subnavId);
+            const isExpanded = button.getAttribute('aria-expanded') === 'true';
+            subnav.hidden = isExpanded;
+            group.classList.toggle('is-collapsed', isExpanded);
+            button.setAttribute('aria-expanded', String(!isExpanded));
         }
 
         function hideAllSections() {
@@ -3648,11 +4604,70 @@
         }
 
         function hideIpadTopbarButtons() {
-            const topbarButtons = ['addNewIPadTopbarBtn', 'addNewFlightCrewTopbarBtn', 'downloadIpadTemplateBtn', 'importIpadExcelTopbarBtn'];
+            const topbarButtons = ['addNewIPadTopbarBtn', 'addNewFlightCrewTopbarBtn', 'downloadIpadTemplateBtn', 'importIpadExcelTopbarBtn', 'exportIpadExcelBtn'];
             topbarButtons.forEach(id => {
                 const btn = document.getElementById(id);
                 if (btn) btn.style.display = 'none';
             });
+        }
+
+        function exportIPadDevicesToExcel() {
+            if (typeof XLSX === 'undefined') {
+                showToast('Excel export is unavailable because the spreadsheet library did not load.', 'error');
+                return;
+            }
+
+            const headers = [
+                'No.',
+                'Serial Number',
+                'Colour',
+                'iPad Version',
+                'Status',
+                'Assigned To',
+                'Designation',
+                'Remarks',
+                'Collection Date'
+            ];
+            const toRows = devices => devices.map((device, index) => [
+                index + 1,
+                device.serial || '',
+                device.colour || '',
+                device.version || '',
+                device.availability || '',
+                device.assignedTo || '',
+                device.designation || '',
+                device.remarks || '',
+                device.collectionDate || ''
+            ]);
+            const createWorksheet = devices => {
+                const worksheet = XLSX.utils.aoa_to_sheet([headers, ...toRows(devices)]);
+                worksheet['!cols'] = [
+                    { wch: 7 },
+                    { wch: 22 },
+                    { wch: 18 },
+                    { wch: 20 },
+                    { wch: 18 },
+                    { wch: 32 },
+                    { wch: 20 },
+                    { wch: 32 },
+                    { wch: 18 }
+                ];
+                if (devices.length > 0) {
+                    worksheet['!autofilter'] = { ref: `A1:I${devices.length + 1}` };
+                }
+                return worksheet;
+            };
+
+            const workbook = XLSX.utils.book_new();
+            const assignedDevices = iPadDevices.filter(device => device.availability === 'Assigned');
+            const otherDevices = iPadDevices.filter(device => device.availability !== 'Assigned');
+            XLSX.utils.book_append_sheet(workbook, createWorksheet(iPadDevices), 'All iPads');
+            XLSX.utils.book_append_sheet(workbook, createWorksheet(assignedDevices), 'Assigned iPads');
+            XLSX.utils.book_append_sheet(workbook, createWorksheet(otherDevices), 'Available and Other');
+
+            const date = new Date().toISOString().slice(0, 10);
+            XLSX.writeFile(workbook, `iPad_Inventory_${date}.xlsx`);
+            showToast('iPad inventory exported to Excel.', 'success');
         }
 
         function downloadIPadTemplate() {
@@ -3791,10 +4806,11 @@
             document.getElementById('pageSubtitle').style.display = 'none';
         }
 
-        function showFuelAnalysis() {
+        function showFuelAnalysis(fleet = 'b737') {
             clearActiveNav();
             hideAllSections();
             document.getElementById('nav-fuel').classList.add('active');
+            activateSidebarSubitem(`nav-fuel-${fleet === 'atr' ? 'atr' : fleet}`, 'fuelNavGroup', 'fuelSubnav');
             document.getElementById('launcherSection').style.display = 'none';
             document.getElementById('analysisContent').style.display = 'block';
             document.getElementById('delayCodeContent').style.display = 'none';
@@ -3812,8 +4828,10 @@
             document.getElementById('pageTitle').textContent = 'Fuel Analysis';
             document.getElementById('pageSubtitle').textContent = 'View fuel performance and savings';
             document.getElementById('pageSubtitle').style.display = 'block';
-            
-            document.getElementById('fuelAnalysis').scrollIntoView({ behavior: 'smooth' });
+
+            switchFleet(fleet);
+             
+            document.getElementById('analysisContent').scrollIntoView({ behavior: 'smooth' });
         }
 
         function showFlightData() {
@@ -3837,10 +4855,11 @@
             document.getElementById('pageSubtitle').style.display = 'block';
         }
 
-        function showDelayCodeAnalysis() {
+        function showDelayCodeAnalysis(fleet = 'b737') {
             clearActiveNav();
             hideAllSections();
             document.getElementById('nav-delay').classList.add('active');
+            activateSidebarSubitem(`nav-delay-${fleet === 'atr72' ? 'atr' : fleet}`, 'delayNavGroup', 'delaySubnav');
             document.getElementById('launcherSection').style.display = 'none';
             document.getElementById('analysisContent').style.display = 'none';
             document.getElementById('delayCodeContent').style.display = 'block';
@@ -3858,6 +4877,8 @@
             document.getElementById('pageSubtitle').textContent = 'Analyze delay codes and root causes';
             document.getElementById('pageSubtitle').style.display = 'block';
             
+            currentDelayFleet = fleet;
+
             // Initialize delay analysis
             initializeDelayAnalysis();
         }
@@ -4058,7 +5079,6 @@
         }
 
         function updateDelayAnalysis() {
-            currentDelayFleet = document.getElementById('delayFleetSelect').value;
             currentDelayYear = document.getElementById('delayYearSelect').value;
             
             if (currentDelayPeriod === 'monthly') {
@@ -4710,7 +5730,37 @@
             });
         }
 
+        const defaultDatabaseData = {
+            navigationResources: { guidelineUrl: '', atrInstallerUrl: '', b737InstallerUrl: '', atrPortalUrl: '' },
+            atr: {
+                navigation: { cycle: '', effectiveDate: '', url: '' }
+            },
+            b737: {
+                navigation: { cycle: '', effectiveDate: '', url: '' },
+                terrain: { cycle: '', url: '' }
+            }
+        };
+        let databaseData = JSON.parse(JSON.stringify(defaultDatabaseData));
+        const navigationCycleLengthDays = 28;
+        const navigationShipOutLeadDays = 8;
+        let databaseCycleRefreshInterval = null;
+        let databaseCycleLastRenderedDate = '';
+
+        function ensureDatabaseCycleRefresh() {
+            if (databaseCycleRefreshInterval !== null) return;
+            databaseCycleLastRenderedDate = new Date().toISOString().slice(0, 10);
+            databaseCycleRefreshInterval = setInterval(() => {
+                const today = new Date().toISOString().slice(0, 10);
+                if (today === databaseCycleLastRenderedDate) return;
+                databaseCycleLastRenderedDate = today;
+                if (document.getElementById('databaseContent').style.display !== 'none') {
+                    renderDatabaseView();
+                }
+            }, 60000);
+        }
+
         function showDatabase() {
+            ensureDatabaseCycleRefresh();
             clearActiveNav();
             hideAllSections();
             document.getElementById('nav-database').classList.add('active');
@@ -4728,8 +5778,436 @@
             
             // Update Page Title
             document.getElementById('pageTitle').textContent = 'Database';
-            document.getElementById('pageSubtitle').textContent = 'Access the database interface for flight data';
+            document.getElementById('pageSubtitle').textContent = 'View and manage aircraft navigation and terrain databases';
             document.getElementById('pageSubtitle').style.display = 'block';
+
+            document.getElementById('databaseEditModeContent').style.display = 'none';
+            document.getElementById('databaseViewModeContent').style.display = 'block';
+            document.getElementById('databasePageActions').style.display = 'flex';
+            renderDatabaseView();
+            loadDatabaseData();
+        }
+
+        function normalizeDatabaseData(data) {
+            const normalized = JSON.parse(JSON.stringify(defaultDatabaseData));
+            if (!data || typeof data !== 'object') return normalized;
+
+            const source = data;
+            const navigationResources = source.navigationResources;
+            if (navigationResources && typeof navigationResources === 'object') {
+                normalized.navigationResources.guidelineUrl = typeof navigationResources.guidelineUrl === 'string' ? navigationResources.guidelineUrl : '';
+                const legacyInstallerUrl = typeof navigationResources.installerUrl === 'string' ? navigationResources.installerUrl : '';
+                normalized.navigationResources.atrInstallerUrl = typeof navigationResources.atrInstallerUrl === 'string'
+                    ? navigationResources.atrInstallerUrl
+                    : legacyInstallerUrl;
+                normalized.navigationResources.b737InstallerUrl = typeof navigationResources.b737InstallerUrl === 'string'
+                    ? navigationResources.b737InstallerUrl
+                    : legacyInstallerUrl;
+                normalized.navigationResources.atrPortalUrl = typeof navigationResources.atrPortalUrl === 'string'
+                    ? navigationResources.atrPortalUrl
+                    : typeof navigationResources.portalUrl === 'string' ? navigationResources.portalUrl : '';
+            }
+            const atrNavigation = source.atr && source.atr.navigation;
+            const b737Navigation = source.b737 && source.b737.navigation;
+            const b737Terrain = source.b737 && source.b737.terrain;
+
+            [atrNavigation, b737Navigation].forEach((navigation, index) => {
+                if (!navigation || typeof navigation !== 'object') return;
+                const target = index === 0 ? normalized.atr.navigation : normalized.b737.navigation;
+                target.cycle = typeof navigation.cycle === 'string' ? navigation.cycle : '';
+                target.effectiveDate = typeof navigation.effectiveDate === 'string' ? navigation.effectiveDate : '';
+                target.url = typeof navigation.url === 'string' ? navigation.url : '';
+            });
+
+            if (b737Terrain && typeof b737Terrain === 'object') {
+                normalized.b737.terrain.cycle = typeof b737Terrain.cycle === 'string' ? b737Terrain.cycle : '';
+                normalized.b737.terrain.url = typeof b737Terrain.url === 'string' ? b737Terrain.url : '';
+            }
+
+            return normalized;
+        }
+
+        async function loadDatabaseData() {
+            const savedData = localStorage.getItem('databaseData');
+            if (savedData) {
+                try {
+                    databaseData = normalizeDatabaseData(JSON.parse(savedData));
+                    renderDatabaseView();
+                } catch (error) {
+                    console.error('Unable to parse saved database details:', error);
+                    showNotification('Saved database details could not be read. Sync or re-enter the details.', 'warning');
+                }
+            }
+
+            const syncedData = await getSyncedData('databaseData');
+            if (syncedData) {
+                databaseData = normalizeDatabaseData(syncedData);
+                localStorage.setItem('databaseData', JSON.stringify(databaseData));
+                renderDatabaseView();
+            }
+        }
+
+        function setDatabaseLink(linkId, emptyMessageId, url) {
+            const link = document.getElementById(linkId);
+            const emptyMessage = emptyMessageId ? document.getElementById(emptyMessageId) : null;
+            const safeUrl = getSafeDatabaseUrl(url);
+            if (safeUrl) {
+                link.href = safeUrl;
+                link.style.display = 'inline-block';
+                if (emptyMessage) emptyMessage.style.display = 'none';
+            } else {
+                link.removeAttribute('href');
+                link.style.display = 'none';
+                if (emptyMessage) emptyMessage.style.display = 'inline';
+            }
+        }
+
+        function getSafeDatabaseUrl(value) {
+            if (typeof value !== 'string' || !/^https?:\/\//i.test(value.trim())) return '';
+            try {
+                const url = new URL(value.trim());
+                return url.protocol === 'http:' || url.protocol === 'https:' ? url.href : '';
+            } catch (error) {
+                if (error instanceof TypeError) return '';
+                throw error;
+            }
+        }
+
+        function formatDatabaseDate(value) {
+            if (!value) return '-';
+            const date = new Date(`${value}T00:00:00`);
+            return Number.isNaN(date.getTime())
+                ? value
+                : new Intl.DateTimeFormat('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).format(date);
+        }
+
+        function parseDatabaseDate(value) {
+            if (!/^\d{4}-\d{2}-\d{2}$/.test(value || '')) return null;
+            const date = new Date(`${value}T00:00:00Z`);
+            return Number.isNaN(date.getTime()) || date.toISOString().slice(0, 10) !== value ? null : date;
+        }
+
+        function addDatabaseDays(date, days) {
+            if (!date) return null;
+            const result = new Date(date.getTime());
+            result.setUTCDate(result.getUTCDate() + days);
+            return result;
+        }
+
+        function databaseDateDifference(start, end) {
+            if (!start || !end) return null;
+            return Math.round((end.getTime() - start.getTime()) / 86400000);
+        }
+
+        function formatDatabaseShortDate(date) {
+            return date
+                ? new Intl.DateTimeFormat('en-GB', { day: '2-digit', month: 'short', year: '2-digit', timeZone: 'UTC' }).format(date).toUpperCase()
+                : '-';
+        }
+
+        function formatDatabaseCycleRange(start, end) {
+            if (!start || !end) return 'Dates not configured';
+            const formatDayMonth = date => new Intl.DateTimeFormat('en-GB', {
+                day: '2-digit',
+                month: 'short',
+                timeZone: 'UTC'
+            }).format(date);
+            const endYear = new Intl.DateTimeFormat('en-GB', { year: '2-digit', timeZone: 'UTC' }).format(end);
+            return `${formatDayMonth(start)} - ${formatDayMonth(end)} ${endYear}`;
+        }
+
+        function getFollowingAiracCycle(cycle) {
+            const match = cycle.trim().match(/^(.*?)(\d{2})(\d{2})$/);
+            if (!match) return '';
+
+            const year = Number(match[2]);
+            const cycleNumber = Number(match[3]);
+            if (cycleNumber < 1 || cycleNumber > 13) return '';
+
+            const nextYear = cycleNumber === 13 ? (year + 1) % 100 : year;
+            const nextCycleNumber = cycleNumber === 13 ? 1 : cycleNumber + 1;
+            return `${match[1]}${String(nextYear).padStart(2, '0')}${String(nextCycleNumber).padStart(2, '0')}`;
+        }
+
+        function advanceAiracCycle(cycle, count) {
+            let result = cycle.trim();
+            for (let index = 0; index < count; index += 1) {
+                result = getFollowingAiracCycle(result);
+                if (!result) return '';
+            }
+            return result;
+        }
+
+        function formatAiracCycleLabel(cycle) {
+            const normalized = cycle.trim();
+            if (/^AIRAC\b/i.test(normalized) || !/^\d{4}$/.test(normalized)) return normalized;
+            return `AIRAC ${normalized}`;
+        }
+
+        function createNavigationDashboardMarkup(prefix) {
+            return `
+                <div class="navigation-cycle-layout ${prefix === 'databaseB737Nav' ? 'navigation-cycle-layout-b737' : 'navigation-cycle-layout-atr'}">
+                    <section class="navigation-cycle-panel">
+                        <div class="navigation-cycle-ring" id="${prefix}ProgressRing" role="img">
+                            <div class="navigation-cycle-ring-inner">
+                                <div>current cycle</div>
+                                <div class="cycle-heading" id="${prefix}CurrentCycle">-</div>
+                                <div class="navigation-cycle-dates" id="${prefix}CurrentRange">Dates not configured</div>
+                                <div class="mt-3">next cycle</div>
+                                <div class="cycle-heading" id="${prefix}NextCycle">-</div>
+                                <div class="navigation-cycle-dates" id="${prefix}NextRange">Dates not configured</div>
+                                <div class="mt-2">Effective in <strong class="nav-effective-countdown" id="${prefix}EffectiveCountdown">-</strong></div>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="navigation-cycle-panel">
+                        <div class="navigation-tailoring-title">Database Cycle</div>
+                        <div class="navigation-tailoring-subtitle">Ship Out</div>
+                        <div class="navigation-countdown-bar" id="${prefix}TailoringProgress"><span id="${prefix}TailoringDays">-</span></div>
+                        <div class="d-flex justify-content-between align-items-center gap-3">
+                            <span class="text-secondary">for Cycle <strong id="${prefix}TailoringCycle">-</strong></span>
+                            <strong id="${prefix}TailoringDate">-</strong>
+                        </div>
+                        <h6 class="mt-4 mb-1 text-secondary fw-bold">UPCOMING SHIP OUTS</h6>
+                        <table class="navigation-upcoming-table"><tbody id="${prefix}UpcomingDeadlines"></tbody></table>
+                        <div class="mt-3">
+                            <a id="${prefix}Link" class="btn navigation-open-database" target="_blank" rel="noopener noreferrer" style="display: none;"><i class="fas fa-external-link-alt me-2"></i>Open Database</a>
+                            <span id="${prefix}NoLink" class="text-muted">Database link not configured</span>
+                        </div>
+                        <div class="d-flex flex-wrap gap-2 mt-3">
+                            <a id="${prefix}GuidelineLink" class="btn navigation-resource-link navigation-resource-guideline" target="_blank" rel="noopener noreferrer" style="display: none;"><i class="fas fa-book me-2"></i>Navigation Database Guideline</a>
+                            <a id="${prefix}InstallerLink" class="btn navigation-resource-link navigation-resource-installer" target="_blank" rel="noopener noreferrer" style="display: none;"><i class="fas fa-download me-2"></i>${prefix === 'databaseAtrNav' ? 'ATR Installer' : 'B737 Installer'}</a>
+                            ${prefix === 'databaseAtrNav' ? '<a id="databaseAtrNavPortalLink" class="btn navigation-resource-link navigation-resource-portal" target="_blank" rel="noopener noreferrer" style="display: none;"><i class="fas fa-globe me-2"></i>Portal Website</a>' : ''}
+                        </div>
+                    </section>
+                </div>
+            `;
+        }
+
+        function setDatabaseText(id, value) {
+            document.getElementById(id).textContent = value || '-';
+        }
+
+        function renderNavigationDashboard(prefix, navigation) {
+            const host = document.getElementById(`${prefix}Dashboard`);
+            host.innerHTML = createNavigationDashboardMarkup(prefix);
+
+            const referenceStart = parseDatabaseDate(navigation.effectiveDate);
+            const today = new Date(`${new Date().toISOString().slice(0, 10)}T00:00:00Z`);
+            const daysSinceReference = databaseDateDifference(referenceStart, today);
+            const elapsedCycles = daysSinceReference === null
+                ? 0
+                : Math.max(0, Math.floor(daysSinceReference / navigationCycleLengthDays));
+            const currentStart = addDatabaseDays(referenceStart, elapsedCycles * navigationCycleLengthDays);
+            const currentCycle = advanceAiracCycle(navigation.cycle, elapsedCycles) || navigation.cycle;
+            const nextStart = addDatabaseDays(currentStart, navigationCycleLengthDays);
+            const nextCycle = getFollowingAiracCycle(currentCycle);
+            const currentEnd = nextStart ? addDatabaseDays(nextStart, -1) :
+                (currentStart ? addDatabaseDays(currentStart, navigationCycleLengthDays - 1) : null);
+            const nextEnd = addDatabaseDays(nextStart, navigationCycleLengthDays - 1);
+            const daysUntilNext = databaseDateDifference(today, nextStart);
+            const totalDays = databaseDateDifference(currentStart, nextStart) || navigationCycleLengthDays;
+            const remainingDays = daysUntilNext === null ? null : Math.max(0, Math.min(totalDays, daysUntilNext));
+            const progressPercent = remainingDays === null ? 0 : (remainingDays / totalDays) * 100;
+
+            setDatabaseText(`${prefix}CurrentCycle`, formatAiracCycleLabel(currentCycle));
+            setDatabaseText(`${prefix}CurrentRange`, formatDatabaseCycleRange(currentStart, currentEnd));
+            setDatabaseText(`${prefix}NextCycle`, formatAiracCycleLabel(nextCycle));
+            setDatabaseText(`${prefix}NextRange`, formatDatabaseCycleRange(nextStart, nextEnd));
+            setDatabaseText(
+                `${prefix}EffectiveCountdown`,
+                daysUntilNext === null ? '-' : daysUntilNext < 0 ? 'Date passed' : daysUntilNext === 0 ? 'today' : `${daysUntilNext} days`
+            );
+
+            const ring = document.getElementById(`${prefix}ProgressRing`);
+            ring.style.setProperty('--cycle-progress', `${progressPercent}%`);
+            ring.setAttribute('aria-label', `${currentCycle || 'Current cycle'}; ${daysUntilNext === null ? 'next effective date not configured' : `${Math.max(0, daysUntilNext)} days until next cycle`}`);
+
+            const firstShipOut = addDatabaseDays(referenceStart, -navigationShipOutLeadDays);
+            const daysSinceFirstShipOut = databaseDateDifference(firstShipOut, today);
+            const shipOutCycleOffset = daysSinceFirstShipOut === null
+                ? 0
+                : Math.max(0, Math.ceil(daysSinceFirstShipOut / navigationCycleLengthDays));
+            const shipOutDate = addDatabaseDays(firstShipOut, shipOutCycleOffset * navigationCycleLengthDays);
+            const shipOutCycle = advanceAiracCycle(navigation.cycle, shipOutCycleOffset);
+            const daysUntilShipOut = databaseDateDifference(today, shipOutDate);
+            setDatabaseText(`${prefix}TailoringCycle`, shipOutCycle);
+            setDatabaseText(`${prefix}TailoringDate`, formatDatabaseShortDate(shipOutDate));
+            setDatabaseText(
+                `${prefix}TailoringDays`,
+                daysUntilShipOut === null ? 'Set cycle effective date' : daysUntilShipOut === 0 ? 'Ship out today' : `Ship out in ${daysUntilShipOut} days`
+            );
+            const shipOutProgress = daysUntilShipOut === null
+                ? 0
+                : (Math.max(0, Math.min(navigationCycleLengthDays, daysUntilShipOut)) / navigationCycleLengthDays) * 100;
+            document.getElementById(`${prefix}TailoringProgress`).style.setProperty('--cycle-progress', `${shipOutProgress}%`);
+
+            const upcomingDeadlines = document.getElementById(`${prefix}UpcomingDeadlines`);
+            [1, 2].forEach(offset => {
+                const cycle = advanceAiracCycle(navigation.cycle, shipOutCycleOffset + offset);
+                const deadline = addDatabaseDays(shipOutDate, navigationCycleLengthDays * offset);
+                if (!cycle || !deadline) return;
+                const daysUntilDeadline = databaseDateDifference(
+                    today,
+                    deadline
+                );
+                const row = document.createElement('tr');
+                const cycleCell = document.createElement('td');
+                const dateCell = document.createElement('td');
+                const daysCell = document.createElement('td');
+                cycleCell.textContent = cycle;
+                dateCell.className = 'deadline-date';
+                dateCell.textContent = formatDatabaseShortDate(deadline);
+                daysCell.className = 'deadline-days';
+                daysCell.textContent = daysUntilDeadline === null ? '-' : `${daysUntilDeadline} days`;
+                row.append(cycleCell, dateCell, daysCell);
+                upcomingDeadlines.appendChild(row);
+            });
+
+            setDatabaseLink(`${prefix}Link`, `${prefix}NoLink`, navigation.url);
+            const resources = databaseData.navigationResources;
+            setDatabaseLink(`${prefix}GuidelineLink`, null, resources.guidelineUrl);
+            setDatabaseLink(
+                `${prefix}InstallerLink`,
+                null,
+                prefix === 'databaseAtrNav' ? resources.atrInstallerUrl : resources.b737InstallerUrl
+            );
+            if (prefix === 'databaseAtrNav') {
+                setDatabaseLink(`${prefix}PortalLink`, null, resources.atrPortalUrl);
+            }
+        }
+
+        function renderDatabaseView() {
+            const b737Terrain = databaseData.b737.terrain;
+
+            renderNavigationDashboard('databaseAtrNav', databaseData.atr.navigation);
+            renderNavigationDashboard('databaseB737Nav', databaseData.b737.navigation);
+
+            document.getElementById('databaseB737TerrainCycle').textContent = b737Terrain.cycle || '-';
+            setDatabaseLink('databaseB737TerrainLink', 'databaseB737TerrainNoLink', b737Terrain.url);
+        }
+
+        async function enterDatabaseEditMode() {
+            await loadDatabaseData();
+            document.getElementById('databaseAtrNavCycleInput').value = databaseData.atr.navigation.cycle;
+            document.getElementById('databaseAtrNavEffectiveDateInput').value = databaseData.atr.navigation.effectiveDate;
+            document.getElementById('databaseAtrNavUrlInput').value = databaseData.atr.navigation.url;
+            document.getElementById('databaseB737NavCycleInput').value = databaseData.b737.navigation.cycle;
+            document.getElementById('databaseB737NavEffectiveDateInput').value = databaseData.b737.navigation.effectiveDate;
+            document.getElementById('databaseB737NavUrlInput').value = databaseData.b737.navigation.url;
+            document.getElementById('databaseB737TerrainCycleInput').value = databaseData.b737.terrain.cycle;
+            document.getElementById('databaseB737TerrainUrlInput').value = databaseData.b737.terrain.url;
+            document.getElementById('databaseNavigationGuidelineUrlInput').value = databaseData.navigationResources.guidelineUrl;
+            document.getElementById('databaseAtrNavigationInstallerUrlInput').value = databaseData.navigationResources.atrInstallerUrl;
+            document.getElementById('databaseB737NavigationInstallerUrlInput').value = databaseData.navigationResources.b737InstallerUrl;
+            document.getElementById('databaseAtrNavigationPortalUrlInput').value = databaseData.navigationResources.atrPortalUrl;
+            document.getElementById('databaseViewModeContent').style.display = 'none';
+            document.getElementById('databaseEditModeContent').style.display = 'block';
+            document.getElementById('databasePageActions').style.display = 'none';
+        }
+
+        function cancelDatabaseEdit() {
+            document.getElementById('databaseEditModeContent').style.display = 'none';
+            document.getElementById('databaseViewModeContent').style.display = 'block';
+            document.getElementById('databasePageActions').style.display = 'flex';
+        }
+
+        async function saveDatabaseData() {
+            const navigationInputs = [
+                {
+                    cycle: document.getElementById('databaseAtrNavCycleInput'),
+                    effectiveDate: document.getElementById('databaseAtrNavEffectiveDateInput')
+                },
+                {
+                    cycle: document.getElementById('databaseB737NavCycleInput'),
+                    effectiveDate: document.getElementById('databaseB737NavEffectiveDateInput')
+                }
+            ];
+            for (const navigation of navigationInputs) {
+                if (!navigation.cycle.checkValidity()) {
+                    navigation.cycle.reportValidity();
+                    return;
+                }
+                const cycle = navigation.cycle.value.trim().replace(/^AIRAC\s*/i, '');
+                if (!/^\d{4}$/.test(cycle) || Number(cycle.slice(2)) < 1 || Number(cycle.slice(2)) > 13) {
+                    navigation.cycle.setCustomValidity('Enter an AIRAC cycle from 01 to 13, e.g. AIRAC 2610.');
+                    navigation.cycle.reportValidity();
+                    navigation.cycle.setCustomValidity('');
+                    return;
+                }
+                if (!navigation.effectiveDate.checkValidity()) {
+                    navigation.effectiveDate.reportValidity();
+                    return;
+                }
+            }
+
+            const urlInputs = [
+                document.getElementById('databaseAtrNavUrlInput'),
+                document.getElementById('databaseB737NavUrlInput'),
+                document.getElementById('databaseB737TerrainUrlInput'),
+                document.getElementById('databaseNavigationGuidelineUrlInput'),
+                document.getElementById('databaseAtrNavigationInstallerUrlInput'),
+                document.getElementById('databaseB737NavigationInstallerUrlInput'),
+                document.getElementById('databaseAtrNavigationPortalUrlInput')
+            ];
+            for (const input of urlInputs) {
+                if (!input.checkValidity()) {
+                    input.reportValidity();
+                    return;
+                }
+                if (input.value.trim() && !getSafeDatabaseUrl(input.value)) {
+                    input.setCustomValidity('Enter a valid HTTP or HTTPS URL.');
+                    input.reportValidity();
+                    input.setCustomValidity('');
+                    return;
+                }
+            }
+
+            databaseData = {
+                navigationResources: {
+                    guidelineUrl: document.getElementById('databaseNavigationGuidelineUrlInput').value.trim(),
+                    atrInstallerUrl: document.getElementById('databaseAtrNavigationInstallerUrlInput').value.trim(),
+                    b737InstallerUrl: document.getElementById('databaseB737NavigationInstallerUrlInput').value.trim(),
+                    atrPortalUrl: document.getElementById('databaseAtrNavigationPortalUrlInput').value.trim()
+                },
+                atr: {
+                    navigation: {
+                        cycle: document.getElementById('databaseAtrNavCycleInput').value.trim(),
+                        effectiveDate: document.getElementById('databaseAtrNavEffectiveDateInput').value,
+                        url: document.getElementById('databaseAtrNavUrlInput').value.trim()
+                    }
+                },
+                b737: {
+                    navigation: {
+                        cycle: document.getElementById('databaseB737NavCycleInput').value.trim(),
+                        effectiveDate: document.getElementById('databaseB737NavEffectiveDateInput').value,
+                        url: document.getElementById('databaseB737NavUrlInput').value.trim()
+                    },
+                    terrain: {
+                        cycle: document.getElementById('databaseB737TerrainCycleInput').value.trim(),
+                        url: document.getElementById('databaseB737TerrainUrlInput').value.trim()
+                    }
+                }
+            };
+
+            localStorage.setItem('databaseData', JSON.stringify(databaseData));
+            await saveDataToSupabase('databaseData', databaseData);
+            renderDatabaseView();
+            cancelDatabaseEdit();
+            showNotification('Database details saved successfully!', 'success');
+        }
+
+        async function syncDatabaseData() {
+            const syncedData = await getSyncedData('databaseData');
+            if (!syncedData) {
+                showNotification('No saved database details found to sync.', 'warning');
+                return;
+            }
+
+            databaseData = normalizeDatabaseData(syncedData);
+            localStorage.setItem('databaseData', JSON.stringify(databaseData));
+            renderDatabaseView();
+            showNotification('Database details synced successfully!', 'success');
         }
 
         function showChartRevision() {
@@ -4893,55 +6371,115 @@
             savePendingSyncQueue(queue);
         }
 
-        function clearPendingSync(key) {
-            const queue = getPendingSyncQueue().filter(entry => entry.key !== key);
+        function clearPendingSync(key, expectedTimestamp = null) {
+            const queue = getPendingSyncQueue().filter(entry => (
+                entry.key !== key ||
+                (expectedTimestamp !== null && entry.timestamp !== expectedTimestamp)
+            ));
             savePendingSyncQueue(queue);
         }
 
         async function flushPendingSyncQueue() {
             const queue = getPendingSyncQueue();
-            if (!queue.length) return;
+            if (!queue.length) return true;
 
-            const remaining = [];
             for (const entry of queue) {
+                const latestEntry = getPendingSyncQueue().find(item => item.key === entry.key);
+                if (!latestEntry || latestEntry.timestamp !== entry.timestamp) continue;
+
                 const result = await saveDataToSupabase(entry.key, entry.value, { silent: true, skipQueue: true });
-                if (result && result.success) {
-                    continue;
+                if (result && result.remoteSynced) {
+                    clearPendingSync(entry.key, entry.timestamp);
                 }
-                remaining.push(entry);
             }
 
-            savePendingSyncQueue(remaining);
+            return getPendingSyncQueue().length === 0;
         }
 
         async function manualSyncNow() {
             if (syncStatus === 'syncing') return;
             
             updateSyncStatus('syncing');
-            console.log('[SYNC] Manual sync triggered');
+            console.log('[SYNC] Manual cloud refresh triggered');
             
             try {
-                const results = [];
-                results.push(await saveDataToSupabase('phoneDevices', phoneDevices));
-                results.push(await saveDataToSupabase('ipadDevices', iPadDevices));
-                results.push(await saveDataToSupabase('ipadStandbyDevices', iPadStandbyDevices));
-                results.push(await saveDataToSupabase('accessories', accessories));
-                results.push(await saveDataToSupabase('entryLog', entryLog));
-                results.push(await saveDataToSupabase('crewList', crewList));
-                results.push(await saveDataToSupabase('paymentDashboardData', { paymentData, nextPaymentId }));
-                
-                const allHandled = results.every(result => result && result.success);
-                if (allHandled) {
-                    updateSyncStatus('success');
-                    const usedFallback = results.some(result => result.localFallback);
-                    if (usedFallback) {
-                        console.log('[SYNC] Data saved locally; cloud sync will retry automatically');
-                    } else {
-                        console.log('[SYNC] All data synced successfully');
-                    }
-                } else {
-                    updateSyncStatus('error', 'Some items failed to sync');
+                await paymentSaveQueue;
+                const pendingWritesSynced = await flushPendingSyncQueue();
+                if (!pendingWritesSynced) {
+                    throw new Error('Some saved changes are still waiting to sync. Check the connection and try again; cloud data was not loaded over your local changes.');
                 }
+
+                const keys = [
+                    'phoneDevices',
+                    'ipadDevices',
+                    'ipadStandbyDevices',
+                    'accessories',
+                    'entryLog',
+                    'crewList',
+                    'paymentDashboardData',
+                    'databaseData'
+                ];
+                const snapshot = await getDataBatchFromSupabase(keys);
+
+                if (Array.isArray(snapshot.phoneDevices)) {
+                    phoneDevices.splice(0, phoneDevices.length, ...snapshot.phoneDevices.map(device => ({
+                        ...device,
+                        uploadDate: device.uploadDate || device.collectionDate || ''
+                    })));
+                    localStorage.setItem('phoneDevices', JSON.stringify(phoneDevices));
+                }
+                if (Array.isArray(snapshot.ipadDevices)) {
+                    iPadDevices.splice(0, iPadDevices.length, ...snapshot.ipadDevices);
+                    localStorage.setItem('ipadDevices', JSON.stringify(iPadDevices));
+                }
+                if (Array.isArray(snapshot.ipadStandbyDevices)) {
+                    iPadStandbyDevices.splice(0, iPadStandbyDevices.length, ...snapshot.ipadStandbyDevices);
+                    localStorage.setItem('ipadStandbyDevices', JSON.stringify(iPadStandbyDevices));
+                }
+                if (Array.isArray(snapshot.accessories)) {
+                    accessories.splice(0, accessories.length, ...snapshot.accessories);
+                    localStorage.setItem('accessories', JSON.stringify(accessories));
+                }
+                if (Array.isArray(snapshot.entryLog)) {
+                    entryLog.splice(0, entryLog.length, ...snapshot.entryLog);
+                    localStorage.setItem('entryLog', JSON.stringify(entryLog));
+                }
+                if (Array.isArray(snapshot.crewList)) {
+                    crewList.splice(0, crewList.length, ...snapshot.crewList);
+                    localStorage.setItem('crewList', JSON.stringify(crewList));
+                }
+                if (snapshot.paymentDashboardData && Array.isArray(snapshot.paymentDashboardData.paymentData)) {
+                    paymentData = snapshot.paymentDashboardData.paymentData;
+                    nextPaymentId = Number(snapshot.paymentDashboardData.nextPaymentId) || nextPaymentId;
+                    localStorage.setItem('paymentDashboardData', JSON.stringify(paymentData));
+                    localStorage.setItem('paymentDashboardNextId', String(nextPaymentId));
+                }
+                if (snapshot.databaseData) {
+                    databaseData = normalizeDatabaseData(snapshot.databaseData);
+                    localStorage.setItem('databaseData', JSON.stringify(databaseData));
+                }
+
+                if (currentDeviceView === 'ipad') {
+                    renderIPadDeviceTable();
+                    updateIPadTracker();
+                } else if (currentDeviceView === 'phone') {
+                    renderPhoneDeviceTable();
+                    updatePhoneTracker();
+                    renderIPadStandbyTable();
+                    updateIPadStandbyTracker();
+                }
+                if (document.getElementById('paymentDashboardContent').style.display !== 'none') {
+                    loadPaymentData();
+                    updatePaymentSummary();
+                }
+                if (document.getElementById('databaseContent').style.display !== 'none') {
+                    renderDatabaseView();
+                }
+                if (document.getElementById('entryLogSection') && document.getElementById('entryLogSection').style.display !== 'none') {
+                    renderEntryLogTable();
+                }
+
+                updateSyncStatus('success');
             } catch (error) {
                 updateSyncStatus('error', error.message);
             }
@@ -4954,7 +6492,7 @@
                 if (!silent) console.warn(`[SYNC] Supabase not available for ${key}`);
                 if (!skipQueue) queuePendingSync(key, value);
                 if (!silent) updateSyncStatus('error', 'Supabase unavailable. Data saved locally and will retry when the connection is restored.');
-                return { success: true, remoteSynced: false, localFallback: true };
+                return { success: false, remoteSynced: false, localFallback: true };
             }
             try {
                 console.log(`[SYNC] Saving to Supabase: ${key}`, value);
@@ -4966,17 +6504,17 @@
                     if (!silent) console.error(`[SYNC] Supabase sync failed for ${key}:`, error);
                     if (!skipQueue) queuePendingSync(key, value);
                     if (!silent) updateSyncStatus('error', `Cloud sync failed for ${key}. Data was saved locally and will retry automatically.`);
-                    return { success: true, remoteSynced: false, localFallback: true };
+                    return { success: false, remoteSynced: false, localFallback: true };
                 }
 
-                clearPendingSync(key);
+                if (!skipQueue) clearPendingSync(key);
                 console.log(`[SYNC] Successfully saved ${key} to Supabase`);
                 return { success: true, remoteSynced: true, localFallback: false };
             } catch (e) {
                 if (!silent) console.error(`[SYNC] Supabase sync error for ${key}:`, e);
                 if (!skipQueue) queuePendingSync(key, value);
                 if (!silent) updateSyncStatus('error', `Cloud sync error for ${key}. Data was saved locally and will retry automatically.`);
-                return { success: true, remoteSynced: false, localFallback: true };
+                return { success: false, remoteSynced: false, localFallback: true };
             }
         }
 
@@ -5009,6 +6547,26 @@
                 console.error(`[SYNC] Supabase load error for ${key}:`, e);
                 return null;
             }
+        }
+
+        async function getDataBatchFromSupabase(keys) {
+            if (!window.supabase || !window.supabase.from) {
+                throw new Error('Supabase is unavailable. Check the internet connection and try again.');
+            }
+
+            const { data, error } = await window.supabase
+                .from(SUPABASE_SYNC_TABLE)
+                .select('key, value')
+                .in('key', keys);
+
+            if (error) {
+                throw new Error(`Cloud refresh failed: ${error.message}`);
+            }
+
+            return (data || []).reduce((snapshot, row) => {
+                snapshot[row.key] = row.value;
+                return snapshot;
+            }, {});
         }
 
         async function getSyncedData(key) {
@@ -5260,9 +6818,49 @@
         }
 
         async function savePaymentDataToStorage() {
+            const snapshot = {
+                paymentData: JSON.parse(JSON.stringify(paymentData)),
+                nextPaymentId
+            };
             localStorage.setItem('paymentDashboardData', JSON.stringify(paymentData));
             localStorage.setItem('paymentDashboardNextId', String(nextPaymentId));
-            await saveDataToSupabase('paymentDashboardData', { paymentData, nextPaymentId });
+            paymentSaveQueue = paymentSaveQueue
+                .catch(() => null)
+                .then(async () => {
+                    const result = await saveDataToSupabase('paymentDashboardData', snapshot);
+                    if (!result.remoteSynced) return result;
+
+                    const persistedData = await getDataFromSupabase('paymentDashboardData');
+                    if (persistedData && paymentSnapshotsMatch(snapshot, persistedData)) {
+                        return result;
+                    }
+
+                    queuePendingSync('paymentDashboardData', snapshot);
+                    return { success: false, remoteSynced: false, localFallback: true };
+                });
+            return paymentSaveQueue;
+        }
+
+        function paymentSnapshotsMatch(expected, persisted) {
+            if (!persisted || !Array.isArray(persisted.paymentData) ||
+                Number(persisted.nextPaymentId) !== Number(expected.nextPaymentId) ||
+                persisted.paymentData.length !== expected.paymentData.length) {
+                return false;
+            }
+
+            const canonicalize = value => {
+                if (Array.isArray(value)) return value.map(canonicalize);
+                if (value && typeof value === 'object') {
+                    return Object.keys(value).sort().reduce((result, key) => {
+                        result[key] = canonicalize(value[key]);
+                        return result;
+                    }, {});
+                }
+                return value;
+            };
+
+            return JSON.stringify(canonicalize(persisted.paymentData)) ===
+                JSON.stringify(canonicalize(expected.paymentData));
         }
 
         async function loadPaymentDataFromStorage() {
@@ -5372,8 +6970,10 @@
                         renderIPadDeviceTable();
                         updateIPadTracker();
                     } else if (viewType === 'phone') {
-                        await loadPhoneDevicesFromStorage();
-                        await loadIPadStandbyDevicesFromStorage();
+                        await Promise.all([
+                            loadPhoneDevicesFromStorage(),
+                            loadIPadStandbyDevicesFromStorage()
+                        ]);
                         renderPhoneDeviceTable();
                         updatePhoneTracker();
                         renderIPadStandbyTable();
@@ -5396,21 +6996,16 @@
         // Initialize crew list on page load
         document.addEventListener('DOMContentLoaded', async function() {
             updateSyncStatus('idle');
-            await loadCrewListFromStorage();
-            await loadIPadDevicesFromStorage();
-            await loadPhoneDevicesFromStorage();
-            await loadIPadStandbyDevicesFromStorage();
-            await loadEntryLogFromStorage();
-            await loadPaymentDataFromStorage();
+            await Promise.all([
+                loadCrewListFromStorage(),
+                loadIPadDevicesFromStorage(),
+                loadPhoneDevicesFromStorage(),
+                loadIPadStandbyDevicesFromStorage(),
+                loadEntryLogFromStorage(),
+                loadPaymentDataFromStorage()
+            ]);
             populateCrewList();
             renderEntryLogTable();
-
-            // Auto-sync every 15 seconds
-            setInterval(() => {
-                if (syncStatus !== 'syncing') {
-                    manualSyncNow();
-                }
-            }, 15000);
 
             const addAvailability = document.getElementById('ipadAvailability');
             if (addAvailability) {
@@ -6602,6 +8197,7 @@
             document.getElementById('addNewFlightCrewTopbarBtn').style.display = 'inline-flex';
             document.getElementById('downloadIpadTemplateBtn').style.display = 'inline-flex';
             document.getElementById('importIpadExcelTopbarBtn').style.display = 'inline-flex';
+            document.getElementById('exportIpadExcelBtn').style.display = 'inline-flex';
             document.getElementById('pageTitle').textContent = 'Device Management - iPad';
             document.getElementById('pageSubtitle').textContent = 'Track iPad availability and crew assignments';
             document.getElementById('pageSubtitle').style.display = 'block';
@@ -6650,20 +8246,39 @@
             'PHP': 14.32,
             'MYR': 1
         };
+        let currencyRatesUpdatedAt = null;
+        let currencyRatesSourceDate = null;
+        let currencyRatesRefreshInterval = null;
+        let currencyRatesRequest = null;
+        let currencyRatesVisibilityListenerInitialized = false;
 
         let currentCalendarDate = new Date();
         let selectedCalendarDate = null;
         let nextPaymentId = 5;
+        let paymentSaveQueue = Promise.resolve(null);
 
         function initializePaymentDashboard() {
             // Do not auto-load from Supabase - manual sync only
             // Initialize UI only
-            loadCurrencyRates();
+            renderCurrencyRates();
+            refreshCurrencyRates();
+            if (!currencyRatesRefreshInterval) {
+                currencyRatesRefreshInterval = setInterval(refreshCurrencyRates, 30 * 60 * 1000);
+            }
+            if (!currencyRatesVisibilityListenerInitialized) {
+                document.addEventListener('visibilitychange', () => {
+                    if (document.visibilityState === 'visible' &&
+                        (!currencyRatesUpdatedAt || Date.now() - currencyRatesUpdatedAt.getTime() >= 5 * 60 * 1000)) {
+                        refreshCurrencyRates();
+                    }
+                });
+                currencyRatesVisibilityListenerInitialized = true;
+            }
             updatePaymentSummary();
             initializePaymentCalendar();
             
             // Show buttons for users
-            document.getElementById('paymentEditToggle').style.display = 'inline-block';
+            document.getElementById('paymentEditToggleTop').style.display = 'inline-block';
             document.getElementById('paymentAddReminderBtn').style.display = 'inline-block';
         }
 
@@ -6698,6 +8313,7 @@
                 
                 row.innerHTML = `
                     <td>${rowNum}</td>
+                    <td>${payment.paymentName || '-'}</td>
                     <td>${payment.vendor}</td>
                     <td>${payment.category}</td>
                     <td>${payment.createdDate || payment.date}</td>
@@ -6854,7 +8470,7 @@
             loadPaymentData();
         }
 
-        function loadCurrencyRates() {
+        function renderCurrencyRates() {
             const tbody = document.getElementById('currencyRatesBody');
             tbody.innerHTML = '';
 
@@ -6872,10 +8488,67 @@
                     <td style="font-weight: 600;">${code}</td>
                     <td>${currencyNames[code] || code}</td>
                     <td style="text-align: right; font-weight: 600;">${rate.toFixed(4)}</td>
-                    <td>Real-time</td>
+                    <td>${currencyRatesSourceDate || 'Fallback rate'}</td>
                 `;
                 tbody.appendChild(row);
             });
+        }
+
+        async function refreshCurrencyRates() {
+            if (currencyRatesRequest) return currencyRatesRequest;
+
+            const status = document.getElementById('currencyRatesStatus');
+            if (status) status.textContent = 'Refreshing rates...';
+
+            currencyRatesRequest = (async () => {
+                try {
+                    const response = await fetch('https://api.frankfurter.dev/v2/rates?base=MYR&quotes=USD,EUR,SGD,PHP', {
+                        cache: 'no-store'
+                    });
+                    if (!response.ok) {
+                        throw new Error(`Exchange-rate service returned HTTP ${response.status}`);
+                    }
+
+                    const rates = await response.json();
+                    if (!Array.isArray(rates) || rates.length === 0 || !rates[0].date) {
+                        throw new Error('Exchange-rate service returned an invalid response');
+                    }
+
+                    const ratesByCurrency = new Map(
+                        rates.map(rate => [rate.quote, Number(rate.rate)])
+                    );
+                    const requiredCurrencies = ['USD', 'EUR', 'SGD', 'PHP'];
+                    const updatedRates = {};
+                    for (const currency of requiredCurrencies) {
+                        const unitsPerMyr = ratesByCurrency.get(currency);
+                        if (!Number.isFinite(unitsPerMyr) || unitsPerMyr <= 0) {
+                            throw new Error(`Exchange rate for ${currency} is missing or invalid`);
+                        }
+                        updatedRates[currency] = 1 / unitsPerMyr;
+                    }
+
+                    currencyRates = { ...currencyRates, ...updatedRates, MYR: 1 };
+                    currencyRatesSourceDate = rates[0].date;
+                    currencyRatesUpdatedAt = new Date();
+                    renderCurrencyRates();
+                    updatePaymentSummary();
+
+                    if (status) {
+                        status.textContent = `Rates dated ${currencyRatesSourceDate}; checked ${currencyRatesUpdatedAt.toLocaleTimeString()}`;
+                    }
+                } catch (error) {
+                    console.error('Unable to refresh currency rates:', error);
+                    if (status) {
+                        status.textContent = currencyRatesUpdatedAt
+                            ? `Refresh failed; showing rates dated ${currencyRatesSourceDate} (last checked ${currencyRatesUpdatedAt.toLocaleTimeString()})`
+                            : 'Live rates unavailable; showing fallback rates';
+                    }
+                } finally {
+                    currencyRatesRequest = null;
+                }
+            })();
+
+            return currencyRatesRequest;
         }
 
         function initializePaymentCalendar() {
@@ -6966,7 +8639,11 @@
         function enablePaymentEditMode() {
             const addPaymentBtn = document.getElementById('addPaymentBtn');
             const paymentActionHeader = document.getElementById('paymentActionHeader');
-            const paymentEditToggle = document.getElementById('paymentEditToggle');
+            const paymentEditToggles = [
+                document.getElementById('paymentEditToggle'),
+                document.getElementById('paymentEditToggleTop')
+            ];
+            const savePaymentChangesBtn = document.getElementById('savePaymentChangesBtn');
             
             // Check if edit mode is already enabled
             const isEditMode = addPaymentBtn && addPaymentBtn.style.display !== 'none';
@@ -6975,14 +8652,46 @@
                 // Show edit mode
                 if (addPaymentBtn) addPaymentBtn.style.display = 'inline-block';
                 if (paymentActionHeader) paymentActionHeader.style.display = 'table-cell';
-                if (paymentEditToggle) paymentEditToggle.innerHTML = '<i class="fas fa-times me-2"></i>Cancel Edit';
+                paymentEditToggles.forEach(button => {
+                    if (button) button.innerHTML = '<i class="fas fa-times me-2"></i>Cancel Edit';
+                });
+                if (savePaymentChangesBtn) savePaymentChangesBtn.style.display = 'inline-block';
                 loadPaymentData();
             } else {
                 // Hide edit mode
                 if (addPaymentBtn) addPaymentBtn.style.display = 'none';
                 if (paymentActionHeader) paymentActionHeader.style.display = 'none';
-                if (paymentEditToggle) paymentEditToggle.innerHTML = '<i class="fas fa-edit me-2"></i>Edit Payment List';
+                paymentEditToggles.forEach(button => {
+                    if (button) button.innerHTML = '<i class="fas fa-edit me-2"></i>Edit Payment List';
+                });
+                if (savePaymentChangesBtn) savePaymentChangesBtn.style.display = 'none';
                 loadPaymentData();
+            }
+        }
+
+        async function savePaymentEdits() {
+            const saveButton = document.getElementById('savePaymentChangesBtn');
+            if (saveButton) {
+                saveButton.disabled = true;
+                saveButton.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Saving...';
+            }
+
+            try {
+                const result = await savePaymentDataToStorage();
+                if (result && result.remoteSynced) {
+                    enablePaymentEditMode();
+                    showNotification('Payment changes saved to the cloud. Click Sync on other devices to load them.', 'success');
+                } else {
+                    showNotification('Payment changes are saved on this device but have not synced to the cloud. Edit mode remains open; check your connection and click Save Changes again.', 'warning');
+                }
+            } catch (error) {
+                console.error('Error saving payment changes:', error);
+                showNotification('Unable to save payment changes: ' + error.message, 'danger');
+            } finally {
+                if (saveButton) {
+                    saveButton.disabled = false;
+                    saveButton.innerHTML = '<i class="fas fa-save me-1"></i>Save Changes';
+                }
             }
         }
 
@@ -7026,14 +8735,19 @@
             }
         }
 
-        function deletePaymentItem(id) {
+        async function deletePaymentItem(id) {
             if (confirm('Are you sure you want to delete this payment?')) {
                 paymentData = paymentData.filter(p => p.id !== id);
-                savePaymentDataToStorage();
+                const result = await savePaymentDataToStorage();
                 loadPaymentData();
                 updatePaymentSummary();
                 renderCalendar();
-                showNotification('Payment deleted successfully', 'success');
+                showNotification(
+                    result && result.remoteSynced
+                        ? 'Payment deletion saved to the cloud. Click Sync on other devices to load it.'
+                        : 'Payment deleted on this device but has not synced to the cloud. Check your connection and sync again.',
+                    result && result.remoteSynced ? 'success' : 'warning'
+                );
             }
         }
 
@@ -7069,7 +8783,7 @@
             modal.show();
         }
 
-        function savePaymentReminder() {
+        async function savePaymentReminder() {
             const paymentName = document.getElementById('reminderPaymentName').value.trim();
             const vendorName = document.getElementById('reminderVendorName').value.trim();
             const amount = parseFloat(document.getElementById('reminderAmount').value);
@@ -7112,7 +8826,6 @@
                         poNumber: poNumber || 'N/A',
                         invoiceNumber: invoiceNumber || 'N/A'
                     };
-                    showNotification('Payment updated successfully!', 'success');
                 }
                 window.editingPaymentId = undefined;
             } else {
@@ -7132,10 +8845,9 @@
                 
                 // Add to payment data
                 paymentData.push(newPayment);
-                showNotification('Payment reminder added successfully!', 'success');
             }
 
-            savePaymentDataToStorage();
+            const saveResult = await savePaymentDataToStorage();
             
             // Close modal
             const modal = bootstrap.Modal.getInstance(document.getElementById('paymentReminderModal'));
@@ -7145,6 +8857,12 @@
             loadPaymentData();
             updatePaymentSummary();
             renderCalendar();
+            showNotification(
+                saveResult && saveResult.remoteSynced
+                    ? 'Payment changes saved to the cloud. Click Sync on other devices to load them.'
+                    : 'Payment changes saved on this device but have not synced to the cloud. Check your connection and sync again.',
+                saveResult && saveResult.remoteSynced ? 'success' : 'warning'
+            );
         }
 
         function showJSONConverter() {
@@ -8073,7 +9791,7 @@
             window.pendingAction = action;
         }
 
-        function verifyAdminLogin() {
+        async function verifyAdminLogin() {
             const username = document.getElementById('adminUsername').value.trim();
             const password = document.getElementById('adminPassword').value.trim();
             
@@ -8099,6 +9817,8 @@
                     enterEditMode();
                 } else if (window.pendingAction === 'editPayment') {
                     enablePaymentEditMode();
+                } else if (window.pendingAction === 'editDatabase') {
+                    await enterDatabaseEditMode();
                 }
             } else {
                 showNotification('Invalid username or password', 'danger');
@@ -8889,7 +10609,21 @@
         async function syncPaymentData() {
             try {
                 showNotification('<i class="fas fa-sync me-2" style="animation: spin 2s linear infinite;"></i>Syncing latest payment data from Supabase...', 'info');
-                await loadPaymentDataFromStorage();
+                await paymentSaveQueue;
+                const pendingWritesSynced = await flushPendingSyncQueue();
+                if (!pendingWritesSynced) {
+                    throw new Error('Saved changes are still waiting to sync. Check the connection and try again.');
+                }
+
+                const savedData = await getDataFromSupabase('paymentDashboardData');
+                if (!savedData || !Array.isArray(savedData.paymentData)) {
+                    throw new Error('Payment data could not be loaded from the cloud. Your current data was left unchanged.');
+                }
+
+                paymentData = savedData.paymentData;
+                nextPaymentId = Number(savedData.nextPaymentId) || nextPaymentId;
+                localStorage.setItem('paymentDashboardData', JSON.stringify(paymentData));
+                localStorage.setItem('paymentDashboardNextId', String(nextPaymentId));
                 loadPaymentData();
                 updatePaymentSummary();
                 showNotification('<i class="fas fa-check-circle me-2"></i>Payment data synced successfully!', 'success');

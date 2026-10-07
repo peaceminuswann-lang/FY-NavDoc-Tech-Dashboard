@@ -6,6 +6,7 @@ let currentQuarter = 'Q1';
 let currentQuarterlyYear = '2026';
 let currentYearlyYear = '2026';
 let table;
+let fuelDataLoadRequestId = 0;
 let fuelOverTimeChart, fuelByAircraftChart, fuelByRouteChart, fuelStatsChart;
 
 // Live data auto-refresh configuration
@@ -312,47 +313,46 @@ function renderSummaryData(data) {
     });
 }
 
-async function renderMonthlyFuelSavings(fleet, year) {
+async function renderMonthlyFuelSavings(fleet, year, requestId) {
     const monthNames = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
     const fleetKeys = getFleetKeys(fleet);
-    
-    // Populate header with month names
+    const monthlyResults = await Promise.all(monthNames.map(async (_, index) => {
+        const monthStr = String(index + 1).padStart(2, '0');
+        const fleetData = await Promise.all(fleetKeys.map(fleetKey => getFlightData(`${fleetKey}_${monthStr}_${year}`)));
+        const allData = fleetData.flat();
+        const fuelSavedPercent = allData.length > 0
+            ? calculateSummary(allData.map(normalizeRow)).fuelSavedPercent
+            : 0;
+        return { fuelSavedPercent, isZero: allData.length === 0 };
+    }));
+
+    if (requestId !== fuelDataLoadRequestId) return;
+
     const headerRow = document.getElementById('monthlyHeaderRow');
-    headerRow.innerHTML = '<th style="text-align: left;">MONTH</th>';
-    monthNames.forEach(month => {
+    const monthHeader = document.createElement('th');
+    monthHeader.style.textAlign = 'left';
+    monthHeader.textContent = 'MONTH';
+    const monthCells = monthNames.map(month => {
         const th = document.createElement('th');
         th.textContent = month;
-        headerRow.appendChild(th);
+        return th;
     });
-    
-    // Populate data row with percentages
+    headerRow.replaceChildren(monthHeader, ...monthCells);
+
     const dataRow = document.getElementById('monthlyFuelSavingsTable');
-    dataRow.innerHTML = '<td style="text-align: left; color: #333; font-weight: 600;">% FUEL SAVINGS</td>';
-    
-    for (let month = 1; month <= 12; month++) {
-        const monthStr = month.toString().padStart(2, '0');
-        let allData = [];
-        for (const f of fleetKeys) {
-            const key = f + '_' + monthStr + '_' + year;
-            const data = await getFlightData(key);
-            allData = allData.concat(data);
-        }
-        
-        let fuelSavedPercent = 0;
-        if (allData.length > 0) {
-            const summary = calculateSummary(allData.map(normalizeRow));
-            fuelSavedPercent = summary.fuelSavedPercent;
-        }
-        
+    const savingsLabel = document.createElement('td');
+    savingsLabel.style.cssText = 'text-align: left; color: #333; font-weight: 600;';
+    savingsLabel.textContent = '% FUEL SAVINGS';
+    const savingsCells = monthlyResults.map(({ fuelSavedPercent, isZero }) => {
         const td = document.createElement('td');
-        const isZero = allData.length === 0;
         td.className = `savings-value ${isZero ? 'zero' : ''}`;
         td.textContent = fuelSavedPercent.toFixed(2) + '%';
-        dataRow.appendChild(td);
-    }
+        return td;
+    });
+    dataRow.replaceChildren(savingsLabel, ...savingsCells);
 }
 
-async function renderQuarterlyFuelSavings(fleet, year) {
+async function renderQuarterlyFuelSavings(fleet, year, requestId) {
     const quarterMonths = {
         'Q1': ['01', '02', '03'],
         'Q2': ['04', '05', '06'],
@@ -361,44 +361,40 @@ async function renderQuarterlyFuelSavings(fleet, year) {
     };
     const quarters = ['Q1', 'Q2', 'Q3', 'Q4'];
     
-    // Populate header with quarter names
+    const fleetKeys = getFleetKeys(fleet);
+    const quarterlyResults = await Promise.all(quarters.map(async quarter => {
+        const quarterData = await Promise.all(quarterMonths[quarter].flatMap(month =>
+            fleetKeys.map(fleetKey => getFlightData(`${fleetKey}_${month}_${year}`))
+        ));
+        const allData = quarterData.flat();
+        const fuelSavedPercent = allData.length > 0
+            ? calculateSummary(allData.map(normalizeRow)).fuelSavedPercent
+            : 0;
+        return { fuelSavedPercent, isZero: allData.length === 0 };
+    }));
+
+    if (requestId !== fuelDataLoadRequestId) return;
+
     const headerRow = document.getElementById('quarterlyHeaderRow');
-    headerRow.innerHTML = '<th style="text-align: left;">QUARTER</th>';
-    quarters.forEach(quarter => {
+    const quarterHeader = document.createElement('th');
+    quarterHeader.style.textAlign = 'left';
+    quarterHeader.textContent = 'QUARTER';
+    headerRow.replaceChildren(quarterHeader, ...quarters.map(quarter => {
         const th = document.createElement('th');
         th.textContent = quarter;
-        headerRow.appendChild(th);
-    });
-    
-    // Populate data row with percentages
+        return th;
+    }));
+
     const dataRow = document.getElementById('quarterlyFuelSavingsTable');
-    dataRow.innerHTML = '<td style="text-align: left; color: #333; font-weight: 600;">% FUEL SAVINGS</td>';
-    
-    for (const quarter of quarters) {
-        const months = quarterMonths[quarter];
-        const fleetKeys = getFleetKeys(fleet);
-        let allData = [];
-        
-        for (const month of months) {
-            for (const f of fleetKeys) {
-                const key = f + '_' + month + '_' + year;
-                const data = await getFlightData(key);
-                allData = allData.concat(data);
-            }
-        }
-        
-        let fuelSavedPercent = 0;
-        if (allData.length > 0) {
-            const summary = calculateSummary(allData.map(normalizeRow));
-            fuelSavedPercent = summary.fuelSavedPercent;
-        }
-        
+    const savingsLabel = document.createElement('td');
+    savingsLabel.style.cssText = 'text-align: left; color: #333; font-weight: 600;';
+    savingsLabel.textContent = '% FUEL SAVINGS';
+    dataRow.replaceChildren(savingsLabel, ...quarterlyResults.map(({ fuelSavedPercent, isZero }) => {
         const td = document.createElement('td');
-        const isZero = allData.length === 0;
         td.className = `savings-value ${isZero ? 'zero' : ''}`;
         td.textContent = fuelSavedPercent.toFixed(2) + '%';
-        dataRow.appendChild(td);
-    }
+        return td;
+    }));
 }
 
 async function populateMonthSelector() {
@@ -461,10 +457,6 @@ function getFleetKeys(fleet) {
 
 function setPeriod(period) {
     currentPeriod = period;
-    // Sync fleet selectors across tabs
-    document.getElementById('fleetSelector').value = currentFleet;
-    document.getElementById('quarterlyFleetSelector').value = currentFleet;
-    document.getElementById('yearlyFleetSelector').value = currentFleet;
     
     // Show/hide tables based on period
     document.getElementById('monthlyTableContainer').style.display = period === 'monthly' ? 'flex' : 'none';
@@ -480,6 +472,7 @@ function setPeriod(period) {
 }
 
 async function loadFleetData(fleet, month, period, isAutoRefresh = false) {
+    const requestId = ++fuelDataLoadRequestId;
     const fleetKeys = getFleetKeys(fleet);
     let allData = [];
     for (const f of fleetKeys) {
@@ -488,6 +481,7 @@ async function loadFleetData(fleet, month, period, isAutoRefresh = false) {
         allData = allData.concat(data);
     }
 
+    if (requestId !== fuelDataLoadRequestId) return;
     const normalizedData = allData.map(normalizeRow);
     
     // Only reinitialize table if not auto-refresh to avoid disruption
@@ -506,10 +500,11 @@ async function loadFleetData(fleet, month, period, isAutoRefresh = false) {
     updateTitle(fleet, month, period);
     renderSummaryData(normalizedData, document.getElementById('periodTitle').textContent);
     const [, year] = month.split('_');
-    await renderMonthlyFuelSavings(fleet, year);
+    await renderMonthlyFuelSavings(fleet, year, requestId);
 }
 
 async function loadQuarterlyData(fleet, quarter, year, isAutoRefresh = false) {
+    const requestId = ++fuelDataLoadRequestId;
     const quarterMonths = {
         'Q1': ['01', '02', '03'],
         'Q2': ['04', '05', '06'],
@@ -526,6 +521,7 @@ async function loadQuarterlyData(fleet, quarter, year, isAutoRefresh = false) {
             allData = allData.concat(data);
         }
     }
+    if (requestId !== fuelDataLoadRequestId) return;
     const normalizedData = allData.map(normalizeRow);
     
     // Only reinitialize table if not auto-refresh to avoid disruption
@@ -543,10 +539,11 @@ async function loadQuarterlyData(fleet, quarter, year, isAutoRefresh = false) {
     createCharts(normalizedData);
     updateTitle(fleet, quarter + '_' + year, 'quarterly');
     renderSummaryData(normalizedData, document.getElementById('periodTitle').textContent);
-    await renderQuarterlyFuelSavings(fleet, year);
+    await renderQuarterlyFuelSavings(fleet, year, requestId);
 }
 
 async function loadYearlyData(fleet, year, isAutoRefresh = false) {
+    const requestId = ++fuelDataLoadRequestId;
     const fleetKeys = getFleetKeys(fleet);
     let allData = [];
     for (let month = 1; month <= 12; month++) {
@@ -557,6 +554,7 @@ async function loadYearlyData(fleet, year, isAutoRefresh = false) {
             allData = allData.concat(data);
         }
     }
+    if (requestId !== fuelDataLoadRequestId) return;
     const normalizedData = allData.map(normalizeRow);
     
     // Only reinitialize table if not auto-refresh to avoid disruption
@@ -578,26 +576,18 @@ async function loadYearlyData(fleet, year, isAutoRefresh = false) {
 
 function switchFleet(fleet) {
     currentFleet = fleet;
-    // Sync fleet selectors across tabs
-    document.getElementById('fleetSelector').value = fleet;
-    document.getElementById('quarterlyFleetSelector').value = fleet;
-    document.getElementById('yearlyFleetSelector').value = fleet;
     
     if (currentPeriod === 'monthly') {
-        if (table) table.destroy();
         loadFleetData(fleet, currentMonth, currentPeriod);
     } else if (currentPeriod === 'quarterly') {
-        if (table) table.destroy();
         loadQuarterlyData(fleet, currentQuarter, currentQuarterlyYear);
     } else if (currentPeriod === 'yearly') {
-        if (table) table.destroy();
         loadYearlyData(fleet, currentYearlyYear);
     }
 }
 
 function switchMonth(month) {
     currentMonth = `${month}_${currentMonthlyYear}`;
-    if (table) table.destroy();
     loadFleetData(currentFleet, currentMonth, currentPeriod);
     updateTitle(currentFleet, currentMonth, currentPeriod);
 }
@@ -606,26 +596,22 @@ function switchMonthlyYear(year) {
     currentMonthlyYear = year;
     const monthNumber = currentMonth.split('_')[0];
     currentMonth = `${monthNumber}_${year}`;
-    if (table) table.destroy();
     loadFleetData(currentFleet, currentMonth, currentPeriod);
     updateTitle(currentFleet, currentMonth, currentPeriod);
 }
 
 function switchQuarter(quarter) {
     currentQuarter = quarter;
-    if (table) table.destroy();
     loadQuarterlyData(currentFleet, quarter, currentQuarterlyYear);
 }
 
 function switchQuarterlyYear(year) {
     currentQuarterlyYear = year;
-    if (table) table.destroy();
     loadQuarterlyData(currentFleet, currentQuarter, year);
 }
 
 function switchYearlyYear(year) {
     currentYearlyYear = year;
-    if (table) table.destroy();
     loadYearlyData(currentFleet, year);
 }
 
@@ -647,6 +633,10 @@ function updateTitle(fleet, period, periodType) {
 
 function initTable(data) {
     const normalizedData = data.map(normalizeRow);
+    const tableElement = $('#flightTable');
+    if ($.fn.dataTable.isDataTable(tableElement[0])) {
+        tableElement.DataTable().clear().destroy();
+    }
     table = $('#flightTable').DataTable({
         data: normalizedData,
         pageLength: 25,
@@ -661,8 +651,7 @@ function initTable(data) {
             { data: 'STA', defaultContent: '' },
             { data: 'Block Time', defaultContent: '' },
             { data: 'Actual Burn Off', defaultContent: '0' }
-        ],
-        destroy: true // Allow re-initialization
+        ]
     });
 }
 
