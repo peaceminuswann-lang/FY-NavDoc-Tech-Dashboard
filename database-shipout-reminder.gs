@@ -103,6 +103,8 @@ function sendPaymentDueReminders() {
   const today = Utilities.formatDate(new Date(), REMINDER_CONFIG.timeZone, 'yyyy-MM-dd');
   const properties = PropertiesService.getScriptProperties();
   const duePayments = payments.filter(payment => {
+    if (String(payment.paymentDoneDate || '').trim()) return false;
+
     const dueDate = parsePaymentDate_(payment.date);
     if (!dueDate) {
       throw new Error(`Payment "${payment.paymentName || payment.vendor || payment.id}" has an invalid payment date.`);

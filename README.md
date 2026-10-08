@@ -87,7 +87,7 @@ To test this reminder, select `testShipOutReminderEmail` in the Apps Script func
 
 ### Payment due reminders
 
-Add a payment term of 15, 30, 60, or 90 days. The Payment Dashboard calculates the expected payment date by adding the selected term to the payment's created date. The script sends a consolidated email 3 days before the due date for payments due that day. It reads the latest `paymentDashboardData` saved in Supabase.
+Add a payment term of 15, 30, 60, or 90 days. The Payment Dashboard calculates the expected payment date by adding the selected term to the payment's created date. The script sends a consolidated email 3 days before the due date for payments due that day. It skips any payment with a `paymentDoneDate`, so entering a Payment Done Date stops future reminders for that payment. It reads the latest `paymentDashboardData` saved in Supabase.
 
 To test this reminder, select `testPaymentDueReminderEmail` in the Apps Script function menu, click **Run**, approve Google's authorization prompt if prompted, and confirm the test email arrives.
 
