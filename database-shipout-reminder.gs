@@ -13,6 +13,7 @@ function setupDailyShipOutReminderTrigger() {
   const handlerNames = [
     'sendDatabaseShipOutReminders',
     'sendPaymentDueReminders',
+    'sendContractExpiryReminders',
     'sendScheduledReminders'
   ];
   ScriptApp.getProjectTriggers()
@@ -38,7 +39,8 @@ function sendScheduledReminders() {
   try {
     [
       sendDatabaseShipOutReminders,
-      sendPaymentDueReminders
+      sendPaymentDueReminders,
+      sendContractExpiryReminders
     ].forEach(sendReminder => {
       try {
         sendReminder();
@@ -99,7 +101,7 @@ function testShipOutReminderEmail() {
 
 function sendPaymentDueReminders() {
   validateReminderConfig_();
-  const payments = fetchPaymentData_();
+  const payments = fetchPaymentDashboardData_().paymentData;
   const today = Utilities.formatDate(new Date(), REMINDER_CONFIG.timeZone, 'yyyy-MM-dd');
   const properties = PropertiesService.getScriptProperties();
   const duePayments = payments.filter(payment => {
@@ -161,7 +163,87 @@ function testPaymentDueReminderEmail() {
   );
 }
 
-function fetchPaymentData_() {
+function sendContractExpiryReminders() {
+  validateReminderConfig_();
+  const snapshot = fetchPaymentDashboardData_();
+  const contracts = Array.isArray(snapshot.contractData) ? snapshot.contractData : [];
+  const today = Utilities.formatDate(new Date(), REMINDER_CONFIG.timeZone, 'yyyy-MM-dd');
+  const properties = PropertiesService.getScriptProperties();
+  const reminders = [];
+
+  contracts.forEach(contract => {
+    if (!contract || !contract.expiryDate) return;
+
+    const expiryDate = parsePaymentDate_(contract.expiryDate);
+    if (!expiryDate) {
+      throw new Error(`Contract "${contract.name || contract.vendor || contract.id}" has an invalid expiry date.`);
+    }
+
+    const expiryIso = formatIsoDate_(expiryDate);
+    const daysAfterExpiry = dateDifference_(expiryDate, parseIsoDate_(today));
+    const scheduledReminders = [
+      { key: '6-months', label: '6 months before expiry', date: addMonths_(expiryDate, -6) },
+      { key: '3-months', label: '3 months before expiry', date: addMonths_(expiryDate, -3) },
+      { key: '1-month', label: '1 month before expiry', date: addMonths_(expiryDate, -1) },
+      { key: '7-days', label: '7 days before expiry', date: addDays_(expiryDate, -7) }
+    ];
+    const dueEvents = scheduledReminders.filter(reminder => formatIsoDate_(reminder.date) === today);
+
+    if (daysAfterExpiry === 0) {
+      dueEvents.push({ key: 'expiry-day', label: 'Contract expires today' });
+    } else if (daysAfterExpiry > 0 && daysAfterExpiry % 3 === 0) {
+      dueEvents.push({
+        key: `overdue-${daysAfterExpiry}-days`,
+        label: `Contract expired ${daysAfterExpiry} days ago`
+      });
+    }
+
+    const contractId = contract.id === undefined || contract.id === null
+      ? `${contract.name || 'unnamed'}:${contract.vendor || 'unknown'}`
+      : String(contract.id);
+    dueEvents.forEach(event => {
+      const sentKey = `sent:contract:${contractId}:${expiryIso}:${event.key}`;
+      if (properties.getProperty(sentKey)) return;
+      reminders.push({ contract, expiryIso, event, sentKey });
+    });
+  });
+
+  if (!reminders.length) return;
+
+  const lines = reminders.map(({ contract, expiryIso, event }) => [
+    `Contract: ${contract.name || 'Unnamed contract'}`,
+    `Vendor: ${contract.vendor || 'Not specified'}`,
+    `Alert: ${event.label}`,
+    `Expiry date: ${expiryIso}`,
+    `Status: ${daysAfterExpiry > 0 ? 'Expired' : contract.status || 'Not specified'}`,
+    `Remarks: ${contract.remarks || 'N/A'}`
+  ].join('\n'));
+  GmailApp.sendEmail(
+    REMINDER_CONFIG.recipient,
+    `Contract expiry reminder: ${reminders.length} alert${reminders.length === 1 ? '' : 's'}`,
+    [
+      'Contract expiry reminder(s):',
+      '',
+      lines.join('\n\n'),
+      '',
+      'This is an automated reminder.'
+    ].join('\n')
+  );
+
+  const sentAt = new Date().toISOString();
+  reminders.forEach(reminder => properties.setProperty(reminder.sentKey, sentAt));
+}
+
+function testContractExpiryReminderEmail() {
+  validateReminderConfig_();
+  GmailApp.sendEmail(
+    REMINDER_CONFIG.recipient,
+    'Contract expiry reminders - test',
+    'This is a test email confirming Gmail is configured to send contract expiry reminders. Scheduled alerts are sent 6 months, 3 months, 1 month, and 7 days before expiry, on the expiry date, and every 3 days afterward.'
+  );
+}
+
+function fetchPaymentDashboardData_() {
   const url = `${REMINDER_CONFIG.supabaseUrl}/rest/v1/app_storage?key=eq.paymentDashboardData&select=value`;
   const response = UrlFetchApp.fetch(url, {
     method: 'get',
@@ -175,14 +257,14 @@ function fetchPaymentData_() {
 
   const status = response.getResponseCode();
   if (status < 200 || status >= 300) {
-    throw new Error(`Supabase returned HTTP ${status} while reading payment data: ${response.getContentText()}`);
+    throw new Error(`Supabase returned HTTP ${status} while reading payment dashboard data: ${response.getContentText()}`);
   }
 
   const rows = JSON.parse(response.getContentText());
   if (!Array.isArray(rows) || !rows[0] || !rows[0].value || !Array.isArray(rows[0].value.paymentData)) {
     throw new Error('Supabase returned no valid paymentDashboardData row.');
   }
-  return rows[0].value.paymentData;
+  return rows[0].value;
 }
 
 function parsePaymentDate_(value) {
@@ -286,6 +368,20 @@ function parseIsoDate_(value) {
 function addDays_(date, days) {
   const result = new Date(date.getTime());
   result.setUTCDate(result.getUTCDate() + days);
+  return result;
+}
+
+function addMonths_(date, months) {
+  const result = new Date(date.getTime());
+  const originalDay = result.getUTCDate();
+  result.setUTCDate(1);
+  result.setUTCMonth(result.getUTCMonth() + months);
+  const lastDayOfTargetMonth = new Date(Date.UTC(
+    result.getUTCFullYear(),
+    result.getUTCMonth() + 1,
+    0
+  )).getUTCDate();
+  result.setUTCDate(Math.min(originalDay, lastDayOfTargetMonth));
   return result;
 }
 

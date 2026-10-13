@@ -4839,6 +4839,45 @@
                         </div>
                     </div>
 
+                    <div class="card mb-4" style="border-radius: 16px; border: 2px solid #ffe9d6; box-shadow: 0 4px 12px rgba(255, 140, 0, 0.1);">
+                        <div class="card-header" style="background: linear-gradient(135deg, #ff8c00 0%, #ffb74d 100%); border-radius: 14px 14px 0 0;">
+                            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                                <div>
+                                    <h5 class="mb-0">Contract Expiry Tracker</h5>
+                                    <small class="text-white">Track contract status, term progress, expiry dates, and remarks</small>
+                                </div>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <button class="btn btn-sm btn-light" id="contractEditToggle" onclick="toggleContractEditMode()" style="font-weight: 600; border-radius: 6px;">
+                                        <i class="fas fa-edit me-1"></i>Edit Contract List
+                                    </button>
+                                    <button class="btn btn-sm btn-success" id="saveContractChangesBtn" onclick="saveContractChanges()" style="display: none; font-weight: 600; border-radius: 6px;">
+                                        <i class="fas fa-save me-1"></i>Save Changes
+                                    </button>
+                                    <button class="btn btn-sm btn-light" id="addContractBtn" onclick="openContractModal()" style="display: none; font-weight: 600; border-radius: 6px;">
+                                        <i class="fas fa-plus me-1"></i>Add Contract
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body" style="padding: 20px; overflow-x: auto;">
+                            <table class="table table-striped table-hover align-middle" id="contractTable" style="margin-bottom: 0; min-width: 900px;">
+                                <thead style="background: #f5f5f5;">
+                                    <tr>
+                                        <th>Contract</th>
+                                        <th>Vendor</th>
+                                        <th>Start Date</th>
+                                        <th>Expiry Date</th>
+                                        <th style="min-width: 190px;">Term Progress</th>
+                                        <th>Status</th>
+                                        <th>Remarks</th>
+                                        <th id="contractActionHeader" style="display: none; text-align: center;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="contractTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
                     <!-- Currency Rates Table -->
                     <div class="card" style="border-radius: 16px; border: 2px solid #ffe9d6; box-shadow: 0 4px 12px rgba(255, 140, 0, 0.1);">
                         <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2" style="background: linear-gradient(135deg, #ff8c00 0%, #ffb74d 100%); border-radius: 14px 14px 0 0;">
@@ -6944,7 +6983,7 @@
             
             // Update Page Title
             document.getElementById('pageTitle').textContent = 'Payment Dashboard';
-            document.getElementById('pageSubtitle').textContent = 'Track and manage payment schedules and expenses';
+            document.getElementById('pageSubtitle').textContent = 'Track payment schedules, expenses, and contract expiries';
             document.getElementById('pageSubtitle').style.display = 'block';
             
             // Initialize payment dashboard (local data only)
@@ -7138,6 +7177,7 @@
                 if (snapshot.paymentDashboardData && Array.isArray(snapshot.paymentDashboardData.paymentData)) {
                     paymentData = snapshot.paymentDashboardData.paymentData;
                     nextPaymentId = Number(snapshot.paymentDashboardData.nextPaymentId) || nextPaymentId;
+                    restoreContractData(snapshot.paymentDashboardData);
                     localStorage.setItem('paymentDashboardData', JSON.stringify(paymentData));
                     localStorage.setItem('paymentDashboardNextId', String(nextPaymentId));
                 }
@@ -7158,6 +7198,7 @@
                 if (document.getElementById('paymentDashboardContent').style.display !== 'none') {
                     loadPaymentData();
                     updatePaymentSummary();
+                    renderContractTable();
                 }
                 if (document.getElementById('databaseContent').style.display !== 'none') {
                     renderDatabaseView();
@@ -7507,10 +7548,14 @@
         async function savePaymentDataToStorage() {
             const snapshot = {
                 paymentData: JSON.parse(JSON.stringify(paymentData)),
-                nextPaymentId
+                nextPaymentId,
+                contractData: JSON.parse(JSON.stringify(contractData)),
+                nextContractId
             };
             localStorage.setItem('paymentDashboardData', JSON.stringify(paymentData));
             localStorage.setItem('paymentDashboardNextId', String(nextPaymentId));
+            localStorage.setItem('contractDashboardData', JSON.stringify(contractData));
+            localStorage.setItem('contractDashboardNextId', String(nextContractId));
             paymentSaveQueue = paymentSaveQueue
                 .catch(() => null)
                 .then(async () => {
@@ -7531,7 +7576,10 @@
         function paymentSnapshotsMatch(expected, persisted) {
             if (!persisted || !Array.isArray(persisted.paymentData) ||
                 Number(persisted.nextPaymentId) !== Number(expected.nextPaymentId) ||
-                persisted.paymentData.length !== expected.paymentData.length) {
+                persisted.paymentData.length !== expected.paymentData.length ||
+                !Array.isArray(persisted.contractData || []) ||
+                Number(persisted.nextContractId || 1) !== Number(expected.nextContractId) ||
+                (persisted.contractData || []).length !== expected.contractData.length) {
                 return false;
             }
 
@@ -7547,14 +7595,44 @@
             };
 
             return JSON.stringify(canonicalize(persisted.paymentData)) ===
-                JSON.stringify(canonicalize(expected.paymentData));
+                    JSON.stringify(canonicalize(expected.paymentData)) &&
+                JSON.stringify(canonicalize(persisted.contractData || [])) ===
+                    JSON.stringify(canonicalize(expected.contractData));
+        }
+
+        function restoreContractData(snapshot = {}) {
+            const hasSyncedContracts = Array.isArray(snapshot.contractData);
+            if (hasSyncedContracts) {
+                    contractData = snapshot.contractData;
+            } else {
+                    contractData = [];
+                    const savedContracts = localStorage.getItem('contractDashboardData');
+                    if (savedContracts) {
+                        try {
+                            const parsedContracts = JSON.parse(savedContracts);
+                            if (Array.isArray(parsedContracts)) contractData = parsedContracts;
+                        } catch (error) {
+                            console.warn('Failed to load contract data from localStorage', error);
+                        }
+                    }
+            }
+
+            const savedNextId = hasSyncedContracts
+                    ? Number(snapshot.nextContractId)
+                    : Number(localStorage.getItem('contractDashboardNextId'));
+            nextContractId = Number.isInteger(savedNextId) && savedNextId > 0
+                    ? savedNextId
+                    : contractData.reduce((max, contract) => Math.max(max, Number(contract.id) || 0), 0) + 1;
+            localStorage.setItem('contractDashboardData', JSON.stringify(contractData));
+            localStorage.setItem('contractDashboardNextId', String(nextContractId));
         }
 
         async function loadPaymentDataFromStorage() {
             const savedData = await getSyncedData('paymentDashboardData');
             if (savedData && Array.isArray(savedData.paymentData)) {
-                paymentData = savedData.paymentData;
-                nextPaymentId = Number(savedData.nextPaymentId) || nextPaymentId;
+                    paymentData = savedData.paymentData;
+                    nextPaymentId = Number(savedData.nextPaymentId) || nextPaymentId;
+                    restoreContractData(savedData);
             } else {
                 const savedLocalData = localStorage.getItem('paymentDashboardData');
                 if (savedLocalData) {
@@ -7575,6 +7653,8 @@
                     const maxId = paymentData.reduce((max, payment) => Math.max(max, payment.id || 0), 0);
                     nextPaymentId = maxId + 1;
                 }
+
+                restoreContractData();
             }
         }
 
@@ -8929,6 +9009,11 @@
             { id: 3, paymentName: 'ATR Operations Documentation', vendor: 'ATR Ops Doc', category: 'Software & Support Expenses', date: '30-Jan-2026', createdDate: '20-Jan-2026', currency: 'USD', amount: 19485.00, poNumber: 'PO-003', invoiceNumber: 'INV-003' },
             { id: 4, paymentName: 'Boeing Manual Subscriptions', vendor: 'Boeing Manual Subs', category: 'Software & Support Expenses', date: '21-Jan-2026', createdDate: '10-Jan-2026', currency: 'USD', amount: 19221.80, poNumber: 'PO-004', invoiceNumber: 'INV-004' },
         ];
+        let contractData = [];
+        let nextContractId = 1;
+        let editingContractId = null;
+        let contractEditMode = false;
+        let contractEditBaseline = null;
 
         let currencyRates = {
             'USD': 3.9,
@@ -8967,6 +9052,7 @@
             }
             updatePaymentSummary();
             initializePaymentCalendar();
+            renderContractTable();
             
             // Show buttons for users
             document.getElementById('paymentEditToggleTop').style.display = 'inline-block';
@@ -9021,6 +9107,7 @@
 
             // Load expense breakdown
             loadExpenseBreakdown();
+            renderContractTable();
         }
 
         function loadPaymentReminderList() {
@@ -9048,6 +9135,318 @@
                 tbody.appendChild(row);
                 rowNum++;
             });
+        }
+
+        function parseContractDate(value) {
+            const match = (value || '').match(/^(\d{4})-(\d{2})-(\d{2})$/);
+            if (!match) return null;
+            const timestamp = Date.UTC(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
+            const date = new Date(timestamp);
+            return date.toISOString().slice(0, 10) === value ? timestamp : null;
+        }
+
+        function formatContractDate(value) {
+            const timestamp = parseContractDate(value);
+            return timestamp === null
+                ? 'N/A'
+                : new Intl.DateTimeFormat('en-GB', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'UTC' })
+                    .format(new Date(timestamp));
+        }
+
+        function getContractStatus(contract, today) {
+            const expiryDate = parseContractDate(contract.expiryDate);
+            if (expiryDate !== null && expiryDate < today) return 'Expired';
+            return contract.status === 'In Progress' ? 'In Progress' : 'Active';
+        }
+
+        function renderContractTable() {
+            const tbody = document.getElementById('contractTableBody');
+            if (!tbody) return;
+            tbody.replaceChildren();
+
+            const isEditMode = contractEditMode;
+            const today = (() => {
+                const now = new Date();
+                return Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+            })();
+
+            if (!contractData.length) {
+                const row = document.createElement('tr');
+                const cell = document.createElement('td');
+                cell.colSpan = isEditMode ? 8 : 7;
+                cell.className = 'text-center text-muted py-4';
+                cell.textContent = 'No contracts added yet. Enable edit mode to add a contract.';
+                row.appendChild(cell);
+                tbody.appendChild(row);
+                return;
+            }
+
+            contractData.forEach(contract => {
+                const row = document.createElement('tr');
+                const startDate = parseContractDate(contract.startDate);
+                const expiryDate = parseContractDate(contract.expiryDate);
+                const totalDuration = startDate !== null && expiryDate !== null ? expiryDate - startDate : 0;
+                const elapsedDuration = startDate !== null ? today - startDate : 0;
+                const status = getContractStatus(contract, today);
+                const hasStartDate = startDate !== null;
+                const hasExpiryDate = expiryDate !== null;
+                const progress = !hasStartDate || !hasExpiryDate
+                    ? null
+                    : status === 'Expired' || today >= expiryDate
+                    ? 100
+                    : totalDuration > 0
+                        ? Math.max(0, Math.min(100, Math.round((elapsedDuration / totalDuration) * 100)))
+                        : 0;
+                const daysRemaining = expiryDate !== null
+                    ? Math.max(0, Math.ceil((expiryDate - today) / 86400000))
+                    : null;
+
+                const addTextCell = value => {
+                    const cell = document.createElement('td');
+                    cell.textContent = value || 'N/A';
+                    row.appendChild(cell);
+                    return cell;
+                };
+
+                addTextCell(contract.name);
+                addTextCell(contract.vendor);
+                addTextCell(formatContractDate(contract.startDate));
+
+                const expiryCell = addTextCell(formatContractDate(contract.expiryDate));
+                const expiryNote = document.createElement('small');
+                expiryNote.className = status === 'Expired' ? 'd-block text-danger' : 'd-block text-muted';
+                expiryNote.textContent = status === 'Expired'
+                    ? `Expired on ${formatContractDate(contract.expiryDate)}`
+                    : daysRemaining === 0
+                        ? 'Expires today'
+                        : daysRemaining === null
+                            ? ''
+                            : `${daysRemaining} days remaining`;
+                expiryCell.appendChild(expiryNote);
+
+                const progressCell = document.createElement('td');
+                const progressWrapper = document.createElement('div');
+                progressWrapper.className = 'progress';
+                progressWrapper.setAttribute('role', 'progressbar');
+                progressWrapper.setAttribute('aria-valuemin', '0');
+                progressWrapper.setAttribute('aria-valuemax', '100');
+                const progressBar = document.createElement('div');
+                const hasTermDates = hasStartDate && hasExpiryDate;
+                progressBar.className = `progress-bar ${status === 'Expired' ? 'bg-danger' : status === 'In Progress' ? 'bg-info' : 'bg-success'}${hasTermDates ? '' : ' progress-bar-striped progress-bar-animated'}`;
+                if (hasTermDates) {
+                    progressWrapper.setAttribute('aria-label', `Contract term elapsed: ${progress}%`);
+                    progressWrapper.setAttribute('aria-valuenow', String(progress));
+                    progressBar.style.width = `${progress}%`;
+                } else {
+                    progressWrapper.setAttribute('aria-label', 'Contract term progress unavailable until start and expiry dates are set');
+                    progressBar.style.width = '35%';
+                }
+                progressWrapper.appendChild(progressBar);
+                const progressLabel = document.createElement('small');
+                progressLabel.className = 'text-muted';
+                progressLabel.textContent = hasTermDates
+                    ? `${progress}% term elapsed`
+                    : status === 'In Progress'
+                        ? 'In progress - dates not set'
+                        : 'Progress unavailable';
+                progressCell.append(progressWrapper, progressLabel);
+                row.appendChild(progressCell);
+
+                const statusCell = document.createElement('td');
+                const badge = document.createElement('span');
+                badge.className = `badge ${status === 'Expired' ? 'bg-danger' : status === 'In Progress' ? 'bg-info text-dark' : 'bg-success'}`;
+                badge.textContent = status;
+                statusCell.appendChild(badge);
+                row.appendChild(statusCell);
+
+                addTextCell(contract.remarks);
+
+                if (isEditMode) {
+                    const actionCell = document.createElement('td');
+                    actionCell.className = 'text-center text-nowrap';
+                    const editButton = document.createElement('button');
+                    editButton.type = 'button';
+                    editButton.className = 'btn btn-sm btn-warning me-1';
+                    editButton.setAttribute('aria-label', `Edit ${contract.name || 'contract'}`);
+                    editButton.innerHTML = '<i class="fas fa-edit"></i>';
+                    editButton.addEventListener('click', () => openContractModal(contract.id));
+                    const deleteButton = document.createElement('button');
+                    deleteButton.type = 'button';
+                    deleteButton.className = 'btn btn-sm btn-danger';
+                    deleteButton.setAttribute('aria-label', `Delete ${contract.name || 'contract'}`);
+                    deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
+                    deleteButton.addEventListener('click', () => deleteContract(contract.id));
+                    actionCell.append(editButton, deleteButton);
+                    row.appendChild(actionCell);
+                }
+
+                tbody.appendChild(row);
+            });
+        }
+
+        function openContractModal(id = null) {
+            editingContractId = id;
+            const form = document.getElementById('contractForm');
+            form.reset();
+            const contract = id === null ? null : contractData.find(item => item.id === id);
+            if (contract) {
+                document.getElementById('contractName').value = contract.name || '';
+                document.getElementById('contractVendor').value = contract.vendor || '';
+                document.getElementById('contractStartDate').value = contract.startDate || '';
+                document.getElementById('contractExpiryDate').value = contract.expiryDate || '';
+                document.getElementById('contractStatus').value = contract.status === 'In Progress' ? 'In Progress' : 'Active';
+                document.getElementById('contractRemarks').value = contract.remarks || '';
+            }
+            updateContractStartRequirement();
+            updateContractExpiryRequirement();
+            document.getElementById('contractModalTitle').innerHTML = contract
+                ? '<i class="fas fa-edit me-2"></i>Edit Contract'
+                : '<i class="fas fa-file-contract me-2"></i>Add Contract';
+            document.getElementById('contractSubmitBtn').innerHTML = contract
+                ? '<i class="fas fa-save me-1"></i>Save Contract'
+                : '<i class="fas fa-plus me-1"></i>Add Contract';
+            new bootstrap.Modal(document.getElementById('contractModal')).show();
+        }
+
+        function updateContractExpiryRequirement() {
+            const status = document.getElementById('contractStatus').value;
+            const expiryInput = document.getElementById('contractExpiryDate');
+            const expiryLabel = document.querySelector('label[for="contractExpiryDate"]');
+            const expiryRequired = status === 'Active';
+            expiryInput.required = expiryRequired;
+            expiryLabel.innerHTML = expiryRequired
+                ? 'Expiry Date <span class="text-danger">*</span>'
+                : 'Expiry Date <span class="text-muted">(optional)</span>';
+        }
+
+        function updateContractStartRequirement() {
+            const status = document.getElementById('contractStatus').value;
+            const startInput = document.getElementById('contractStartDate');
+            const startLabel = document.querySelector('label[for="contractStartDate"]');
+            const startRequired = status === 'Active';
+            startInput.required = startRequired;
+            startLabel.innerHTML = startRequired
+                ? 'Start Date <span class="text-danger">*</span>'
+                : 'Start Date <span class="text-muted">(optional)</span>';
+        }
+
+        function toggleContractEditMode() {
+            if (contractEditMode) {
+                if (contractEditBaseline) {
+                    contractData = JSON.parse(JSON.stringify(contractEditBaseline.contractData));
+                    nextContractId = contractEditBaseline.nextContractId;
+                }
+                contractEditBaseline = null;
+                contractEditMode = false;
+                document.getElementById('contractEditToggle').innerHTML = '<i class="fas fa-edit me-1"></i>Edit Contract List';
+                document.getElementById('saveContractChangesBtn').style.display = 'none';
+                document.getElementById('addContractBtn').style.display = 'none';
+                document.getElementById('contractActionHeader').style.display = 'none';
+                renderContractTable();
+                showNotification('Unsaved contract changes were discarded.', 'info');
+                return;
+            }
+            promptAdminLogin('editContract');
+        }
+
+        function enableContractEditMode() {
+            contractEditBaseline = {
+                contractData: JSON.parse(JSON.stringify(contractData)),
+                nextContractId
+            };
+            contractEditMode = true;
+            document.getElementById('contractEditToggle').innerHTML = '<i class="fas fa-times me-1"></i>Cancel Edit';
+            document.getElementById('saveContractChangesBtn').style.display = 'inline-block';
+            document.getElementById('addContractBtn').style.display = 'inline-block';
+            document.getElementById('contractActionHeader').style.display = 'table-cell';
+            renderContractTable();
+            showNotification('Contract edit mode enabled. Save your changes when finished.', 'info');
+        }
+
+        async function saveContract() {
+            const form = document.getElementById('contractForm');
+            if (!form.reportValidity()) return;
+
+            const name = document.getElementById('contractName').value.trim();
+            const vendor = document.getElementById('contractVendor').value.trim();
+            const startDate = document.getElementById('contractStartDate').value;
+            const expiryDate = document.getElementById('contractExpiryDate').value;
+            const status = document.getElementById('contractStatus').value;
+            const remarks = document.getElementById('contractRemarks').value.trim();
+            const startTimestamp = parseContractDate(startDate);
+            const expiryTimestamp = parseContractDate(expiryDate);
+            if (status === 'Active' && startTimestamp === null) {
+                showNotification('A start date is required for active contracts.', 'warning');
+                return;
+            }
+            if (status === 'Active' && expiryTimestamp === null) {
+                showNotification('An expiry date is required for active contracts.', 'warning');
+                return;
+            }
+            if (expiryDate && expiryTimestamp === null) {
+                showNotification('Please enter a valid expiry date.', 'warning');
+                return;
+            }
+            if (startTimestamp !== null && expiryTimestamp !== null && expiryTimestamp < startTimestamp) {
+                showNotification('Expiry date must be valid and the same as or later than the contract start date.', 'warning');
+                return;
+            }
+
+            const contract = { name, vendor, startDate, expiryDate, status, remarks };
+            if (editingContractId === null) {
+                contractData.push({ id: nextContractId++, ...contract });
+            } else {
+                const index = contractData.findIndex(item => item.id === editingContractId);
+                if (index === -1) {
+                    showNotification('This contract could not be found. Refresh the dashboard and try again.', 'danger');
+                    return;
+                }
+                contractData[index] = { id: editingContractId, ...contract };
+            }
+
+            editingContractId = null;
+            bootstrap.Modal.getInstance(document.getElementById('contractModal')).hide();
+            renderContractTable();
+            showNotification('Contract change is pending. Click Save Changes to save it.', 'info');
+        }
+
+        function deleteContract(id) {
+            if (!confirm('Are you sure you want to delete this contract?')) return;
+            contractData = contractData.filter(contract => contract.id !== id);
+            renderContractTable();
+            showNotification('Contract removal is pending. Click Save Changes to save it.', 'info');
+        }
+
+        async function saveContractChanges() {
+            const saveButton = document.getElementById('saveContractChangesBtn');
+            saveButton.disabled = true;
+            saveButton.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Saving...';
+
+            try {
+                const result = await savePaymentDataToStorage();
+                contractEditBaseline = {
+                    contractData: JSON.parse(JSON.stringify(contractData)),
+                    nextContractId
+                };
+                if (result && result.remoteSynced) {
+                    contractEditMode = false;
+                    contractEditBaseline = null;
+                    document.getElementById('contractEditToggle').innerHTML = '<i class="fas fa-edit me-1"></i>Edit Contract List';
+                    saveButton.style.display = 'none';
+                    document.getElementById('addContractBtn').style.display = 'none';
+                    document.getElementById('contractActionHeader').style.display = 'none';
+                    showNotification('Contract changes saved to the cloud. Click Sync on other devices to load them.', 'success');
+                } else {
+                    showNotification('Contract changes are saved on this device but have not synced to the cloud. Check your connection and click Save Changes again.', 'warning');
+                }
+                renderContractTable();
+            } catch (error) {
+                console.error('Error saving contract changes:', error);
+                showNotification('Unable to save contract changes: ' + error.message, 'danger');
+            } finally {
+                saveButton.disabled = false;
+                saveButton.innerHTML = '<i class="fas fa-save me-1"></i>Save Changes';
+            }
         }
 
         function togglePaymentView(view) {
@@ -10657,6 +11056,8 @@
                     enterEditMode();
                 } else if (window.pendingAction === 'editPayment') {
                     enablePaymentEditMode();
+                } else if (window.pendingAction === 'editContract') {
+                    enableContractEditMode();
                 } else if (window.pendingAction === 'editDatabase') {
                     await enterDatabaseEditMode();
                 }
@@ -11462,10 +11863,12 @@
 
                 paymentData = savedData.paymentData;
                 nextPaymentId = Number(savedData.nextPaymentId) || nextPaymentId;
+                restoreContractData(savedData);
                 localStorage.setItem('paymentDashboardData', JSON.stringify(paymentData));
                 localStorage.setItem('paymentDashboardNextId', String(nextPaymentId));
                 loadPaymentData();
                 updatePaymentSummary();
+                renderContractTable();
                 showNotification('<i class="fas fa-check-circle me-2"></i>Payment data synced successfully!', 'success');
             } catch (error) {
                 console.error('Error syncing payment data:', error);
@@ -11631,6 +12034,57 @@
                         <i class="fas fa-info-circle me-1"></i>
                         This is a secure admin area. Contact your administrator for credentials.
                     </small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="contractModal" tabindex="-1" aria-labelledby="contractModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="border-radius: 16px; border: 2px solid #ffe9d6;">
+                <div class="modal-header" style="background: linear-gradient(135deg, #ff8c00 0%, #ffb74d 100%); color: white; border-radius: 14px 14px 0 0; border: none;">
+                    <h5 class="modal-title" id="contractModalTitle" style="font-weight: 700;"><i class="fas fa-file-contract me-2"></i>Add Contract</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="padding: 30px;">
+                    <form id="contractForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold" for="contractName">Contract Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="contractName" maxlength="120" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold" for="contractVendor">Vendor <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="contractVendor" maxlength="120" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold" for="contractStartDate">Start Date <span class="text-muted">(optional)</span></label>
+                                <input type="date" class="form-control" id="contractStartDate">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold" for="contractExpiryDate">Expiry Date <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" id="contractExpiryDate" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold" for="contractStatus">Status <span class="text-danger">*</span></label>
+                            <select class="form-select" id="contractStatus" required onchange="updateContractStartRequirement(); updateContractExpiryRequirement()">
+                                <option value="In Progress">In Progress</option>
+                                <option value="Active">Active</option>
+                            </select>
+                            <small class="text-muted" id="contractExpiryHelp">Expiry date is optional for in-progress contracts and required for active contracts.</small>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold" for="contractRemarks">Remarks</label>
+                            <textarea class="form-control" id="contractRemarks" rows="3" maxlength="1000" placeholder="Optional notes about this contract"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer" style="background-color: #f8f9fa; border-top: 1px solid #dee2e6; border-radius: 0 0 14px 14px;">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fas fa-times me-1"></i>Cancel</button>
+                    <button type="button" id="contractSubmitBtn" class="btn btn-primary" onclick="saveContract()" style="background: linear-gradient(135deg, #ff8c00 0%, #ff9f1a 100%); border: none;"><i class="fas fa-plus me-1"></i>Add Contract</button>
                 </div>
             </div>
         </div>

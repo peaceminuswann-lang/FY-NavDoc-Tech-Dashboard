@@ -7,6 +7,7 @@ A web application for analyzing flight fuel data for Firefly Airlines.
 - View fuel consumption data by fleet (B737, ATR72)
 - Monthly, quarterly, and yearly analysis
 - Interactive charts and tables
+- Payment dashboard with contract expiry status, progress, and remarks tracking
 - Admin panel for uploading CSV/XLSX data
 - Responsive design for mobile and desktop
 
@@ -91,9 +92,15 @@ Add a payment term of 15, 30, 60, or 90 days. The Payment Dashboard calculates t
 
 To test this reminder, select `testPaymentDueReminderEmail` in the Apps Script function menu, click **Run**, approve Google's authorization prompt if prompted, and confirm the test email arrives.
 
+### Contract expiry reminders
+
+The Payment Dashboard sends a consolidated email for contracts with an expiry date at 6 months, 3 months, and 1 month before expiry, 7 days before expiry, on the expiry date, and every 3 days after expiry. Calendar-month reminders use the matching day of the month, or the last day of that month when the expiry day does not exist (for example, 31 August minus six months is the last day of February). In-progress contracts without an expiry date are skipped. Each scheduled alert is sent once per contract and expiry date.
+
+To test email delivery, select `testContractExpiryReminderEmail` in the Apps Script function menu and click **Run**. To test an actual scheduled alert, select `sendContractExpiryReminders` and click **Run**; it sends only alerts due today.
+
 ### Enable the daily reminder schedule
 
-After testing the reminders you want, select `setupDailyShipOutReminderTrigger` and click **Run** once. The script creates one daily trigger that checks both navigation ship-out and payment due reminders at around 9 AM Malaysia time. Google may run it at a slightly varied time within that hour. Verify it under **Triggers**. If you already created the database-only trigger, running setup again replaces it with the combined reminder trigger.
+After testing the reminders you want, select `setupDailyShipOutReminderTrigger` and click **Run** once. The script creates one daily trigger that checks navigation ship-out, payment due, and contract expiry reminders at around 9 AM Malaysia time. Google may run it at a slightly varied time within that hour. Verify it under **Triggers**. If you already created a reminder trigger, running setup again replaces it with the combined reminder trigger.
 
 No paid service is required. The script sends through Gmail's free Apps Script allowance; it does not require Gmail SMTP passwords or app passwords. The sender must keep the Gmail account active and the installed trigger enabled. The calendar marks payment due dates in red, the exact reminder date (3 days before) in yellow, and created dates in soft orange, with labels and payment names shown on each date.
 
