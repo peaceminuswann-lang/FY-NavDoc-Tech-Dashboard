@@ -6734,7 +6734,7 @@
             const daysUntilNext = databaseDateDifference(today, nextStart);
             const totalDays = databaseDateDifference(currentStart, nextStart) || navigationCycleLengthDays;
             const remainingDays = daysUntilNext === null ? null : Math.max(0, Math.min(totalDays, daysUntilNext));
-            const progressPercent = remainingDays === null ? 0 : (remainingDays / totalDays) * 100;
+            const progressPercent = remainingDays === null ? 0 : ((totalDays - remainingDays) / totalDays) * 100;
 
             setDatabaseText(`${prefix}CurrentCycle`, formatAiracCycleLabel(currentCycle));
             setDatabaseText(`${prefix}CurrentRange`, formatDatabaseCycleRange(currentStart, currentEnd));
@@ -6763,9 +6763,12 @@
                 `${prefix}TailoringDays`,
                 daysUntilShipOut === null ? 'Set cycle effective date' : daysUntilShipOut === 0 ? 'Ship out today' : `Ship out in ${daysUntilShipOut} days`
             );
-            const shipOutProgress = daysUntilShipOut === null
+            const shipOutRemainingDays = daysUntilShipOut === null
+                ? null
+                : Math.max(0, Math.min(navigationCycleLengthDays, daysUntilShipOut));
+            const shipOutProgress = shipOutRemainingDays === null
                 ? 0
-                : (Math.max(0, Math.min(navigationCycleLengthDays, daysUntilShipOut)) / navigationCycleLengthDays) * 100;
+                : ((navigationCycleLengthDays - shipOutRemainingDays) / navigationCycleLengthDays) * 100;
             document.getElementById(`${prefix}TailoringProgress`).style.setProperty('--cycle-progress', `${shipOutProgress}%`);
 
             const upcomingDeadlines = document.getElementById(`${prefix}UpcomingDeadlines`);
